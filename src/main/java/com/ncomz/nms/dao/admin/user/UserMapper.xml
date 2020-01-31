@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.user.UserMapper">
+
+
+	<!--  직원 리스트 조회 조건 -->
+	<sql id="where_clause">
+	
+		<!-- 검색 조건  -->
+		<if test=' dept_cd != null and dept_cd != "" and dept_cd != "ALL" '>
+			AND CO.DEPT_CD = #{dept_cd}
+		</if>
+		<if test=' team_cd != null and team_cd != "" and team_cd != "ALL" '>
+			AND CO.TEAM_CD = #{team_cd}
+		</if>
+		<if test=' rank_cd != null and rank_cd != "" and rank_cd != "ALL" '>
+			AND CO.RANK_CD = #{rank_cd}
+		</if>
+		<if test=' step_cd != null and step_cd != "" and step_cd != "ALL" '>
+			AND CO.STEP_CD = #{step_cd}
+		</if>
+		<if test=' usr_grp_id != null and usr_grp_id != "" and usr_grp_id != "ALL" '>
+			AND U.USR_GRP_ID = #{usr_grp_id}
+		</if>
+		<if test=' usr_nm != null and usr_nm != "" '>
+			AND U.USR_NM LIKE concat('%',#{usr_nm},'%')
+		</if>
+		
+		<!-- search type  -->
+		<if test='search_date_type == "JOIN"'>
+			AND DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m') = #{search_month}
+		</if>
+		<if test='search_date_type == "BIRTH"'>
+			AND SUBSTRING(U.SRT_NO, 5, 2) = LPAD(#{month_period},'2','0')
+		</if>
+		    AND U.EMP_NO != 'admin'
+		<!-- /search type  -->
+		
+		
+	</sql>
+
+	<!-- 직원  리스트조회.-->
+ 	<sql id="selectList">
+		  SELECT   U.EMP_NO, 
+			       U.USR_NM,
+			       U.USR_GRP_ID,
+			       (SELECT EXPLN FROM T_USR_GRP G WHERE U.USR_GRP_ID = G.USR_GRP_ID) EXPLN,
+			       A.DTL_CD_DESC AS DEPT_CD, 
+			       CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
+			            ELSE E.DTL_CD_DESC END AS TEAM_CD,
+			       B.DTL_CD_DESC AS RANK_CD, 
+			       C.DTL_CD_DESC AS PSIT_CD, 
+			       D.DTL_CD_DESC AS STEP_CD, 
+			       DATE_FORMAT(CO.COM_STRT_DT, '%Y-%m-%d') AS COM_STRT_DT, 
+			       CONCAT(SUBSTRING(U.SRT_NO, 5, 2), '월 ', 
+			       SUBSTRING(U.SRT_NO, 7, 2), '일') AS SRT_NO, 
+			       U.EMAIL 
+			FROM   T_USER U, 
+			       T_COMMON_CODE A, 
+			       T_COMMON_CODE B, 
+			       T_COMMON_CODE C, 
+			       T_COMMON_CODE D, 
+			       T_COM_INFO CO
+			       LEFT OUTER JOIN T_COMMON_CODE E
+			       ON CO.TEAM_CD = E.DTL_CD 
+			WHERE  CO.EMP_NO = U.EMP_NO 
+			       AND U.USE_YN = 'Y' 
+			       AND CO.DEPT_CD = A.DTL_CD 
+			       AND CO.RANK_CD = B.DTL_CD 
+			       AND CO.PSIT_CD = C.DTL_CD 
+			       AND CO.STEP_CD = D.DTL_CD
+			
+			/* 관리자 사용자 권한 분기*/       
+			<if test='emp_no != null and !emp_no.equals("admin") '>
+				AND CO.EMP_NO = #{emp_no}
+			</if>
+			<if test='emp_no != null and emp_no.equals("admin") '>						       
+		    	<include refid="where_clause" />
+		    </if>
+		    
+		    ORDER BY U.EMP_NO LIMIT 18446744073709551615
+	</sql>
+
+	<!-- 직원  리스트조회 페이징-->
+	<select id="getUserList" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* UserMapper.xml.getUserList */
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_header" />
+	   	<include refid="selectList" />
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_footer" />
+	</select>
+
+	<select id="getUserListCount" resultType="int">
+		SELECT /* UserMapper.xml.getUserListCount */ 
+		       COUNT(*)
+		FROM   T_USER U, 
+		       T_COMMON_CODE A, 
+		       T_COMMON_CODE B, 
+		       T_COMMON_CODE C, 
+		       T_COMMON_CODE D, 
+		       T_COM_INFO CO
+		       LEFT OUTER JOIN T_COMMON_CODE E
+		       ON CO.team_cd = E.dtl_cd 
+		WHERE  CO.emp_no = U.emp_no 
+		       AND U.use_yn = 'Y' 
+		       AND CO.dept_cd = A.dtl_cd 
+		       AND CO.rank_cd = B.dtl_cd 
+		       AND CO.psit_cd = C.dtl_cd 
+		       AND CO.step_cd = D.dtl_cd
+		       
+		    /* 관리자 사용자 권한 분기*/       
+			<if test='emp_no != null and !emp_no.equals("admin") '>
+				AND CO.EMP_NO = #{emp_no}
+			</if>
+			<if test='emp_no != null and emp_no.equals("admin") '>						       
+		    	<include refid="where_clause" />
+		    </if> 
+	</select>
+	
+	<select id="getUserInfo" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+        SELECT U.EMP_NO, U.USR_NM /* UserMapper.xml.getUserList */
+             , CO.DEPT_CD
+             , CO.TEAM_CD
+             , CO.RANK_CD
+             , CO.PSIT_CD
+             , CO.STEP_CD
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , DATE_FORMAT(SRT_NO,'%Y-%m-%d') SRT_NO
+             , U.EMAIL
+             , U.TEL_NO
+             , U.MARI_YN
+             , U.MIL_CD
+             , FI.FILE_ID
+             , FI.FILE_URI
+             , DATE_FORMAT(U.MIL_STRT_DT,'%Y-%m-%d') AS MIL_STRT_DT
+             , DATE_FORMAT(U.MIL_END_DT,'%Y-%m-%d') AS MIL_END_DT
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , U.CELL_NO
+             , U.FAX_NO
+             , U.ADDR
+             , U.SPE_ABIL
+             , CO.COM_CD
+             , CO.GRADE
+             , GEND_CD
+             , WORP_CD
+          FROM T_USER U 
+		  LEFT OUTER JOIN T_FILE_INFO FI 
+			ON U.FILE_ID = FI.FILE_ID
+			 , T_COM_INFO CO 
+		 WHERE CO.EMP_NO = U.EMP_NO 
+           AND U.USE_YN = 'Y'
+           AND U.EMP_NO = #{emp_no}
+   </select>
+	
+	<select id="getUserEdu" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		SELECT /* UserMapper.xml.getUserEdu */
+      		   SEQ AS EDU_SEQ 
+      		  ,SCHL_NM
+              ,DATE_FORMAT(EDU_STRT_DT,'%Y-%m-%d') AS EDU_STRT_DT
+      		  ,DATE_FORMAT(EDU_END_DT,'%Y-%m-%d') AS EDU_END_DT
+      		  ,MAJOR
+      		  ,REMARK AS EDU_REMARK
+          FROM T_EDU_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="getUserCert" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		SELECT /* UserMapper.xml.getUserCert */
+		       SEQ AS CERT_SEQ
+      		  ,CERT_NM
+              ,DATE_FORMAT(GET_DT,'%Y-%m-%d') AS GET_DT
+      		  ,REMARK AS CERT_REMARK
+          FROM T_CERT_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="getUserCarr" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		SELECT /* UserMapper.xml.getUserCarr */
+		       SEQ AS CARR_SEQ
+      		  ,CARR_COM_NM
+              ,DATE_FORMAT(CARR_STRT_DT,'%Y-%m-%d') AS CARR_STRT_DT
+              ,DATE_FORMAT(CARR_END_DT,'%Y-%m-%d') AS CARR_END_DT
+              ,CARR_RANK_NM
+              ,WORK
+          FROM T_CAREER_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="getUserTask" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		SELECT /* UserMapper.xml.getUserCarr */
+		       SEQ AS TASK_SEQ
+      		  ,PRJT_NM
+      		  ,RLTD_COM
+              ,DATE_FORMAT(DEV_STRT_DT,'%Y-%m-%d') AS DEV_STRT_DT
+              ,DATE_FORMAT(DEV_END_DT,'%Y-%m-%d') AS DEV_END_DT
+			  ,MY_ROLE
+			  ,USED_MDEL
+			  ,USED_OS
+			  ,USED_LANG
+			  ,USED_DBMS
+			  ,USED_DC
+          FROM T_TASK_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="getUserPassword" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="String">
+		SELECT PWD
+		  FROM T_USER
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="chkUserEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		  FROM T_USER
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="chkComEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		  FROM T_COM_INFO
+		 WHERE EMP_NO = #{emp_no} 
+	</select>
+	
+	<select id="chkEduEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		  FROM T_EDU_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="chkCertEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		  FROM T_CERT_INFO
+		 WHERE EMP_NO = #{emp_no} 
+	</select>
+	
+	<select id="chkCareerEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		
+!1q2		  FROM T_CAREER_INFO
+		 WHERE EMP_NO = #{emp_no} 
+	</select>
+	
+	<select id="chkTsakEmpNo" parameterType="String" resultType="int">
+		SELECT COUNT(EMP_NO)
+		  FROM T_TASK_INFO
+		 WHERE EMP_NO = #{emp_no} 
+	</select>
+	
+	<insert id="insertUserInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_USER(
+			   EMP_NO
+			 , USR_GRP_ID
+			 , PWD
+			 , USR_NM
+			 , SRT_NO
+			 , GEND_CD
+			 , ADDR
+			 , TEL_NO
+			 , CELL_NO
+			 , FAX_NO
+			 , EMAIL
+			 , MARI_YN
+			 , SPE_ABIL
+			 , MIL_CD
+			 , MIL_STRT_DT
+		     , MIL_END_DT
+			 , FILE_ID
+			 , USE_YN
+			 , IP_BAND
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+			   #{emp_no}
+			 , 4
+			 , #{pwd_tobe}
+			 , #{usr_nm}
+			 , REPLACE(#{srt_no},'-','')
+			 , #{gend_cd}
+			 , #{addr}
+			 , REPLACE(#{tel_no},'-','')
+			 , REPLACE(#{cell_no},'-','')
+			 , REPLACE(#{fax_no},'-','')
+			 , CONCAT(#{email},'@ncomz.com')
+			 , #{mari_yn}
+			 , #{spe_abil}
+			 , #{mil_cd}
+			 , REPLACE(#{mil_strt_dt},'-','')
+			 , REPLACE(#{mil_end_dt},'-','')
+			 , #{file_id}
+			 , 'Y'
+			 , '*.*.*.*'
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<insert id="insertComInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_COM_INFO(
+			   EMP_NO
+			 , DEPT_CD
+			 , TEAM_CD
+			 , RANK_CD
+			 , PSIT_CD
+			 , STEP_CD
+			 , COM_CD
+			 , COM_STRT_DT
+			 , WORP_CD
+			 , GRADE
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , #{dept_cd}
+			 , #{team_cd}
+			 , #{rank_cd}
+			 , #{psit_cd}
+			 , #{step_cd}
+			 , #{com_cd}
+			 , REPLACE(#{com_strt_dt},'-','')
+			 , #{worp_cd}
+			 , #{grade}
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<insert id="insertEduInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_EDU_INFO(
+			   EMP_NO
+			 , SEQ
+			 , SCHL_NM
+			 , EDU_STRT_DT
+			 , EDU_END_DT
+			 , MAJOR
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+	    	 , (SELECT  IFNULL(MAX(SEQ),0)+1
+				 FROM T_EDU_INFO A
+				WHERE EMP_NO = #{emp_no})
+			 , #{schl_nm}
+	    	 , REPLACE(#{edu_strt_dt},'-','')
+	    	 , REPLACE(#{edu_end_dt},'-','')
+	    	 , #{major}
+	    	 , #{edu_remark}
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<insert id="insertCertInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CERT_INFO(
+			   EMP_NO
+			 , SEQ
+			 , CERT_NM
+			 , GET_DT
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+	    	 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CERT_INFO A
+				 WHERE EMP_NO = #{emp_no})
+	    	 , #{cert_nm}
+	    	 , REPLACE(#{get_dt},'-','')
+	    	 , #{cert_remark}
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<insert id="insertCareerInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CAREER_INFO(
+			   EMP_NO
+			 , SEQ
+			 , CARR_COM_NM
+			 , CARR_STRT_DT
+			 , CARR_END_DT
+			 , CARR_RANK_NM
+			 , WORK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CAREER_INFO A
+				 WHERE EMP_NO = #{emp_no})
+			 , #{carr_com_nm}
+			 , REPLACE(#{carr_strt_dt},'-','')
+			 , REPLACE(#{carr_end_dt},'-','')
+			 , #{carr_rank_nm}
+			 , #{work}
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<insert id="insertTaskInfo" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_TASK_INFO(
+			   EMP_NO
+			 , SEQ
+			 , PRJT_NM
+			 , RLTD_COM
+			 , DEV_STRT_DT
+			 , DEV_END_DT
+			 , MY_ROLE
+			 , USED_MDEL
+			 , USED_OS
+			 , USED_LANG
+			 , USED_DBMS
+			 , USED_DC
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_TASK_INFO A
+				 WHERE EMP_NO = #{emp_no})
+			 , #{prjt_nm}
+			 , #{rltd_com}
+			 , REPLACE(#{dev_strt_dt},'-','')
+			 , REPLACE(#{dev_end_dt},'-','')
+			 , #{my_role}
+			 , #{used_mdel}
+			 , #{used_os}
+			 , #{used_lang}
+			 , #{used_dbms}
+			 , #{used_dc}
+			 , #{cre_id}
+			 , now()
+			 , #{upd_id}
+			 , now()
+		)
+	</insert>
+	
+	<update id="updateUserInfo" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_USER
+		   SET USR_NM 		= #{usr_nm}
+		   	 , GEND_CD		= #{gend_cd}
+		     , SRT_NO 		= REPLACE(#{srt_no},'-','')
+		     , ADDR 		= #{addr}
+		     , TEL_NO 		= REPLACE(#{tel_no},'-','')
+		     , CELL_NO 		= REPLACE(#{cell_no},'-','')
+		     , FAX_NO 		= REPLACE(#{fax_no},'-','')
+		     , EMAIL 		= #{email}
+		     , MARI_YN 		= #{mari_yn}
+		     , SPE_ABIL 	= #{spe_abil}
+		     , MIL_CD 		= #{mil_cd}
+		     , MIL_STRT_DT  = IFNULL(REPLACE(#{mil_strt_dt},'-',''),'')
+		     , MIL_END_DT   = IFNULL(REPLACE(#{mil_end_dt},'-',''),'')
+	   		 , FILE_ID 		= #{file_id}
+		     , UPD_ID 		= #{upd_id}
+		     , UPD_DT 		= now()
+		 WHERE EMP_NO 		= #{emp_no}
+	</update>
+	
+	<update id="updateUserPassword" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_USER
+		   SET PWD 			= #{pwd_tobe}
+		     , UPD_ID 		= #{upd_id}
+		     , UPD_DT 		= now()
+		 WHERE EMP_NO 		= #{emp_no}
+	</update>
+	
+	<update id="updateComInfo" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_COM_INFO
+		   SET DEPT_CD  = #{dept_cd}
+			 , TEAM_CD 	= #{team_cd}
+			 , RANK_CD	= #{rank_cd}
+			 , PSIT_CD 	= #{psit_cd}
+			 , STEP_CD 	= #{step_cd}
+			 , COM_CD 	= #{com_cd}
+			 , COM_STRT_DT 	= REPLACE(#{com_strt_dt},'-','')
+			 , WORP_CD	= #{worp_cd}
+			 , GRADE 	= #{grade}
+			 , UPD_ID 	= #{upd_id}
+		     , UPD_DT 	= now()
+		 WHERE EMP_NO 	= #{emp_no}
+		   
+		  
+	</update>
+	
+	<update id="deleteEduInfo" parameterType="String">
+		DELETE FROM T_EDU_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<update id="deleteCertInfo" parameterType="String">
+		DELETE FROM T_CERT_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<update id="deleteCareerInfo" parameterType="String">
+		DELETE FROM T_CAREER_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<update id="deleteTaskInfo" parameterType="String">
+		DELETE FROM T_TASK_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<select id="newEmpNo" resultType="String">
+		SELECT LPAD(MAX(EMP_NO) + 1, 5, '0') newEmpNo
+		  FROM T_USER 
+		 WHERE EMP_NO != 'admin'
+		   AND EMP_NO NOT LIKE '9%'
+	</select>
+	
+	<update id="updateUseYnAction" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_USER
+		   SET USE_YN = 'N'
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	
+	<select id="getUserListExcel" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="java.util.LinkedHashMap">
+   /*UserMapper.getUserListExcel */
+       SELECT CONCAT("'",U.EMP_NO) AS label_user_empno, 
+              IFNULL(U.USR_NM, '-') AS label_user_usernm, 
+              IFNULL(A.DTL_CD_DESC , '-') AS label_user_dept,
+              IFNULL(B.DTL_CD_DESC , '-') AS label_user_team,
+              IFNULL(C.DTL_CD_DESC , '-') AS label_user_rank,
+              IFNULL(D.DTL_CD_DESC , '-') AS label_user_psit,
+              IFNULL(E.DTL_CD_DESC , '-') AS label_user_stmp,
+              IFNULL(DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') , '-') AS label_user_comstrt,
+              IFNULL(CONCAT(SUBSTRING(U.SRT_NO, 5, 2),'월 ',SUBSTRING(U.SRT_NO, 7, 2),'일') , '-') AS label_user_srtno,
+              IFNULL(U.EMAIL , '-') AS label_user_email
+		 FROM T_USER U, 
+		      T_COMMON_CODE A, 
+		      T_COMMON_CODE B, 
+		      T_COMMON_CODE C, 
+		      T_COMMON_CODE D, 
+		      T_COM_INFO CO
+		 LEFT OUTER JOIN T_COMMON_CODE E
+		      ON CO.TEAM_CD = E.DTL_CD 
+	    WHERE CO.EMP_NO = U.EMP_NO 
+          AND U.USE_YN = 'Y' 
+          AND U.USR_NM != 'admin'
+          AND CO.DEPT_CD = A.DTL_CD 
+          AND CO.RANK_CD = B.DTL_CD 
+          AND CO.PSIT_CD = C.DTL_CD 
+          AND CO.STEP_CD = D.DTL_CD
+         
+          <include refid="where_clause" />
+   </select>
+	
+ </mapper>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	$('#aletTest_basic').on('click', function(){
+	    swal({
+	        title: "알럿 내용이 들어가는 부분",
+	        text: "하위 상세 내용이 필요현경우만 사용" // 꼭필요한 경우만 사용
+	    });
+	});
+	
+	
+	
+	$('#aletTest_confirm').on('click', function(){
+	    swal({
+	        title: "정말 삭제하시겠습니까?",
+	        type: "warning",
+	        showCancelButton: true,
+	        confirmButtonText: "예",
+	        cancelButtonText: "아니오",
+	        closeOnConfirm: false
+	    },function () {
+	      	swal({
+	      		title: "삭제 되었습니다", 
+	      		type: "success",
+	      		confirmButtonText: "닫기"
+	      	});
+	    });
+	});
+	
+	$('#aletTest_confirm2').click(function () {
+	    swal({
+		    title: "정말 삭제하시겠습니까?",
+		    type: "warning",
+		    showCancelButton: true,
+		    confirmButtonText: "예",
+		    cancelButtonText: "아니오",
+		    closeOnConfirm: false,
+		    closeOnCancel: false 
+		},function (isConfirm) {
+		    if (isConfirm) {
+		        swal({
+		        	title: "삭제 되었습니다", 
+	      			type: "success",
+	      			confirmButtonText: "닫기"
+		        });
+		    } else {
+		        swal({
+		        	title: "취소 되었습니다", 
+	      			type: "error",
+	      			confirmButtonText: "닫기"
+		        });
+		    }
+		});
+	});	
+	
+	
+	$('#aletTest_type_success').on('click', function(){
+	    swal({
+	    	title: "알럿타입 success",
+	        type: "success"
+	    });
+	});
+	
+	$('#aletTest_type_warning').on('click', function(){
+	    swal({
+	    	title: "알럿타입 warning",
+	        type: "warning"
+	    });
+	});
+	
+	$('#aletTest_type_error').on('click', function(){
+	    swal({
+	    	title: "알럿타입 error",
+	        type: "error"
+	    });
+	});
+	
+	$('#aletTest_type_info').on('click', function(){
+	    swal({
+	    	title: "알럿타입 info",
+	        type: "info"
+	    });
+	});
+	
+	
+});
+</script>
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">			
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2 class="snbAutoHide">
+				<span class="title">Alert / Confirm예제 - sweetalert 플러그인 사용됨 // https://sweetalert.js.org</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">템플릿 가이드</a>
+					>
+					<a href="#">기타페이지</a>
+					>
+					<a href="#">Alert/Confirm 예제</a>
+				</div>
+			</h2>
+			
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT30">
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">기본  arelt</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">기본  arelt</th>
+									<td>
+										<button type="button" id="aletTest_basic" class="amb_btnstyle blue middle" >기본 alert</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_basic').on('click', function(){
+    swal({
+        title: "알럿 내용이 들어가는 부분",
+        text: "하위 상세 내용이 필요현경우만 사용" // 꼭필요한 경우만 사용
+    });
+});
+					</xmp>
+				</div>
+
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">alert type warning</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">type warning</th>
+									<td>
+										<button type="button" id="aletTest_type_success" class="amb_btnstyle blue middle" >type success</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_type_success').on('click', function(){
+    swal({
+        title: "알럿타입 success",
+        type: "success"
+    });
+});
+					</xmp>					
+				</div>
+
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">type error</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">type error</th>
+									<td>
+										<button type="button" id="aletTest_type_error" class="amb_btnstyle blue middle" >type error</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_type_error').on('click', function(){
+    swal({
+    	title: "알럿타입 error",
+        type: "error"
+    });
+});
+					</xmp>					
+				</div>
+
+
+			</div>
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox">
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">alert type info</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">alert type info</th>
+									<td>
+										<button type="button" id="aletTest_type_info" class="amb_btnstyle blue middle" >alert type info</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_type_info').on('click', function(){
+    swal({
+    	title: "알럿타입 info",
+        type: "info"
+    });
+});	
+					</xmp>
+				</div>
+
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">confirm</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">confirm</th>
+									<td>
+										<button type="button" id="aletTest_confirm" class="amb_btnstyle blue middle" >confirm</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_confirm').on('click', function(){
+    swal({
+        title: "정말 삭제하시겠습니까?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "예",
+        cancelButtonText: "아니오",
+        closeOnConfirm: false
+    },function () {
+      	swal({
+      		title: "삭제 되었습니다", 
+      		type: "success",
+      		confirmButtonText: "닫기"
+      	});
+    });
+});	
+					</xmp>					
+				</div>
+
+				<div class="g_column w_3_1">
+					<h3>
+						<span class="title">confirm2 // '아니오'버튼시 확인 alert출력</span>
+					</h3>
+					<div class="unitBox">
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:20%;" />
+								<col style="" />
+							</colgroup>	
+							<tbody>
+								 <tr>
+									<th class="active">confirm2</th>
+									<td>
+										<button type="button" id="aletTest_confirm2" class="amb_btnstyle blue middle" >confirm2</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<xmp class="codeView grayBox lineBox" style="height:200px; display:block;">
+$('#aletTest_confirm2').click(function () {
+    swal({
+	    title: "정말 삭제하시겠습니까?",
+	    type: "warning",
+	    showCancelButton: true,
+	    confirmButtonText: "예",
+	    cancelButtonText: "아니오",
+	    closeOnConfirm: false,
+	    closeOnCancel: false 
+	},function (isConfirm) {
+	    if (isConfirm) {
+	        swal({
+	        	title: "삭제 되었습니다", 
+      			type: "success"
+      			confirmButtonText: "닫기"
+	        });
+	    } else {
+	        swal({
+	        	title: "취소 되었습니다", 
+      			type: "error"
+      			confirmButtonText: "닫기"
+	        });
+	    }
+	});
+});	
+	
+					</xmp>					
+				</div>
+
+
+			</div>
+			<!-- rowBox 반복단위 -->
+
+			
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,1010 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.profile.ProfileMapper">
+	
+	<!-- ################################## 조건 ################################## --> 
+		
+	<!-- 0503 - 직원 프로필 리스트 조회 조건 -->
+	<sql id="list_where_clause">
+		<!-- 검색 조건  -->
+		<if test=' dept_cd != null and dept_cd != "" and dept_cd != "ALL" '>
+			AND CO.DEPT_CD = #{dept_cd}
+		</if>
+		<if test=' team_cd != null and team_cd != "" and team_cd != "ALL" '>
+			AND CO.TEAM_CD = #{team_cd}
+		</if>
+		<if test=' usr_nm != null and usr_nm != "" '>
+			AND U.USR_NM LIKE CONCAT('%',#{usr_nm},'%')
+		</if>
+	</sql>
+	
+	<!-- 0522 - 직원 프로필 리스트 조회 조건 (권한) -->
+	<sql id="team_where_clause">
+         AND CO.DEPT_CD = #{dept_cd}
+         AND CO.TEAM_CD = #{team_cd}
+      <if test=' usr_nm != null and usr_nm != "" '>
+         AND U.USR_NM LIKE CONCAT('%',#{usr_nm},'%')
+      </if>
+    </sql>
+   
+	<!-- 0522 - 직원 프로필 리스트 조회 조건 (권한)-->
+    <sql id="dept_where_clause">
+         AND CO.DEPT_CD = #{dept_cd}
+      <if test=' team_cd != null and team_cd != "" and team_cd != "ALL" '>
+         AND CO.TEAM_CD = #{team_cd}
+      </if>
+      <if test=' usr_nm != null and usr_nm != "" '>
+         AND U.USR_NM LIKE CONCAT('%',#{usr_nm},'%')
+      </if>
+    </sql>
+	
+	<!-- 0522 - 직원 프로필 날짜 조회 조건 (일반 사용자 제외 공통 코드) -->
+	<sql id="month_where_clause">
+		<if test=' search_month != null and search_month != "" '>
+			AND DATE_FORMAT(U.UPD_DT,'%Y-%m') = #{search_month}
+		</if>
+	</sql>
+	
+	<!-- 0522 - 직원 프로필 이력 날짜 조회 조건 -->
+	<sql id="hist_month_where_clause">
+		<if test=' search_month != null and search_month != "" '>
+			AND DATE_FORMAT(U.CRE_DT,'%Y-%m') = #{search_month}
+		</if>
+		<if test=' search_month == null or search_month == "" '>
+			AND DATE_FORMAT(U.CRE_DT, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+            AND U.WRIT_YM = DATE_FORMAT(NOW(), '%Y%m')
+		</if>
+	</sql>
+	
+	<!-- 0522 - 이력 상세보기 공통 조건 -->
+	<sql id="history_where_clause">
+		AND (
+			DATE_FORMAT(CRE_DT,'%Y-%m-%d %h:%i:%s') = #{cre_dt_st} 
+       		OR DATE_FORMAT(CRE_DT,'%Y-%m-%d %h:%i:%s') = (#{cre_dt_st} - interval 1 second)
+       		OR DATE_FORMAT(CRE_DT,'%Y-%m-%d %h:%i:%s') = (#{cre_dt_st} + interval 1 second)
+       	)
+	</sql> 
+	
+	<!-- ################################## 이력 목록 ################################## -->
+	
+	<!-- 0521 - 직원 프로필 이력 리스트 조회 -->
+ 	<sql id="selectProfileHistoryList">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileHistoryList */
+		SELECT 
+             U.EMP_NO, 
+             U.USR_NM, 
+             A.DTL_CD_DESC AS DEPT_CD, 
+             CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
+                  ELSE E.DTL_CD_DESC END AS TEAM_CD,
+             U.CRE_DT,   
+             CONCAT(SUBSTRING(U.WRIT_YM, 1, 4),'-',SUBSTRING(U.WRIT_YM, 5, 2)) AS WRIT_YM
+      	FROM   T_USER_HIST U, 
+             T_COMMON_CODE A, 
+             T_COM_INFO_HIST CO
+             LEFT OUTER JOIN T_COMMON_CODE E
+             ON CO.TEAM_CD = E.DTL_CD 
+      	WHERE  CO.EMP_NO = U.EMP_NO 
+             AND U.USE_YN = 'Y' 
+             AND CO.DEPT_CD = A.DTL_CD
+             AND U.WRIT_YM = CO.WRIT_YM
+             AND U.CRE_DT = CO.CRE_DT
+			 AND U.EMP_NO != 'admin'
+        
+        /* 사용자 권한 분기*/
+        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+            AND CO.EMP_NO = #{emp_no}       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+            <include refid="team_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+            <include refid="dept_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+            <include refid="list_where_clause" />  		       
+		    <include refid="hist_month_where_clause" />            
+        </if>
+        
+        ORDER BY U.EMP_NO, U.CRE_DT DESC LIMIT 18446744073709551615
+	</sql>
+	
+	<!-- 0503 - 직원 프로필 이력 리스트 조회 페이징-->
+	<select id="getProfileHistoryList" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_header" />
+	   	<include refid="selectProfileHistoryList" />
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_footer" />
+	</select>
+	
+	<!-- 0523 - 직원 프로필 이력 개수 -->
+	<select id="getProfileHistoryListCount" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="int">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileHistoryListCount */       
+		SELECT 
+             COUNT(*)
+      	FROM   T_USER_HIST U, 
+             T_COMMON_CODE A, 
+             T_COM_INFO_HIST CO
+             LEFT OUTER JOIN T_COMMON_CODE E
+             ON CO.TEAM_CD = E.DTL_CD 
+      	WHERE  CO.EMP_NO = U.EMP_NO 
+             AND U.USE_YN = 'Y' 
+             AND CO.DEPT_CD = A.DTL_CD
+             AND U.WRIT_YM = CO.WRIT_YM
+             AND U.CRE_DT = CO.CRE_DT
+			 AND U.EMP_NO != 'admin'
+        
+        /* 사용자 권한 분기*/
+        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+            AND CO.EMP_NO = #{emp_no}       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+            <include refid="team_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+            <include refid="dept_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+            <include refid="list_where_clause" />  		       
+		    <include refid="hist_month_where_clause" />            
+        </if>
+	</select>
+	
+	<!-- ################################## 이력 상세보기 ################################## -->
+	
+	<!-- 0520 - 직원 이력 기본 정보 & 사내 정보 -->
+	<select id="getProfileUserHist" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+	      /* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileUserHist */
+		  SELECT U.EMP_NO, U.USR_NM
+             , A.DTL_CD_DESC AS DEPT_CD
+             , CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
+                  ELSE E.DTL_CD_DESC END AS TEAM_CD
+             , B.DTL_CD_DESC AS RANK_CD
+             , C.DTL_CD_DESC AS PSIT_CD
+             , D.DTL_CD_DESC AS STEP_CD
+             , F.DTL_CD_DESC AS GRADE
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , CONCAT(SUBSTRING(U.SRT_NO, 3, 8)) AS SRT_NO
+             , U.EMAIL
+             , U.TEL_NO
+             , U.MARI_YN
+             , U.MIL_CD
+             , FI.FILE_ID
+             , FI.FILE_URI
+             , DATE_FORMAT(U.MIL_STRT_DT,'%Y-%m-%d') AS MIL_STRT_DT
+             , DATE_FORMAT(U.MIL_END_DT,'%Y-%m-%d') AS MIL_END_DT
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , U.CELL_NO
+             , U.FAX_NO
+             , U.ADDR
+             , U.SPE_ABIL
+             , CO.COM_CD
+             , U.CRE_DT
+             , CO.WORP_CD
+             , U.GEND_CD
+             , U.CAREER_PERIOD
+          FROM T_USER_HIST U 
+		  	   LEFT OUTER JOIN T_FILE_INFO FI 
+			 	  ON U.FILE_ID = FI.FILE_ID
+			   , T_COM_INFO_HIST CO 
+               LEFT OUTER JOIN T_COMMON_CODE E
+              	  ON CO.TEAM_CD = E.DTL_CD
+               , T_COMMON_CODE A   
+               , T_COMMON_CODE B   
+               , T_COMMON_CODE C
+               , T_COMMON_CODE D
+               , T_COMMON_CODE F
+		  WHERE CO.EMP_NO = U.EMP_NO 
+           	AND U.USE_YN = 'Y'
+           	AND CO.WRIT_YM = U.WRIT_YM 
+            AND CO.DEPT_CD = A.DTL_CD
+            AND CO.RANK_CD = B.DTL_CD
+            AND CO.PSIT_CD = C.DTL_CD
+            AND CO.STEP_CD = D.DTL_CD
+            AND CO.GRADE = F.DTL_CD
+           	AND DATE_FORMAT(U.CRE_DT,'%Y-%m-%d %h:%i:%s') = #{cre_dt_st}
+           	AND U.EMP_NO = #{emp_no}
+	</select>
+	
+	<!-- 0522 - 직원 학력 이력 정보 -->
+	<select id="getProfileEduHist" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileEduHist */
+		SELECT 
+	     	SCHL_NM
+	     	, SEQ AS EDU_SEQ 
+	        , DATE_FORMAT(EDU_STRT_DT,'%Y-%m-%d') AS EDU_STRT_DT
+	     	, DATE_FORMAT(EDU_END_DT,'%Y-%m-%d') AS EDU_END_DT
+	     	, MAJOR
+	     	, REMARK AS EDU_REMARK
+		FROM T_EDU_INFO_HIST
+		WHERE EMP_NO = #{emp_no}
+			<include refid="history_where_clause" />
+		ORDER BY EDU_STRT_DT DESC
+	</select>
+	
+	<!-- 0522 - 직원 자격증 이력 정보 -->
+	<select id="getProfileCertHist" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileCertHist */
+		SELECT 
+	     	CERT_NM
+	     	, SEQ AS CERT_SEQ 
+	        , DATE_FORMAT(GET_DT,'%Y-%m-%d') AS GET_DT
+	     	, REMARK AS CERT_REMARK
+		FROM T_CERT_INFO_HIST
+		WHERE EMP_NO = #{emp_no}
+			<include refid="history_where_clause" />
+		ORDER BY GET_DT DESC
+	</select>
+	
+	<!-- 0522 - 직원 경력 이력 정보 -->
+	<select id="getProfileCarrHist" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileCarrHist */
+		SELECT 
+	     	CARR_COM_NM
+	     	, SEQ AS CARR_SEQ 
+	        , DATE_FORMAT(CARR_STRT_DT,'%Y-%m-%d') AS CARR_STRT_DT
+	        , DATE_FORMAT(CARR_END_DT,'%Y-%m-%d') AS CARR_END_DT
+	        , CARR_RANK_NM
+	        , WORK
+		FROM T_CAREER_INFO_HIST
+		WHERE EMP_NO = #{emp_no}
+			<include refid="history_where_clause" />	
+		ORDER BY CARR_STRT_DT DESC
+	</select>
+	
+	<!-- 0522 - 직원 업무경험 이력 정보 -->
+	<select id="getProfileTaskHist" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileTaskHist */
+		SELECT 
+	     	PRJT_NM
+	     	, SEQ AS TASK_SEQ 
+	     	, RLTD_COM
+	        , DATE_FORMAT(DEV_STRT_DT,'%Y-%m-%d') AS DEV_STRT_DT
+	        , DATE_FORMAT(DEV_END_DT,'%Y-%m-%d') AS DEV_END_DT
+	        , MY_ROLE
+	        , USED_MDEL
+	        , USED_OS
+	        , USED_LANG
+	        , USED_DBMS
+	        , USED_DC
+		FROM T_TASK_INFO_HIST
+		WHERE EMP_NO = #{emp_no}
+			<include refid="history_where_clause" />
+		ORDER BY DEV_STRT_DT DESC
+	</select>
+	
+	<!-- ################################## 목록 ################################## -->
+	
+	<!-- 0503 - 직원 프로필 리스트 조회 -->
+ 	<sql id="selectProfileList">
+		SELECT /* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileList */
+		       U.EMP_NO, 
+		       U.USR_NM, 
+		       A.DTL_CD_DESC AS DEPT_CD, 
+		       CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
+		            ELSE E.DTL_CD_DESC END AS TEAM_CD,
+		       DATE_FORMAT(U.CRE_DT, '%Y-%m-%d') AS CRE_DT,
+		       DATE_FORMAT(U.UPD_DT, '%Y-%m-%d') AS UPD_DT
+		FROM   T_USER U, 
+		       T_COMMON_CODE A, 
+		       T_COM_INFO CO
+		       LEFT OUTER JOIN T_COMMON_CODE E
+		       ON CO.TEAM_CD = E.DTL_CD 
+		WHERE  CO.EMP_NO = U.EMP_NO 
+		       AND U.USE_YN = 'Y' 
+		       AND CO.DEPT_CD = A.DTL_CD
+			   AND U.EMP_NO != 'admin'
+			   
+			/* 사용자 권한 분기*/
+	        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+	            AND CO.EMP_NO = #{emp_no}
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+	            <include refid="team_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+	            <include refid="dept_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+	            <include refid="list_where_clause" />     
+            	<include refid="month_where_clause" />            
+	        </if>
+		    
+        ORDER BY U.EMP_NO LIMIT 18446744073709551615
+	</sql>
+	
+	<!-- 0503 - 직원 프로필 리스트 조회 페이징-->
+	<select id="getProfileList" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="com.ncomz.nms.domain.admin.user.User">
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_header" />
+	   	<include refid="selectProfileList" />
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_footer" />
+	</select>
+
+	<!-- 0503 - 직원 프로필 개수 -->
+	<select id="getProfileListCount" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="int">
+		SELECT /* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileListCount */
+		       COUNT(*)
+		FROM   T_USER U, 
+		       T_COMMON_CODE A, 
+		       T_COM_INFO CO
+		       LEFT OUTER JOIN T_COMMON_CODE E
+		       ON CO.TEAM_CD = E.DTL_CD 
+		WHERE  CO.EMP_NO = U.EMP_NO 
+		       AND U.USE_YN = 'Y' 
+		       AND CO.DEPT_CD = A.DTL_CD
+			   AND U.EMP_NO != 'admin'
+			   
+			/* 사용자 권한 분기*/
+	        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+	            AND CO.EMP_NO = #{emp_no}
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+	            <include refid="team_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+	            <include refid="dept_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+	            <include refid="list_where_clause" />     
+            	<include refid="month_where_clause" />            
+	        </if>
+	</select>
+	
+	<!-- ################################## 수정폼 ################################## -->
+	
+	<!-- 0507 - 직원 기본 정보 & 사내 정보 -->
+	<select id="getProfileUser" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+	      /* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileUser */
+	      SELECT U.EMP_NO, U.USR_NM
+             , CO.DEPT_CD
+             , A.DTL_CD_DESC AS DEPT_CD_ST
+             , CO.TEAM_CD
+             , CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
+		            ELSE E.DTL_CD_DESC END AS TEAM_CD_ST
+             , CO.RANK_CD
+             , B.DTL_CD_DESC AS RANK_CD_ST
+             , CO.PSIT_CD
+             , C.DTL_CD_DESC AS PSIT_CD_ST
+             , CO.STEP_CD
+             , D.DTL_CD_DESC AS STEP_CD_ST
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , CONCAT(SUBSTRING(U.SRT_NO, 1, 4),'-',SUBSTRING(U.SRT_NO, 5, 2),'-',SUBSTRING(U.SRT_NO, 7, 2)) AS SRT_NO
+             , U.EMAIL
+             , U.TEL_NO
+             , U.MARI_YN
+             , U.MIL_CD
+             , FI.FILE_ID
+             , FI.FILE_URI
+             , DATE_FORMAT(U.MIL_STRT_DT,'%Y-%m-%d') AS MIL_STRT_DT
+             , DATE_FORMAT(U.MIL_END_DT,'%Y-%m-%d') AS MIL_END_DT
+             , DATE_FORMAT(CO.COM_STRT_DT,'%Y-%m-%d') AS COM_STRT_DT
+             , U.CELL_NO
+             , U.FAX_NO
+             , U.ADDR
+             , U.SPE_ABIL
+             , CO.COM_CD
+             , CO.GRADE
+             , F.DTL_CD_DESC AS GRADE_ST
+             , CO.WORP_CD
+             , U.GEND_CD
+          FROM T_USER U 
+		  	   LEFT OUTER JOIN T_FILE_INFO FI 
+			   ON U.FILE_ID = FI.FILE_ID
+			 , T_COM_INFO CO 
+		       LEFT OUTER JOIN T_COMMON_CODE E
+		       ON CO.TEAM_CD = E.DTL_CD 
+		     , T_COMMON_CODE A
+		     , T_COMMON_CODE B
+		     , T_COMMON_CODE C
+		     , T_COMMON_CODE D
+		     , T_COMMON_CODE F
+		 WHERE CO.EMP_NO = U.EMP_NO 
+           AND U.USE_YN = 'Y'
+           AND CO.DEPT_CD = A.DTL_CD
+           AND CO.RANK_CD = B.DTL_CD
+           AND CO.PSIT_CD = C.DTL_CD
+           AND CO.STEP_CD = D.DTL_CD
+           AND CO.GRADE = F.DTL_CD
+           AND U.EMP_NO = #{emp_no}
+	</select>
+	
+	<!-- 0507 - 직원 학력 정보 -->
+	<select id="getProfileEdu" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileEdu */
+		SELECT 
+	     	SCHL_NM
+	     	, SEQ AS EDU_SEQ 
+	        , DATE_FORMAT(EDU_STRT_DT,'%Y-%m-%d') AS EDU_STRT_DT
+	     	, DATE_FORMAT(EDU_END_DT,'%Y-%m-%d') AS EDU_END_DT
+	     	, MAJOR
+	     	, REMARK AS EDU_REMARK
+		FROM T_EDU_INFO
+		WHERE EMP_NO = #{emp_no}
+		ORDER BY EDU_STRT_DT DESC
+	</select>
+	
+	<!-- 0507 - 직원 자격증 정보 -->
+	<select id="getProfileCert" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileCert */
+		SELECT 
+	     	CERT_NM
+	     	, SEQ AS CERT_SEQ 
+	        , DATE_FORMAT(GET_DT,'%Y-%m-%d') AS GET_DT
+	     	, REMARK AS CERT_REMARK
+		FROM T_CERT_INFO
+		WHERE EMP_NO = #{emp_no}
+		ORDER BY GET_DT DESC
+	</select>
+	
+	<!-- 0507 - 직원 경력 정보 -->
+	<select id="getProfileCarr" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileCarr */
+		SELECT 
+	     	CARR_COM_NM
+	     	, SEQ AS CARR_SEQ 
+	        , DATE_FORMAT(CARR_STRT_DT,'%Y-%m-%d') AS CARR_STRT_DT
+	        , DATE_FORMAT(CARR_END_DT,'%Y-%m-%d') AS CARR_END_DT
+	        , CARR_RANK_NM
+	        , WORK
+		FROM T_CAREER_INFO
+		WHERE EMP_NO = #{emp_no}
+		ORDER BY CARR_STRT_DT DESC
+	</select>
+	
+	<!-- 0508 - 직원 업무경험 정보 -->
+	<select id="getProfileTask" parameterType="String" resultType="com.ncomz.nms.domain.admin.user.User">
+		/* com.ncomz.nms.dao.admin.profile.ProfileMapper.xml.getProfileTask */
+		SELECT 
+	     	PRJT_NM
+	     	, SEQ AS TASK_SEQ 
+	     	, RLTD_COM
+	        , DATE_FORMAT(DEV_STRT_DT,'%Y-%m-%d') AS DEV_STRT_DT
+	        , DATE_FORMAT(DEV_END_DT,'%Y-%m-%d') AS DEV_END_DT
+	        , MY_ROLE
+	        , USED_MDEL
+	        , USED_OS
+	        , USED_LANG
+	        , USED_DBMS
+	        , USED_DC
+		FROM T_TASK_INFO
+		WHERE EMP_NO = #{emp_no}
+		ORDER BY DEV_STRT_DT DESC
+	</select>
+	
+	<!-- ################################## 프로필 수정 (USER, COM 수정 / EDU 이하 삭제 후 삽입 ) ################################## -->
+	
+	<!-- 0520 - 기본 정보 수정 (0528 - career_period 추가해야 함) -->
+	<update id="updateProfileUser" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_USER
+		   SET USR_NM 		= #{usr_nm}
+		     , SRT_NO 		= REPLACE(#{srt_no},'-','')
+		     , ADDR 		= #{addr}
+		     , TEL_NO 		= REPLACE(#{tel_no},'-','')
+		     , CELL_NO 		= REPLACE(#{cell_no},'-','')
+		     , FAX_NO 		= REPLACE(#{fax_no},'-','')
+		     , EMAIL 		= #{email}
+		     , MARI_YN 		= #{mari_yn}
+		     , SPE_ABIL 	= #{spe_abil}
+		     , MIL_CD 		= #{mil_cd}
+		     , MIL_STRT_DT  = IFNULL(REPLACE(#{mil_strt_dt},'-',''),'')
+		     , MIL_END_DT   = IFNULL(REPLACE(#{mil_end_dt},'-',''),'')
+	   		 , FILE_ID 		= #{file_id}
+		     , UPD_ID 		= #{upd_id}
+		     , UPD_DT 		= now()
+		     , CAREER_PERIOD= #{career_period}
+		 WHERE EMP_NO 		= #{emp_no}
+	</update>
+	
+	<!-- 0520 - 사내 정보 수정 -->
+	<update id="updateProfileCom" parameterType="com.ncomz.nms.domain.admin.user.User" >
+		UPDATE T_COM_INFO
+		   SET DEPT_CD  = #{dept_cd}
+			 , TEAM_CD 	= #{team_cd}
+			 , RANK_CD	= #{rank_cd}
+			 , PSIT_CD 	= #{psit_cd}
+			 , STEP_CD 	= #{step_cd}
+			 , COM_CD 	= #{com_cd}
+			 , COM_STRT_DT 	= REPLACE(#{com_strt_dt},'-','')
+			 , WORP_CD	= #{worp_cd}
+			 , GRADE 	= #{grade}
+			 , UPD_ID 	= #{upd_id}
+		     , UPD_DT 	= now()
+		 WHERE EMP_NO 	= #{emp_no}
+	</update>
+	
+	<!-- 0508 - 학력 정보 삽입 -->
+	<insert id="insertProfileEdu" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_EDU_INFO(
+			   EMP_NO
+			 , SEQ
+			 , SCHL_NM
+			 , EDU_STRT_DT
+			 , EDU_END_DT
+			 , MAJOR
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+	    	 , (SELECT  IFNULL(MAX(SEQ),0)+1
+				 FROM T_EDU_INFO A
+				WHERE EMP_NO = #{emp_no})
+			 , #{schl_nm}
+	    	 , REPLACE(#{edu_strt_dt},'-','')
+	    	 , REPLACE(#{edu_end_dt},'-','')
+	    	 , #{major}
+	    	 , #{edu_remark}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 자격증 정보 삽입 -->
+	<insert id="insertProfileCert" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CERT_INFO(
+			   EMP_NO
+			 , SEQ
+			 , CERT_NM
+			 , GET_DT
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+	    	 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CERT_INFO A
+				 WHERE EMP_NO = #{emp_no})
+	    	 , #{cert_nm}
+	    	 , REPLACE(#{get_dt},'-','')
+			 , #{cert_remark}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 경력 정보 삽입 -->
+	<insert id="insertProfileCarr" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CAREER_INFO(
+			   EMP_NO
+			 , SEQ
+			 , CARR_COM_NM
+			 , CARR_STRT_DT
+			 , CARR_END_DT
+			 , CARR_RANK_NM
+			 , WORK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CAREER_INFO A
+				 WHERE EMP_NO = #{emp_no})
+			 , #{carr_com_nm}
+			 , REPLACE(#{carr_strt_dt},'-','')
+			 , REPLACE(#{carr_end_dt},'-','')
+			 , #{carr_rank_nm}
+			 , #{work}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 업무 경험 정보 삽입 -->
+	<insert id="insertProfileTask" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_TASK_INFO(
+			   EMP_NO
+			 , SEQ
+			 , PRJT_NM
+			 , RLTD_COM
+			 , DEV_STRT_DT
+			 , DEV_END_DT
+			 , MY_ROLE
+			 , USED_MDEL
+			 , USED_OS
+			 , USED_LANG
+			 , USED_DBMS
+			 , USED_DC
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_TASK_INFO A
+				 WHERE EMP_NO = #{emp_no})
+			 , #{prjt_nm}
+			 , #{rltd_com}
+			 , REPLACE(#{dev_strt_dt},'-','')
+			 , REPLACE(#{dev_end_dt},'-','')
+			 , #{my_role}
+			 , #{used_mdel}
+			 , #{used_os}
+			 , #{used_lang}
+			 , #{used_dbms}
+			 , #{used_dc}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- ################################## 프로필 히스토리 추가 (모두 Insert) ################################## -->
+	
+	<!-- 0508 - 기본 정보 삽입 / 0520 - T_USER_HIST 로 변경 -->
+	<insert id="insertProfileUserHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_USER_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , USR_GRP_ID
+			 , PWD
+			 , USR_NM
+			 , SRT_NO
+			 , GEND_CD
+			 , ADDR
+			 , TEL_NO
+			 , CELL_NO
+			 , FAX_NO
+			 , EMAIL
+			 , MARI_YN
+			 , SPE_ABIL
+			 , MIL_CD
+			 , MIL_STRT_DT
+		     , MIL_END_DT
+			 , FILE_ID
+			 , USE_YN
+			 , IP_BAND
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+		     , CAREER_PERIOD
+	    ) 
+	    VALUES(
+			   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+			 , 3
+			 , #{emp_no}
+			 , #{usr_nm}
+			 , REPLACE(#{srt_no},'-','')
+			 , #{gend_cd}
+			 , #{addr}
+			 , REPLACE(#{tel_no},'-','')
+			 , REPLACE(#{cell_no},'-','')
+			 , REPLACE(#{fax_no},'-','')
+			 , #{email}
+			 , #{mari_yn}
+			 , #{spe_abil}
+			 , #{mil_cd}
+			<if test='mil_cd.equals("1")'> , REPLACE(#{mil_strt_dt},'-',''), REPLACE(#{mil_end_dt},'-','') </if> 
+			<if test='!mil_cd.equals("1")'> , '', '' </if> 
+			 , #{file_id}
+			 , 'Y'
+			 , '*.*.*.*'
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+			 , #{career_period}
+		)
+	</insert>
+	
+	<!-- 0508 - 사내 정보 삽입 / 0520 - T_COM_INFO_HIST 로 변경 -->
+	<insert id="insertProfileComHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_COM_INFO_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , DEPT_CD
+			 , TEAM_CD
+			 , RANK_CD
+			 , PSIT_CD
+			 , STEP_CD
+			 , COM_CD
+			 , COM_STRT_DT
+			 , WORP_CD
+			 , GRADE
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+			 , #{dept_cd}
+			 , #{team_cd}
+			 , #{rank_cd}
+			 , #{psit_cd}
+			 , #{step_cd}
+			 , #{com_cd}
+			 , REPLACE(#{com_strt_dt},'-','')
+			 , #{worp_cd}
+			 , #{grade}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+		
+	<!-- 0508 - 학력 정보 삽입 / 0520 - T_EDU_INFO_HIST 로 변경-->
+	<insert id="insertProfileEduHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_EDU_INFO_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , SEQ
+			 , SCHL_NM
+			 , EDU_STRT_DT
+			 , EDU_END_DT
+			 , MAJOR
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+	    	 , (SELECT  IFNULL(MAX(SEQ),0)+1
+				 FROM T_EDU_INFO_HIST A
+				WHERE EMP_NO = #{emp_no} AND WRIT_YM = (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL))
+			 , #{schl_nm}
+	    	 , REPLACE(#{edu_strt_dt},'-','')
+	    	 , REPLACE(#{edu_end_dt},'-','')
+	    	 , #{major}
+	    	 , #{edu_remark}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 자격증 정보 삽입 / 0520 - T_CERT_INFO_HIST 로 변경-->
+	<insert id="insertProfileCertHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CERT_INFO_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , SEQ
+			 , CERT_NM
+			 , GET_DT
+			 , REMARK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+	    	 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CERT_INFO_HIST A
+				 WHERE EMP_NO = #{emp_no} AND WRIT_YM = (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL))
+	    	 , #{cert_nm}
+	    	 , REPLACE(#{get_dt},'-','')
+			 , #{cert_remark}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 경력 정보 삽입 / 0520 - T_CAREER_INFO_HIST 로 변경 -->
+	<insert id="insertProfileCarrHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_CAREER_INFO_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , SEQ
+			 , CARR_COM_NM
+			 , CARR_STRT_DT
+			 , CARR_END_DT
+			 , CARR_RANK_NM
+			 , WORK
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_CAREER_INFO_HIST A
+				 WHERE EMP_NO = #{emp_no} AND WRIT_YM = (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL))
+			 , #{carr_com_nm}
+			 , REPLACE(#{carr_strt_dt},'-','')
+			 , REPLACE(#{carr_end_dt},'-','')
+			 , #{carr_rank_nm}
+			 , #{work}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- 0508 - 업무 경험 정보 삽입 / 0520 - T_TASK_INFO_HIST 로 변경 -->
+	<insert id="insertProfileTaskHist" parameterType="com.ncomz.nms.domain.admin.user.User">
+		INSERT INTO T_TASK_INFO_HIST(
+			   EMP_NO
+			 , WRIT_YM
+			 , SEQ
+			 , PRJT_NM
+			 , RLTD_COM
+			 , DEV_STRT_DT
+			 , DEV_END_DT
+			 , MY_ROLE
+			 , USED_MDEL
+			 , USED_OS
+			 , USED_LANG
+			 , USED_DBMS
+			 , USED_DC
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    ) 
+	    VALUES(
+	    	   #{emp_no}
+			 , (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL)
+			 , (SELECT IFNULL(MAX(SEQ),0)+1
+				  FROM T_TASK_INFO_HIST A
+				 WHERE EMP_NO = #{emp_no} AND WRIT_YM = (SELECT DATE_FORMAT(NOW(),'%Y%m') FROM DUAL))
+			 , #{prjt_nm}
+			 , #{rltd_com}
+			 , REPLACE(#{dev_strt_dt},'-','')
+			 , REPLACE(#{dev_end_dt},'-','')
+			 , #{my_role}
+			 , #{used_mdel}
+			 , #{used_os}
+			 , #{used_lang}
+			 , #{used_dbms}
+			 , #{used_dc}
+			 , #{cre_id}
+			 , NOW()
+			 , #{upd_id}
+			 , NOW()
+		)
+	</insert>
+	
+	<!-- ################################## 프로필 삭제 ################################## -->
+	
+	<delete id="deleteProfileEdu" parameterType="String">
+		DELETE FROM T_EDU_INFO
+		WHERE EMP_NO = #{emp_no}
+	</delete>
+	
+	<delete id="deleteProfileCert" parameterType="String">
+		DELETE FROM T_CERT_INFO
+		WHERE EMP_NO = #{emp_no}
+	</delete>
+	
+	<delete id="deleteProfileCarr" parameterType="String">
+		DELETE FROM T_CAREER_INFO
+		WHERE EMP_NO = #{emp_no}
+	</delete>
+	
+	<delete id="deleteProfileTask" parameterType="String">
+		DELETE FROM T_TASK_INFO
+		WHERE EMP_NO = #{emp_no}
+	</delete>
+	
+	<!-- ################################## 프로필 감추기 ################################## -->
+	
+	<update id="hideUser" parameterType="String" >
+		UPDATE T_USER
+		   SET USE_YN = 'N'
+		 WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<!-- ################################## 엑셀 다운로드 ################################## -->
+	
+	<select id="getProfileListExcel" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="java.util.LinkedHashMap">
+   		/*com.ncomz.nms.dao.admin.profile.ProfileMapper.getProfileListExcel */
+   		SELECT
+		       CONCAT("'",U.EMP_NO) AS label_user_empno,
+               IFNULL(U.USR_NM, '-') AS label_user_usernm, 
+               IFNULL(A.DTL_CD_DESC , '-') AS label_user_dept,
+               IFNULL(E.DTL_CD_DESC , '-') AS label_user_team,
+		       DATE_FORMAT(U.CRE_DT, '%Y-%m-%d') AS label_user_cre
+		FROM   T_USER U, 
+		       T_COMMON_CODE A, 
+		       T_COM_INFO CO
+		       LEFT OUTER JOIN T_COMMON_CODE E
+		       ON CO.TEAM_CD = E.DTL_CD 
+		WHERE  CO.EMP_NO = U.EMP_NO 
+		       AND U.USE_YN = 'Y' 
+          	   AND U.USR_NM != 'admin'
+		       AND CO.DEPT_CD = A.DTL_CD
+		       
+			/* 사용자 권한 분기*/
+	        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+	            AND CO.EMP_NO = #{emp_no}
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+	            <include refid="team_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+	            <include refid="dept_where_clause" />
+            	<include refid="month_where_clause" />    
+	        </if>
+	        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+	            <include refid="list_where_clause" />     
+            	<include refid="month_where_clause" />            
+	        </if>
+	        		    
+		ORDER BY U.EMP_NO LIMIT 18446744073709551615
+	</select>
+	
+    <select id="getProfileHistListExcel" parameterType="com.ncomz.nms.domain.admin.user.User" resultType="java.util.LinkedHashMap">
+   		/*com.ncomz.nms.dao.admin.profile.ProfileMapper.getProfileHistListExcel */
+   		SELECT 
+		       CONCAT("'",U.EMP_NO) AS label_user_empno,
+               IFNULL(U.USR_NM, '-') AS label_user_usernm, 
+               IFNULL(A.DTL_CD_DESC , '-') AS label_user_dept,
+               IFNULL(E.DTL_CD_DESC , '-') AS label_user_team,
+		       DATE_FORMAT(U.CRE_DT, '%Y-%m-%d') AS label_user_cre
+      	FROM   T_USER_HIST U, 
+             T_COMMON_CODE A, 
+             T_COM_INFO_HIST CO
+             LEFT OUTER JOIN T_COMMON_CODE E
+             ON CO.TEAM_CD = E.DTL_CD 
+      	WHERE  CO.EMP_NO = U.EMP_NO 
+             AND U.USE_YN = 'Y' 
+          	 AND U.USR_NM != 'admin'
+             AND CO.DEPT_CD = A.DTL_CD 
+             AND U.WRIT_YM = CO.WRIT_YM
+             AND U.CRE_DT = CO.CRE_DT
+             
+        /* 사용자 권한 분기*/
+        <if test='usr_grp_id != null and usr_grp_id.equals("4")' >
+            AND CO.EMP_NO = #{emp_no}
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("3")' >
+            <include refid="team_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("2")' >
+            <include refid="dept_where_clause" />		       
+		    <include refid="hist_month_where_clause" />
+        </if>
+        <if test='usr_grp_id != null and usr_grp_id.equals("1")' >
+            <include refid="list_where_clause" />  		       
+		    <include refid="hist_month_where_clause" />            
+        </if>
+        
+        ORDER BY U.EMP_NO, U.CRE_DT DESC LIMIT 18446744073709551615
+	</select>
+   
+ </mapper>

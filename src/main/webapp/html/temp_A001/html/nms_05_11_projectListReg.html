@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">프로젝트관리</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">프로젝트관리</a>
+					>
+					<a href="#">프로젝트</a>
+				</div>
+			</h2>
+			
+
+			
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">프로젝트추가</span>
+					</h3>
+					<div class="unitBox grayBox lineBox" style="">
+						<table class="amb_form_table"  id="">	
+							<colgroup>
+								<col style="width:8%;" />
+								<col style="" />
+								<col style="width:8%;" />
+								<col style="" />
+								<col style="width:8%;" />
+								<col style="" />
+							</colgroup>
+							<tbody>
+								<tr>							
+									<th>구분</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<td colspan="4">
+									</td>
+								</tr>
+
+								<tr>							
+									<th>프로젝트 구분</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<th>프로젝트 코드</th>
+									<td>
+										<input type="text" value="" class="inp w90p" placeholder="프로젝트 코드 입력" />
+									</td>
+
+									<th>프로젝트명</th>
+									<td>
+										<input type="text" value="" class="inp w90p" placeholder="프로젝트명 입력" />
+									</td>
+								</tr>
+
+								<tr>							
+									<th>고객</th>
+									<td>
+										<input type="text" value="" class="inp w90p" placeholder="고객 입력" />
+									</td>
+
+									<th>PM</th>
+									<td>
+										<input type="text" value="" class="inp w90p" placeholder="PM 입력" />
+									</td>
+
+									<th>담당본부/팀</th>
+									<td>
+										<select class="inp w45p">
+											<option value="">전체</option>
+										</select>
+										<select class="inp w45p">
+											<option value="">전체</option>
+										</select>
+									</td>
+								</tr>
+
+								<tr>
+
+									<th>계약여부</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+
+									<th>상태</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+
+									<th>기간</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker endDate" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+
+								<tr>							
+									<th>비고</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+
+									<td colspan="4"></td>
+								</tr>
+
+								<tr>							
+									<th>투입 인력</th>
+									<td colspan="5">
+										<div class="block">
+											<button type="button" id="" class="amb_btnstyle black middle" onclick="javascript:openModal('nms_05_12_projectRegPopup.html' , 'memberList01', '', '700');">추가</button>
+										</div>
+
+										<div id="" class="block">
+											<ul id="" class="memberList whiteBox lineBox">
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">정준우 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">가나다 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">ABC 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">1 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">3 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">4 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+												<li>
+													<i class="ambicon-033_human"></i> <span class="name bold">5 과장</span> <span class="date">(2019-04-01 ~ 2019-06-30)</span>
+													<button type="button" id="" class="amb_btnstyle gray small onlyIcon" onclick="javascript:deleteRow(this)"><i class="ambicon-015_mark_times"></i></button>
+												</li>
+
+											</ul>
+										</div>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+
+						<script>
+						function deleteRow(obj) {
+							var $obj = $(obj);
+							var name = $obj.parent().find('.name').text();
+							alert('[' + name + '] 을 삭제할건지 물어보고난후');
+							$obj.parent().remove();
+						}
+						</script>
+					</div>
+					<div class="paging">						
+						<div class="fr btnArea middle">
+							<a href="#" class="amb_btnstyle gray middle">취소</a>
+							<a href="#" class="amb_btnstyle blue middle">저장</a>
+						</div>
+
+					</div>
+					
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>

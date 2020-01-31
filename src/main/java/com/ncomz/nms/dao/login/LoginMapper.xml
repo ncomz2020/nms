@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.login.LoginMapper">
+ 	<select id="countPresenceId" parameterType="String" resultType="Integer">
+ 		SELECT /*	LoginMapper.xml.countPresenceId	*/
+ 				COUNT(*)
+		  FROM T_USER
+		 WHERE 1=1
+		   AND EMP_NO = #{usrId, jdbcType=VARCHAR}
+ 	</select>
+     
+     <select id="login" resultType="com.ncomz.nms.domain.common.SessionUser">
+		  /* LoginMapper.xml.login */
+		   SELECT A.EMP_NO
+				,A.USR_NM
+				,A.USR_GRP_ID
+				,(SELECT G.USR_GRP_NM FROM T_USR_GRP G WHERE G.USR_GRP_ID = A.USR_GRP_ID) AS USR_GRP_NM
+				,A.IP_BAND
+				,B.DEPT_CD
+				,B.TEAM_CD
+				,B.PSIT_CD
+				,B.RANK_CD
+			FROM T_USER A,
+				 T_COM_INFO B
+		   WHERE BINARY A.EMP_NO = #{usrId, jdbcType=VARCHAR}
+		     AND A.PWD = #{pswd, jdbcType=VARCHAR}
+		     AND A.USE_YN = 'Y'
+		     AND A.EMP_NO = B.EMP_NO	  
+		     
+		     
+     </select>
+
+     <insert id="insertNewMember" parameterType="com.ncomz.nms.domain.authorization.User">
+     	INSERT INTO T_USER	/* LoginMapper.xml.insertNewMember */
+     	(usr_id, usr_grp_id, usr_nm, pwd, email, tel_no, mobile_no, ip_band, login_fail_cnt, pswd_due_dt, pswd_chng_cycl, lst_login_dt, lst_login_tm, acnt_lock_yn, old_pwdno1, old_pwdno2, store_id,base_addr,dtl_addr,zip_cd,gender,birth,join_date,use_yn)
+     	VALUES
+     	(#{usr_id, jdbcType=VARCHAR}, #{usr_grp_id, jdbcType=VARCHAR}, #{usr_nm, jdbcType=VARCHAR}, #{pwd , jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}
+     	, #{tel_no, jdbcType=VARCHAR}, #{mobile_no, jdbcType=VARCHAR}, '*.*.*.*', #{login_fail_cnt, jdbcType=VARCHAR}
+     	, '99991231','30','','','N','','',#{store_id, jdbcType=VARCHAR}
+     	, #{base_addr, jdbcType=VARCHAR}, #{dtl_addr, jdbcType=VARCHAR}, #{zip_cd, jdbcType=VARCHAR}, #{gender, jdbcType=VARCHAR}, #{birth, jdbcType=VARCHAR}, DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),'Y' )
+     </insert>
+ 
+ </mapper>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.card.CardMapper">
+	<sql id="getCardUsers">
+		SELECT DISTINCT(US.EMP_NO) EMP_NO
+	     		 , US.USR_NM
+	     		 , CO.DEPT_CD
+	     		 , (SELECT DTL_CD_DESC FROM T_COMMON_CODE CODE WHERE CO.DEPT_CD = CODE.DTL_CD) DEPT_NM
+	     		 , CO.TEAM_CD
+	     		 , (SELECT DTL_CD_DESC FROM T_COMMON_CODE CODE WHERE CO.TEAM_CD = CODE.DTL_CD) TEAM_NM
+		  	  FROM T_COM_INFO CO
+			     , T_USER US
+			  LEFT OUTER JOIN T_CARD_INFO CA
+			    ON US.EMP_NO = CA.EMP_NO
+	   		 WHERE 1=1
+			   AND US.EMP_NO = CO.EMP_NO
+			   AND US.USE_YN = 'Y'
+			   AND US.EMP_NO != 'admin'
+			 <if test=' usr_nm != null and usr_nm != "" and usr_nm != "ALL"'>
+			   AND US.USR_NM LIKE  CONCAT('%',#{usr_nm},'%')
+			 </if>
+			 <if test=' dept_cd != null and dept_cd != "" and dept_cd != "ALL"'>
+			   AND CO.DEPT_CD = #{dept_cd}
+			 </if>
+			 <if test=' team_cd != null and team_cd != "" and team_cd != "ALL"'>
+			   AND CO.TEAM_CD = #{team_cd}
+			 </if>
+			 <if test=' card_ym != null and card_ym != "" and card_ym != "ALL"'>
+			   AND CA.CARD_YM = #{card_ym}
+			 </if>
+			 <if test=' emp_no != null and emp_no != "" and emp_no != "ALL"'>
+			   AND US.EMP_NO = #{emp_no}
+			 </if>
+	</sql>
+
+	<select id="getCardUserList" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getCardUserList*/
+    	<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_header" />
+	    	<include refid="getCardUsers"></include>
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_footer" />
+	</select>
+	
+	<select id="getUserList" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getUserList*/
+		<include refid="getCardUsers"></include>
+	</select>
+	
+	<select id="getCarDtlInfoList" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getCarDtlInfoList*/
+		SELECT CA.EMP_NO
+			 , (SELECT USR_NM FROM T_USER U WHERE CA.EMP_NO = U.EMP_NO) USR_NM 
+		     , CA.CARD_YM
+		     , CA.WORK_HR
+		     , CA.DINN_YN
+		     , PR.PJT_TYPE_CD
+		     , CA.PJT_NO
+		     , PR.PJT_NAME AS PJT_NM
+		     , (SELECT DTL_CD_DESC 
+						    FROM T_COMMON_CODE 
+						   WHERE PR.PJT_TYPE_CD = DTL_CD) PJT_TYPE_NM
+		  FROM T_CARD_DTL_INFO CA
+		     , (SELECT PR.*
+					 FROM T_PROJECT_INFO PR
+					    , T_PROJECT_USER_INFO US
+					WHERE US.PJT_NO = PR.PJT_NO
+					  AND US.EMP_NO = #{emp_no}
+					  AND DATE_FORMAT(US.STRT_DT,'%Y%m') <![CDATA[<=]]> #{card_ym}
+					  AND DATE_FORMAT(US.END_DT,'%Y%m') <![CDATA[>=]]> #{card_ym}
+			    ) PR
+		 WHERE CA.PJT_NO = PR.PJT_NO
+		   AND CA.EMP_NO = #{emp_no}
+		   AND CA.CARD_YM = #{card_ym}
+		 ORDER BY 6,7 
+	</select>
+	
+	<select id="getCardInfoCount" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="int">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getCardInfoCount*/
+		SELECT COUNT(*) COUNT 
+		  FROM T_COM_INFO COM
+		     , T_CARD_INFO CARD
+		 WHERE CARD.EMP_NO = COM.EMP_NO
+		   AND COM.COM_STRT_DT <![CDATA[<=]]> LAST_DAY(CONCAT(#{card_ym},'01'))
+		   AND COM.EMP_NO = #{emp_no}
+		   AND CARD.CARD_YM = #{card_ym}
+	</select>
+	
+	<select id="getCardListCount" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="int">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getCardListCount*/
+		SELECT COUNT(DISTINCT(US.EMP_NO)) EMP_COUNT
+		  	  FROM T_COM_INFO CO
+			     , T_USER US
+			  LEFT OUTER JOIN T_CARD_INFO CA
+			    ON US.EMP_NO = CA.EMP_NO
+	   		 WHERE 1=1
+			   AND US.EMP_NO = CO.EMP_NO
+			   AND US.USE_YN = 'Y'
+			   AND US.EMP_NO != 'admin'
+			 <if test=' usr_nm != null and usr_nm != "" and usr_nm != "ALL"'>
+			   AND US.USR_NM LIKE  CONCAT('%',#{usr_nm},'%')
+			 </if>
+			 <if test=' dept_cd != null and dept_cd != "" and dept_cd != "ALL"'>
+			   AND CO.DEPT_CD = #{dept_cd}
+			 </if>
+			 <if test=' team_cd != null and team_cd != "" and team_cd != "ALL"'>
+			   AND CO.TEAM_CD = #{team_cd}
+			 </if>
+			 <if test=' card_ym != null and card_ym != "" and card_ym != "ALL"'>
+			   AND CA.CARD_YM = #{card_ym}
+			 </if>
+			 <if test=' emp_no != null and emp_no != "" and emp_no != "ALL"'>
+			   AND US.EMP_NO = #{emp_no}
+			 </if>
+	</select>
+	
+	<select id="getYnMap" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="hashmap">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getYnMap*/
+		SELECT CPLT_YN 
+			 , CARD_YM 
+		  FROM T_CARD_INFO
+		 WHERE EMP_NO = #{emp_no}
+		 AND CARD_YM = DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -${chk_number} MONTH),'%Y%m') 
+	</select>
+	
+	<select id="getYyyymmMap" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="hashmap">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getYyyymmMap*/
+		SELECT CONCAT(DATE_FORMAT(CONCAT(#{search_cplt_ym},'-01'),'%Y'),'년 ',DATE_FORMAT(CONCAT(#{search_cplt_ym},'-01'),'%m'),'월') CUR
+			 , CONCAT(DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -1 MONTH),'%Y'),'년 '
+			         ,DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -1 MONTH),'%m'),'월') ONE
+			 , CONCAT(DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -2 MONTH),'%Y'),'년 '
+			         ,DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -2 MONTH),'%m'),'월') TWO
+			 , DATE_FORMAT(CONCAT(#{search_cplt_ym},'-01'),'%Y%m') CUR_YM
+			 , DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -1 MONTH),'%Y%m') ONE_YM 
+			 , DATE_FORMAT(DATE_ADD(CONCAT(#{search_cplt_ym},'-01'), INTERVAL -2 MONTH),'%Y%m') TWO_YM
+		FROM DUAL;
+	</select>
+	
+	<select id="getLastDay" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="String">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getLastDay*/
+		SELECT DATE_FORMAT(LAST_DAY(CONCAT(#{card_ym},'01')),'%d') 
+		  FROM DUAL
+	</select>
+	
+	<select id="getDateList" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.getDateList*/
+	  SELECT REPLACE(SLTD_DATE,'-','') SLTD_DATE 
+	  	   , DATE_FORMAT(SLTD_DATE,'%d') SLTD_DD
+	    FROM (SELECT ADDDATE('2017-07-01',t4*10000 + t3*1000 + t2*100 + t1*10 + t0) SLTD_DATE FROM
+			 (SELECT 0 t0 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t0,
+			 (SELECT 0 t1 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t1,
+			 (SELECT 0 t2 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t2,
+			 (SELECT 0 t3 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t3,
+			 (SELECT 0 t4 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) t4) V
+	   WHERE SLTD_DATE BETWEEN DATE_FORMAT(CONCAT(#{card_ym},'01'),'%Y-%m-%d') AND DATE_FORMAT(CONCAT(#{card_ym},#{last_day}),'%Y-%m-%d')
+	   ORDER BY SLTD_DATE ASC
+	</select>
+	
+	<select id="chkProjectList" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.chkProjectList*/
+		SELECT PJT_NO
+		  FROM T_PROJECT_USER_INFO
+		 WHERE EMP_NO = #{emp_no}
+		   AND DATE_FORMAT(STRT_DT, '%Y%m') <![CDATA[<=]]> #{card_ym} 
+		   AND DATE_FORMAT(END_DT, '%Y%m') <![CDATA[>=]]> #{card_ym} 
+	</select>
+	
+	<select id="chkcardMastInfo" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="hashmap">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.chkcardMastInfo*/
+		SELECT COM_STRT_DT 
+	 		 , CASE WHEN  COM_STRT_DT > DATE_FORMAT(DATE_ADD(LAST_DAY(CONCAT( #{search_cplt_ym},'-01')), INTERVAL -${chk_number} MONTH),'%Y%m%d')
+			 		THEN 'N'
+			 		ELSE 'Y'
+			 		 END AS STRT_DT_YN
+		  FROM T_COM_INFO
+		 WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="chkCardInfo" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="hashmap">
+	/*com.ncomz.nms.dao.admin.card.CardMapper.chkCardInfo*/
+		SELECT * 
+		  FROM T_CARD_DTL_INFO
+		 WHERE PJT_NO = #{pjt_no}
+		   AND EMP_NO = #{emp_no}
+		   AND CARD_YM = #{card_ym}
+	</select>
+	
+	<select id="chkDtlWorkHrData" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="com.ncomz.nms.domain.admin.card.Card">
+		SELECT WORK_HR
+		     , DINN_YN
+		  FROM T_CARD_DTL_INFO
+		 WHERE EMP_NO = #{emp_no}
+		   AND CARD_YM = #{card_ym}
+	</select>
+	
+	<select id="chkCpltinfo" parameterType="com.ncomz.nms.domain.admin.card.Card" resultType="String">
+		SELECT CPLT_YN FROM T_CARD_INFO
+		 WHERE EMP_NO = #{emp_no}
+		   AND CARD_YM = #{card_ym}
+	</select>
+	
+	<update id="insertNullCardDtlInfo" parameterType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.insertNullCardDtlInfo*/
+		INSERT INTO T_CARD_DTL_INFO(
+			   EMP_NO
+			 , CARD_YM
+			 , PJT_NO
+			 , WORK_HR
+			 , DINN_YN
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    )VALUES(
+			   #{emp_no}
+			 , #{card_ym}
+			 , #{pjt_no}
+			 , ''
+			 , ''
+			 , #{session_id}
+			 , now()
+			 , #{session_id}
+			 , now()
+		)
+	</update>
+	
+	<update id="insertNullCardInfo" parameterType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.insertNullCardInfo*/
+		INSERT INTO T_CARD_INFO(
+			   EMP_NO
+			 , CARD_YM
+			 , CPLT_YN
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT
+	    )VALUES(
+			   #{emp_no}
+			 , DATE_FORMAT(DATE_ADD(CONCAT( #{search_cplt_ym},'-01'), INTERVAL -${chk_number} MONTH),'%Y%m')
+			 , 'N'
+			 , #{session_id}
+			 , now()
+			 , #{session_id}
+			 , now()
+		)
+	</update>
+	
+	<update id="updateCardDtlInfo" parameterType="com.ncomz.nms.domain.admin.card.Card">
+		/*com.ncomz.nms.dao.admin.card.CardMapper.updateCardDtlInfo*/
+		UPDATE T_CARD_DTL_INFO
+		   SET WORK_HR = #{work_hr}
+		     , dinn_yn = #{dinn_yn}
+		     , UPD_ID  = #{session_id}
+		     , UPD_DT  = now()
+		 WHERE EMP_NO  = #{emp_no}
+		   AND CARD_YM = #{card_ym}
+		   AND PJT_NO  = #{pjt_no}
+	</update>
+	
+	<update id="updateFlag" parameterType="com.ncomz.nms.domain.admin.card.Card">
+	/*com.ncomz.nms.dao.admin.card.CardMapper.updateFlag*/
+		UPDATE T_CARD_INFO
+		   SET CPLT_YN = #{cplt_yn}
+		     , UPD_ID  = #{session_id}
+		     , UPD_DT  = now()
+		 WHERE EMP_NO  = #{emp_no}
+		   AND CARD_YM = #{card_ym}
+	</update>
+ </mapper>

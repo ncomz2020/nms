@@ -1,0 +1,91 @@
+
+<!-- 실제 개별 페이지 개발자가 제작하는 부분 -->
+<div class="amb_layout_common amb_admin_layout_temp_01 modal-dialog">
+
+	<div class="modal-content">
+
+		<!-- 실제 컨텐츠 작업부분 -->
+		<!--  레이어팝업 header -->
+		<div class="modal_header">
+			<span class="title">투입 인력</span>
+			<a href="#" class="close" onClick="javascript:closeModal(this);"><i class="ambicon-015_mark_times"></i></a>
+		</div>
+
+		
+		<!--  레이어팝업 content -->
+		<div class="modal_body content">		
+			
+			<!-- 반복단위 -->
+			<div class="rowBox">					
+
+				<div class="g_column w_1_1">
+
+					<div class="unitBox " style="">
+
+						<table class="amb_form_table lineAll ">
+							<colgroup>
+								<col style="width: 20%;">
+								<col style="width: ;">
+								
+							</colgroup>
+							
+							<tbody>
+								<tr>
+									<th>성명</th>
+									<td>
+										<select class="inp w30p">
+											<option value="">전체</option>
+										</select>
+										<select class="inp w30p">
+											<option value="">전체</option>
+										</select>
+										<select class="inp w30p">
+											<option value="">전체</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>기간</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker startDate w44p" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker endDate w44p" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th>MM</th>
+									<td>
+										<select class="inp w30p">
+											<option value="">전체</option>
+										</select>
+										<input type="text" value="" class="inp w60p" placeholder="" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+
+					</div>
+				</div>
+			</div>
+			<!-- //반복단위 -->
+
+			
+		</div>
+
+		<!--  레이어팝업 footer-->
+		<div class="modal_footer">
+			<div class="btnArea right">
+				<button type="button" class="amb_btnstyle middle gray" onClick="javascript:closeModal(this);"><span class="text">취소</span></button>
+				<button type="button" class="amb_btnstyle middle blue" onClick="javascript:alert('필요한 작업후 closeModal(this);');closeModal(this);"><span class="text">저장</span></button>
+			</div>
+		</div>
+	 
+		<!-- //실제 컨텐츠 작업부분 -->
+
+
+	</div>
+</div>
+

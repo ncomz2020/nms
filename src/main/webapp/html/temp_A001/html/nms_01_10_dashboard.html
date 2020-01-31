@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+<!-- 차트가 필요한 곳에서만 사용 -->
+<!--[if lte IE 8]><script type="text/javascript" src="../js/plugins/chart/excanvas.js"></script><![endif]-->
+<script type="text/javascript" src="../js/plugins/chart/chart.js"></script>
+
+
+<script type="text/javascript"> // 차트 공통 요소로써 차트가 존재하는 페이지에 반드시 한번만 존재해야함 
+	//chart 공통 부분							
+	Chart.defaults.global.responsive = true; //가변형
+	Chart.defaults.global.responsiveAnimationDuration = 500; //가변형 animation
+	Chart.defaults.global.maintainAspectRatio = false; //가로세로 비율 유지,
+	
+
+	//폰트 
+	Chart.defaults.global.defaultFontColor = "#222"; 
+	Chart.defaults.global.defaultFontFamily = "Arial, Helvetica, sans-serif"; 
+	Chart.defaults.global.defaultFontSize = 12; 							
+
+	//툴팁
+	Chart.defaults.global.tooltips.cornerRadius = 2 ;
+	Chart.defaults.global.tooltips.bodySpacing = 5;
+	Chart.defaults.global.tooltips.xPadding = 10;
+	Chart.defaults.global.tooltips.yPadding = 10;
+
+	//animation
+	Chart.defaults.global.animation.duration = 1800;
+	Chart.defaults.global.animation.easing = "easeOutBounce";
+</script>
+
+<script type="text/javascript">
+	// line chart용 //공통을 채울때
+	Chart.defaults.global.elements.line.borderWidth = 1;
+
+	Chart.defaults.global.elements.point.radius = 3;
+	Chart.defaults.global.elements.point.hoverRadius = 5;
+	Chart.defaults.global.elements.point.hoverBorderWidth = 0;
+</script>
+<!-- //차트가 필요한 곳에서만 사용 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">현황판</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">현황판</a>
+					>
+					<a href="#">현황판</a>
+				</div>
+			</h2>
+			
+
+			
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">프로젝트 현황</span>
+						<div class="fr btnArea middle">
+							<span class="inline">적용일 (2019/05/22)</span>
+						</div>
+					</h3>
+					<div class="unitBox chartBox" style="height:320px;">
+						<canvas id="lineChart01" style=""></canvas>
+						<div id="chardLegend01" class="chartLegend"></div><!-- 커스텀으로 제작된 legend 부분 -->
+
+						<script type="text/javascript">
+							//data 부분
+							var lineData = {
+								labels: ["2017.01", "2016.02", "2016.03", "2016.04", "2016.05", "2016.06" , "2016.07"],
+								datasets: [{
+									label: "계약건수",
+									data: [2, 0, 2, 1, 1, 3 , 0],
+									backgroundColor: "rgba(49,141,231,0.0)",//background 의 opacity를 0으로
+									borderColor : "rgba(49,141,231,0.6)",
+									lineTension: 0.0,
+									pointBackgroundColor:"rgba(49,141,231,0.5)",
+									pointHoverBackgroundColor :"rgba(49,141,231,1.0)",
+								},{
+									label: "진행건수",
+									data: [4, 10, 6, 8, 2, 8 , 8],
+									backgroundColor: "rgba(80,80,80,0.0)",//background 의 opacity를 0으로
+									borderColor : "rgba(80,80,80,0.7)",
+									lineTension: 0.0,
+									pointBackgroundColor:"rgba(80,80,80,0.5)",
+									pointHoverBackgroundColor :"rgba(80,80,80,1.0)",
+								},{
+									label: "종료건수",
+									data: [0, 0, 2, 2, 1, 4, 3],
+									backgroundColor: "rgba(243,73,80,0.0)",//background 의 opacity를 0으로
+									borderColor : "rgba(243,73,80,0.7)",
+									lineTension: 0.0,
+									pointBackgroundColor:"rgba(243,73,80,0.5)",
+									pointHoverBackgroundColor :"rgba(243,73,80,1.0)",
+								}
+								,{
+									label: "미계약건수",
+									data: [0, 0, 0, 1, 2, 5, 2],
+									backgroundColor: "rgba(0,203,129,0.0)",//background 의 opacity를 0으로
+									borderColor : "rgba(0,203,129,0.7)",
+									lineTension: 0.0,
+									pointBackgroundColor: "rgba(0,203,129,0.5)",
+									pointHoverBackgroundColor : "rgba(0,203,129,1.0)",
+								}]
+							};
+
+							
+							//각종 세부 option부분
+							var options = {							
+								layout: {
+									padding: {left: 0, right: 0, top: 50, bottom: 0},
+								},
+								legend: {display: false},
+								scales:{
+									xAxes: [{
+												gridLines: {display:false, tickMarkLength:15, zeroLineWidth:0, zeroLineColor:"rgba(0, 0, 0, 0.4)",},
+											}],
+									yAxes: [{
+												position: "left",
+												gridLines: {display:true, color:"rgba(0, 0, 0, 0.07)", drawTicks:true, tickMarkLength:10, zeroLineColor:"rgba(0, 0, 0, 0.4)", lineWidth:1},
+												ticks: {padding:15, min:0, }
+											}]
+								},
+
+
+								// 커스텀 툴팁
+								tooltips: {
+									mode: 'index',
+									intersect: false,												
+									callbacks: {
+										/*
+										title: function (tooltipItem, data) { 
+											var total01 = data.datasets[tooltipItem[0].datasetIndex].data[tooltipItem[0].index];
+											var total02 = data.datasets[tooltipItem[1].datasetIndex].data[tooltipItem[1].index];
+											return 'Total : ' + (total01 + total02) + '명 ';
+										},
+										*/
+										label: function (tooltipItem, data) {
+											var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+											var tt = data.datasets[tooltipItem.datasetIndex].label;
+											return tt + ': '+ amount + '건 ';
+										}
+									},
+								},
+
+
+								// 커스텀 라벨
+								legendCallback: function(chart) {
+									console.log(chart.data);
+									var text = [];
+									text.push('<ul>');
+									for (var i=0; i<chart.data.datasets.length; i++) {
+										text.push('<li>');
+										text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '"></span>' + chart.data.datasets[i].label + '');
+										text.push('</li>');
+									}
+									text.push('</ul>');
+									return text.join("");
+								}
+							};
+
+							var ctx = document.getElementById("lineChart01").getContext("2d");
+							var myChart  = new Chart(ctx, {
+								type: 'line',
+								data: lineData,
+								options: options
+							});
+
+							document.getElementById('chardLegend01').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함	
+						</script>	
+						
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_2_1">
+					<h3>
+						<span class="title">팀별 인원 현황</span>
+						<div class="fr btnArea middle">
+							<span class="inline">적용일 (2019/05/22)</span>
+						</div>
+					</h3>
+					<div class="unitBox chartBox legendCenter" style="height:320px;"><!-- 커스텀으로 제작된 legend  center이고 싶을때는 class명 legendCenter -->
+						<canvas id="pieChart02" style=""></canvas>
+						<div id="chardLegend02" class="chartLegend pCenter"></div><!-- 커스텀으로 제작된 legend 부분 -->
+						<script type="text/javascript">
+							//data 부분
+							var pieData = {
+								labels: ['임원실', '경영지원팀', 'SERVICE_MGMT팀', 'SI사업부', 'IT_INFRA개발팀', 'WEB컨버젼스개발팀', 'APP개발팀', '솔루션사업팀', '커뮤니케이션팀'],
+								datasets: [{
+									backgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									hoverBackgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									data : [2, 2, 15, 1, 5, 12, 5, 16, 10]
+								}]
+							};
+
+
+							
+							//각종 세부 option부분
+							var options = {							
+								layout: {
+									padding: {left: 0, right: 0, top: 80, bottom: 30},
+								},
+								cutoutPercentage: 70,
+								elements: {
+									arc: {borderWidth: 0}
+								},
+								legend: {display: false},
+								
+								// 커스텀 라벨
+								legendCallback: function(chart) {
+									console.log(chart.data);
+									console.log(chart.data.datasets[0].data);
+									var text = [];
+									text.push('<ul>');
+									for (var i=0; i<chart.data.datasets[0].data.length; i++) {
+										text.push('<li>');
+										text.push('<span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span>' + chart.data.labels[i] + '');
+										text.push('</li>');
+									}
+									text.push('</ul>');
+									return text.join("");
+								}
+							};
+
+
+
+							var ctx = document.getElementById("pieChart02").getContext("2d");
+							var myChart  = new Chart(ctx, {
+								type: 'doughnut',
+								data: pieData,
+								options: options
+							});
+
+							document.getElementById('chardLegend02').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함							
+						</script>
+					</div>
+				</div>
+							
+
+				<div class="g_column w_2_1">
+					<h3>
+						<span class="title">팀별 인원 현황</span>
+						<div class="fr btnArea middle">
+							<span class="inline">적용일 (2019/05/22)</span>
+						</div>
+					</h3>
+					<div class="unitBox chartBox legendBottom" style="height:320px;"><!-- 커스텀으로 제작된 Bottom 싶을때는 class명 legendBottom -->
+						<canvas id="pieChart03" style=""></canvas>
+						<div id="chardLegend03" class="chartLegend"></div><!-- 커스텀으로 제작된 legend 부분 -->
+						<script type="text/javascript">
+							//data 부분
+							var pieData = {
+								labels: ['임원실', '경영지원팀', 'SERVICE_MGMT팀', 'SI사업부', 'IT_INFRA개발팀', 'WEB컨버젼스개발팀', 'APP개발팀', '솔루션사업팀', '커뮤니케이션팀'],
+								datasets: [{
+									backgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									hoverBackgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									data : [2, 2, 15, 1, 5, 12, 5, 16, 10]
+								}]
+							};
+
+
+							
+							//각종 세부 option부분
+							var options = {							
+								layout: {
+									padding: {left: 0, right: 0, top: 20, bottom: 80},
+								},
+								cutoutPercentage: 70,
+								elements: {
+									arc: {borderWidth: 0}
+								},
+								legend: {display: false},
+								
+								// 커스텀 라벨
+								legendCallback: function(chart) {
+									console.log(chart.data);
+									console.log(chart.data.datasets[0].data);
+									var text = [];
+									text.push('<ul>');
+									for (var i=0; i<chart.data.datasets[0].data.length; i++) {
+										text.push('<li>');
+										text.push('<span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span>' + chart.data.labels[i] + '');
+										text.push('</li>');
+									}
+									text.push('</ul>');
+									return text.join("");
+								}
+							};
+
+
+
+							var ctx = document.getElementById("pieChart03").getContext("2d");
+							var myChart  = new Chart(ctx, {
+								type: 'doughnut',
+								data: pieData,
+								options: options
+							});
+
+							document.getElementById('chardLegend03').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함							
+						</script>
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_2_1">
+					<h3>
+						<span class="title">팀별 인원 현황</span>
+						<div class="fr btnArea middle">
+							<span class="inline">적용일 (2019/05/22)</span>
+						</div>
+					</h3>
+					<div class="unitBox chartBox legendLeft" style="height:320px;"><!-- 커스텀으로 제작된 leftt 싶을때는 class명 legendLeft -->
+						<canvas id="pieChart04" style=""></canvas>
+						<div id="chardLegend04" class="chartLegend"></div><!-- 커스텀으로 제작된 legend 부분-->
+						<script type="text/javascript">
+							//data 부분
+							var pieData = {
+								labels: ['임원실', '경영지원팀', 'SERVICE_MGMT팀', 'SI사업부', 'IT_INFRA개발팀', 'WEB컨버젼스개발팀', 'APP개발팀', '솔루션사업팀', '커뮤니케이션팀'],
+								datasets: [{
+									backgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									hoverBackgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									data : [2, 2, 15, 1, 5, 12, 5, 16, 10]
+								}]
+							};
+
+
+							
+							//각종 세부 option부분
+							var options = {							
+								layout: {
+									padding: {left: 250, right: 0, top: 40, bottom: 40},
+								},
+								cutoutPercentage: 70,
+								elements: {
+									arc: {borderWidth: 0}
+								},
+								legend: {display: false},
+								
+								// 커스텀 라벨
+								legendCallback: function(chart) {
+									console.log(chart.data);
+									console.log(chart.data.datasets[0].data);
+									var text = [];
+									text.push('<ul>');
+									for (var i=0; i<chart.data.datasets[0].data.length; i++) {
+										text.push('<li>');
+										text.push('<span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span>' + chart.data.labels[i] + '');
+										text.push('</li>');
+									}
+									text.push('</ul>');
+									return text.join("");
+								}
+							};
+
+
+
+							var ctx = document.getElementById("pieChart04").getContext("2d");
+							var myChart  = new Chart(ctx, {
+								type: 'doughnut',
+								data: pieData,
+								options: options
+							});
+
+							document.getElementById('chardLegend04').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함							
+						</script>
+					</div>
+				</div>
+
+				<div class="g_column w_2_1">
+					<h3>
+						<span class="title">팀별 인원 현황</span>
+						<div class="fr btnArea middle">
+							<span class="inline">적용일 (2019/05/22)</span>
+						</div>
+					</h3>
+					<div class="unitBox chartBox legendRight" style="height:320px;"><!-- 커스텀으로 제작된 Right 싶을때는 class명 legendRight -->
+						<canvas id="pieChart05" style=""></canvas>
+						<div id="chardLegend05" class="chartLegend"></div><!-- 커스텀으로 제작된 legend 부분-->
+						<script type="text/javascript">
+							//data 부분
+							var pieData = {
+								labels: ['임원실', '경영지원팀', 'SERVICE_MGMT팀', 'SI사업부', 'IT_INFRA개발팀', 'WEB컨버젼스개발팀', 'APP개발팀', '솔루션사업팀', '커뮤니케이션팀'],
+								datasets: [{
+									backgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									hoverBackgroundColor : ['rgb(215,90,10)', 'rgb(142,20,64)', 'rgb(130,231,132)', 'rgb(51,112,213)', 'rgb(156,105,217)', 'rgb(225,205,235)', 'rgb(162,122,92)', 'rgb(99,161,194)', 'rgb(7,190,237)'],
+									data : [2, 2, 15, 1, 5, 12, 5, 16, 10]
+								}]
+							};
+
+
+							
+							//각종 세부 option부분
+							var options = {							
+								layout: {
+									padding: {left: 0, right: 250, top: 40, bottom: 40},
+								},
+								cutoutPercentage: 70,
+								elements: {
+									arc: {borderWidth: 0}
+								},
+								legend: {display: false},
+								
+								// 커스텀 라벨
+								legendCallback: function(chart) {
+									console.log(chart.data);
+									console.log(chart.data.datasets[0].data);
+									var text = [];
+									text.push('<ul>');
+									for (var i=0; i<chart.data.datasets[0].data.length; i++) {
+										text.push('<li>');
+										text.push('<span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"></span>' + chart.data.labels[i] + '');
+										text.push('</li>');
+									}
+									text.push('</ul>');
+									return text.join("");
+								}
+							};
+
+
+
+							var ctx = document.getElementById("pieChart05").getContext("2d");
+							var myChart  = new Chart(ctx, {
+								type: 'doughnut',
+								data: pieData,
+								options: options
+							});
+
+							document.getElementById('chardLegend05').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함							
+						</script>
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>

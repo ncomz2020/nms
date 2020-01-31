@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomz.nms.dao.admin.common.menu.MenuMapper">
+
+	<select id="getMenuList" parameterType="com.ncomz.nms.domain.admin.common.Menu" resultType="com.ncomz.nms.domain.admin.common.Menu">
+		SELECT MENU_ID,
+			   PARENT_ID,
+			   TITLE,
+			   DISP_ORD,
+			   URL,
+			   ICON
+		  FROM T_MENU
+	     WHERE HDDN_YN = 'N' 
+		 ORDER BY DISP_ORD
+	</select>
+	
+	<select id="getAllUserGroupMenuList" parameterType="com.ncomz.nms.domain.admin.common.UserGroup" resultType="com.ncomz.nms.domain.admin.common.Menu">
+		SELECT M.MENU_ID,
+			M.PARENT_ID,
+			TITLE,
+			M.DISP_ORD,
+			M.URL,
+			M.ICON,
+			A.AUTH_TP
+		FROM T_MENU M
+			LEFT OUTER JOIN T_USER_GROUP_AUTH A ON M.MENU_ID = A.MENU_ID AND A.USR_GRP_ID = #{usr_grp_id}
+	   WHERE M.HDDN_YN = 'N' 
+		ORDER BY DISP_ORD
+	</select>
+	
+	<select id="getUserGroupMenuList" parameterType="com.ncomz.nms.domain.admin.common.UserGroup" resultType="com.ncomz.nms.domain.admin.common.Menu">
+		SELECT M.MENU_ID, /* getUserGroupMenuList, doyejin */
+			   M.PARENT_ID,
+			   TITLE,
+			   M.DISP_ORD,
+			   M.URL,
+			   M.ICON,
+			   A.AUTH_TP
+		  FROM T_MENU M
+	     INNER JOIN T_USER_GROUP_AUTH A ON M.MENU_ID = A.MENU_ID AND A.USR_GRP_ID = #{usr_grp_id}
+	     WHERE M.HDDN_YN = 'N' 
+		 ORDER BY DISP_ORD
+	</select>
+
+	<select id="getMenu" parameterType="com.ncomz.nms.domain.admin.common.Menu" resultType="com.ncomz.nms.domain.admin.common.Menu">
+		SELECT
+			M.MENU_ID,
+			M.PARENT_ID,
+			M.TITLE,
+			M.DISP_ORD AS DISPLAY_ORDER,
+			M.URL,
+			M.ICON,
+			IF((SELECT COUNT(*) FROM T_USER_GROUP_AUTH WHERE USR_GRP_ID = 1 AND MENU_ID = #{menu_id})=1, TRUE, FALSE) AS CHK_ADMIN,
+			IF((SELECT COUNT(*) FROM T_USER_GROUP_AUTH WHERE USR_GRP_ID = 2 AND MENU_ID = #{menu_id})=1, TRUE, FALSE) AS CHK_DEPT,
+			IF((SELECT COUNT(*) FROM T_USER_GROUP_AUTH WHERE USR_GRP_ID = 3 AND MENU_ID = #{menu_id})=1, TRUE, FALSE) AS CHK_TEAM,
+			IF((SELECT COUNT(*) FROM T_USER_GROUP_AUTH WHERE USR_GRP_ID = 4 AND MENU_ID = #{menu_id})=1, TRUE, FALSE) AS CHK_USER
+		FROM
+			T_MENU M
+		WHERE
+			HDDN_YN = 'N'
+		AND MENU_ID = #{menu_id}
+		;
+	</select>
+
+	<select id="getNextMenuId" parameterType="com.ncomz.nms.domain.admin.common.Menu" resultType="String">
+			SELECT IFNULL(MAX(MENU_ID), 0) + 1 FROM T_MENU
+	</select>
+
+	<insert id="insertMenu" parameterType="com.ncomz.nms.domain.admin.common.Menu">
+		INSERT INTO T_MENU (
+			MENU_ID,
+			PARENT_ID,
+			TITLE,
+			DISP_ORD,
+			URL,
+			ICON
+		) VALUES (
+			#{menu_id},
+			#{parent_id},
+			#{title},
+			(SELECT A.DISP_ORD FROM (SELECT IFNULL(MAX(DISP_ORD), 0) + 1 AS DISP_ORD FROM T_MENU WHERE PARENT_ID = #{parent_id}) A),
+			#{url},
+			#{icon}
+		)
+	</insert>
+
+	<insert id="insertUserGroupAuth" parameterType="com.ncomz.nms.domain.admin.common.Menu">
+		INSERT INTO 
+			T_USER_GROUP_AUTH (USR_GRP_ID, MENU_ID, AUTH_TP)
+		VALUES
+		<if test='chk_admin'>
+		(1, #{menu_id}, 'A')
+		</if>
+		<if test='chk_dept'>
+		,(2, #{menu_id}, 'A')
+		</if>
+		<if test='chk_team'>
+		,(3, #{menu_id}, 'A')
+		</if>
+		<if test='chk_user'>
+		,(4, #{menu_id}, 'A')
+		</if>
+		;
+	</insert>
+
+	<delete id="deleteMenuInfo" parameterType="com.ncomz.nms.domain.admin.common.Menu">
+		DELETE FROM T_MENU
+		WHERE MENU_ID = #{menu_id}
+	</delete>
+
+	<delete id="deleteUserGroupAuth" parameterType="com.ncomz.nms.domain.admin.common.Menu">
+		DELETE 
+		FROM 	T_USER_GROUP_AUTH
+		WHERE 	MENU_ID = #{menu_id}
+	</delete>
+
+	<update id="updateMenuInfo" parameterType="com.ncomz.nms.domain.admin.common.Menu">
+		UPDATE T_MENU SET TITLE = #{title},
+			URL = #{url},
+			ICON = #{icon}
+		WHERE MENU_ID = #{menu_id}
+	</update>
+	
+	<select id="countMenuAuth" parameterType="com.ncomz.nms.domain.admin.common.Menu" resultType="int">
+		SELECT COUNT(*)
+		FROM T_USER_GROUP_AUTH A,
+			T_MENU M
+		WHERE A.MENU_ID = M.MENU_ID
+			AND A.USR_GRP_ID = #{usrGrpId}
+			AND M.URL LIKE #{url} 
+	</select>
+
+</mapper>

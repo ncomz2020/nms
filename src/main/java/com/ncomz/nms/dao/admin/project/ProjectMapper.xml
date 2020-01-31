@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.project.ProjectMapper">
+ 
+ <!-- 검색조건 -->
+ <sql id="where_clause">
+ 
+ 	<if test=' search_check_yn != null and search_check_yn != "" and search_check_yn != "ALL" '>
+ 		AND CHECK_YN = #{search_check_yn}
+ 	</if>
+ 	<if test=' search_use_yn != null and search_use_yn != "" and search_use_yn != "ALL" '>	
+ 		 AND P.USE_YN = #{search_use_yn}
+ 	</if>
+ 	<if test=' dept_cd != null and dept_cd != "" and dept_cd != "ALL" '>
+			AND DEPT_CD = #{dept_cd}
+	</if>
+	<if test=' team_cd != null and team_cd != "" and team_cd != "ALL" '>
+			AND TEAM_CD = #{team_cd}
+	</if>
+	<if test=' search_etc_yn != null and search_etc_yn != "" and search_etc_yn != "ALL" '>
+ 		AND P.ETC_YN = #{search_etc_yn}
+	</if>
+	<if test='pjt_enddt != "" and pjt_enddt != null'>
+		AND DATE(P.END_DT) BETWEEN #{pjt_strtdt} AND #{pjt_enddt}
+	</if>
+	
+	<choose>
+		<when test='search_pjt == "NAME"'>
+			AND P.PJT_NAME LIKE CONCAT('%',#{search_text},'%')
+		</when>
+		<when test='search_pjt == "NO"'>
+			AND P.PJT_NO LIKE CONCAT('%',#{search_text},'%')
+		</when>
+	</choose>
+	
+ </sql>
+ 
+ <!-- 프로젝트 리스트 -->
+ <sql id="ProjectList">
+ 	/*com.ncomz.nms.dao.admin.project.ProjectMapper.projectList*/
+	   	SELECT
+	   	  	CASE WHEN P.CHECK_YN = 1 THEN '신규'
+ 				  ELSE '추가' END AS CHECK_YN
+ 			, P.PJT_NO
+ 			, P.PJT_NAME
+ 			, P.CUST_NM
+ 			, P.PM_NM
+ 			, A.DTL_CD_DESC AS DEPT_CD 
+ 			, CASE WHEN P.CONT_YN = 1 THEN 'YES'
+ 				  ELSE 'NO' END AS CONT_YN
+ 			, CASE WHEN P.USE_YN = 1 THEN 'Active'
+ 				  ELSE 'Close' END AS USE_YN
+ 			, DATE_FORMAT(P.STRT_DT, '%Y-%m-%d') AS STRT_DT
+ 			, DATE_FORMAT(P.END_DT, '%Y-%m-%d') AS END_DT
+ 			, CASE WHEN P.ETC_YN = 1 THEN '개발'
+ 				  ELSE '유지보수' END AS ETC_YN
+ 		FROM
+		 	   T_COMMON_CODE A  
+ 			 , T_PROJECT_INFO P	 
+		LEFT JOIN T_COMMON_CODE E 
+			  ON P.TEAM_CD = E.DTL_CD
+		WHERE P.DEPT_CD = A.DTL_CD		
+		<include refid="where_clause"/>
+		ORDER BY P.STRT_DT DESC LIMIT 18446744073709551615		
+ </sql>
+ 
+ <!-- 리스트 카운트 -->
+<select id="getProjectListCount" resultType="int">
+	/*com.ncomz.nms.dao.admin.project.ProjectMapper.getProjectListCount*/
+ 	SELECT
+ 		COUNT(*)
+ 	FROM
+		  T_COMMON_CODE A  
+ 		, T_PROJECT_INFO P	 
+		LEFT JOIN T_COMMON_CODE E 
+			  ON P.team_cd = E.dtl_cd
+		WHERE P.DEPT_CD = A.DTL_CD
+		<include refid="where_clause"/>
+		
+ </select>
+ 
+ 	<!-- 프로젝트 리스트 페이징 -->
+	<select id="getProjectList" parameterType="com.ncomz.nms.domain.admin.project.Project" resultType="com.ncomz.nms.domain.admin.project.Project">
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_header" />
+	   	<include refid="ProjectList" />
+		<include refid="com.ncomz.nms.dao.common.CommonMapper.paging_footer" />
+		
+		
+	</select>
+	
+	<!-- 프로젝트 등록 -->
+	<insert id="insertProjectInfo" parameterType="com.ncomz.nms.domain.admin.project.Project">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.insertProjectInfo*/
+		INSERT INTO T_PROJECT_INFO(
+			  PJT_NO
+			, PJT_NAME
+			, CHECK_YN
+			, PJT_TYPE_CD
+			, CUST_NM
+			, PM_NM
+			, DEPT_CD
+			, TEAM_CD
+			, CONT_YN
+			, USE_YN
+			, STRT_DT
+			, END_DT
+			, ETC_YN
+			, CRE_ID
+			, CRE_DT
+			, UPD_ID
+			, UPD_DT
+			) VALUES(
+				  #{pjt_no}
+				, #{pjt_name}
+				, #{check_yn}
+				, #{pjt_type_cd}
+				, #{cust_nm}
+				, #{pm_nm}
+				, #{dept_cd}
+				, #{team_cd}
+				, #{cont_yn}
+				, #{use_yn}
+				, #{strt_dt}
+				, #{end_dt}
+				, #{etc_yn}
+				, #{cre_id}
+				, now()
+				, #{cre_id}
+				, now()
+			)
+	</insert>
+	
+	<!-- 투입인력 등록 -->
+	<insert id="insertMember" parameterType="com.ncomz.nms.domain.admin.project.ProjectUser">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.insertMember*/
+		INSERT INTO T_PROJECT_USER_INFO(
+			  PJT_NO
+			, SEQ
+			, EMP_NO
+			, STRT_DT
+			, END_DT
+			, WORK_DT
+			, WORK_ECT
+			, CRE_ID
+			, CRE_DT
+			, UPD_ID
+			, UPD_DT
+		) VALUES(
+			  #{pjt_no}
+			, (
+				SELECT  IFNULL(MAX(SEQ),0)+1
+				FROM T_PROJECT_USER_INFO PU
+			  )
+			, #{emp_no}
+			, REPLACE(#{mem_strtdt},'-','')
+			, REPLACE(#{mem_enddt},'-','')
+			, #{work_dt}
+			, #{work_ect}
+			, #{cre_id}
+			, NOW()
+			, #{cre_id}
+			, NOW()
+		)
+	</insert>
+	
+	<!-- 중복 체크 -->
+	<select id="chkPjtNo" parameterType="String" resultType="int">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.chkPjtNo*/
+		SELECT COUNT(PJT_NO)
+		FROM T_PROJECT_INFO
+		WHERE PJT_NO = #{pjt_no}
+	</select>
+	
+	<!-- 프로젝트 업데이트 -->
+	<update id="projectUpdate" parameterType="com.ncomz.nms.domain.admin.project.Project">
+	/*com.ncomz.nms.dao.admin.project.ProjectMapper.projectUpdate*/
+	UPDATE T_PROJECT_INFO
+	SET 
+		  PJT_NO = #{pjt_no}
+		, PJT_NAME = #{pjt_name}
+		, PJT_TYPE_CD = #{pjt_type_cd}
+		, CHECK_YN = #{check_yn}
+		, CUST_NM = #{cust_nm}
+		, PM_NM = #{pm_nm}
+		, DEPT_CD = #{dept_cd}
+		, TEAM_CD = #{team_cd}
+		, CONT_YN = #{cont_yn}
+		, USE_YN = #{use_yn}
+		, STRT_DT = #{strt_dt}
+		, END_DT = #{end_dt}
+		, ETC_YN = #{etc_yn}
+		, UPD_ID = #{cre_id}
+		, UPD_DT = now()
+	WHERE PJT_NO = #{pre_pjt_no}
+	</update>
+	
+	<!-- 프로젝트 정보 -->
+	<select id="getProjectInfo" parameterType="com.ncomz.nms.domain.admin.project.Project" resultType="com.ncomz.nms.domain.admin.project.Project">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.getProjectInfo*/
+		SELECT
+ 			  P.CHECK_YN
+ 			, P.PJT_NO
+ 			, P.PJT_TYPE_CD
+ 			, P.PJT_NAME
+ 			, P.CUST_NM
+ 			, P.PM_NM
+ 			, P.DEPT_CD 
+			, P.TEAM_CD
+ 			, P.CONT_YN
+ 			, P.USE_YN
+ 			, P.STRT_DT
+ 			, P.END_DT
+ 			, P.ETC_YN
+ 		FROM
+ 			 T_PROJECT_INFO P	 
+		WHERE PJT_NO = #{pjt_no}
+	</select>
+	
+	<!-- 투입인력 정보 -->
+	<select id="getMemberInfo" parameterType="com.ncomz.nms.domain.admin.project.ProjectUser" resultType="com.ncomz.nms.domain.admin.project.ProjectUser">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.getMemberInfo*/
+		SELECT
+			  PU.PJT_NO
+			, PU.EMP_NO
+			, U.USR_NM
+			, (
+        		SELECT DTL_CD_DESC
+          		FROM T_COMMON_CODE 
+         		WHERE DTL_CD = CO.RANK_CD
+       		  ) AS RANK_CD
+			, DATE_FORMAT(PU.STRT_DT, '%Y-%m-%d') AS STRT_DT
+			, DATE_FORMAT(PU.END_DT, '%Y-%m-%d') AS END_DT
+			, PU.WORK_DT
+			, PU.WORK_ECT
+		FROM
+			T_PROJECT_USER_INFO PU, T_USER U, T_COM_INFO CO
+		WHERE PU.PJT_NO = #{pjt_no} 
+		AND PU.EMP_NO = U.EMP_NO 
+		AND U.EMP_NO = CO.EMP_NO
+		ORDER BY CO.RANK_CD ASC
+	</select>
+	
+	<!-- 프로젝트 삭제 -->
+	<delete id="projectDelete" parameterType="com.ncomz.nms.domain.admin.project.Project">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.projectDelete*/
+		DELETE FROM T_PROJECT_INFO
+		WHERE PJT_NO = #{pjt_no}
+	</delete>
+	
+	<!-- 투입인력 삭제 -->
+	<delete id="deleteMember" parameterType="com.ncomz.nms.domain.admin.project.ProjectUser">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.deleteMember*/
+		DELETE FROM T_PROJECT_USER_INFO
+		WHERE PJT_NO = #{pre_pjt_no}
+	</delete>
+	
+	<!-- 투입인력 출력 -->
+	<select id="memberview" parameterType="HashMap" resultType="com.ncomz.nms.domain.admin.user.User">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.memberview*/
+		SELECT 
+           U.EMP_NO 
+         , U.USR_NM 
+             , (
+              SELECT DTL_CD_DESC
+                FROM T_COMMON_CODE 
+               WHERE DTL_CD = CO.DEPT_CD
+               ) AS DEPT_CD
+             , (
+              SELECT DTL_CD_DESC
+                FROM T_COMMON_CODE 
+               WHERE DTL_CD = CO.TEAM_CD
+               ) AS TEAM_CD
+             , (
+              SELECT DTL_CD_DESC
+                FROM T_COMMON_CODE 
+               WHERE DTL_CD = CO.RANK_CD
+               ) AS RANK_CD
+           FROM T_USER U, T_COM_INFO CO
+           LEFT OUTER JOIN T_COMMON_CODE E
+           ON CO.PSIT_CD=E.DTL_CD
+          WHERE U.EMP_NO = CO.EMP_NO
+          AND CO.DEPT_CD = #{param_dept_cd}
+ 			AND CO.TEAM_CD = #{param_team_cd}
+          ORDER BY E.ALGN_ORD, U.EMP_NO;
+	</select>
+	
+	<!-- 엑셀 출력 -->
+	<select id="getProjectListExcel" parameterType="com.ncomz.nms.domain.admin.project.Project" resultType="java.util.LinkedHashMap">
+		/*com.ncomz.nms.dao.admin.project.ProjectMapper.getProjectListExcel*/
+		SELECT
+	   	  	CASE WHEN P.CHECK_YN = 1 THEN '신규'
+ 				  ELSE '추가' END AS label_project_checkyn
+ 			, P.PJT_NO AS label_project_pjtno
+ 			, P.PJT_NAME AS label_project_pjtname
+ 			, P.CUST_NM AS label_project_custnm
+ 			, P.PM_NM AS label_project_pmnm
+ 			, A.DTL_CD_DESC AS label_project_dept
+ 			, CASE WHEN P.CONT_YN = 1 THEN 'YES'
+ 				  ELSE 'NO' END AS label_project_contyn
+ 			, CASE WHEN P.USE_YN = 1 THEN 'Active'
+ 				  ELSE 'Close' END AS label_project_useyn
+ 			, DATE_FORMAT(P.STRT_DT, '%Y-%m-%d') AS label_project_strtdt
+ 			, DATE_FORMAT(P.END_DT, '%Y-%m-%d') AS label_project_enddt
+ 			, CASE WHEN P.ETC_YN = 1 THEN '개발'
+ 				  ELSE '유지보수' END AS label_project_etcyn
+ 		FROM
+		 	   T_COMMON_CODE A  
+ 			 , T_PROJECT_INFO P
+		WHERE P.DEPT_CD = A.DTL_CD
+		<include refid="where_clause"/>
+		ORDER BY P.STRT_DT DESC
+	</select>
+ 
+ </mapper>

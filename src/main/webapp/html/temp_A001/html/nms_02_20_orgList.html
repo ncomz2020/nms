@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+
+<script type="text/javascript" src="../js/plugins/jquery.print.js"></script> <!-- jquery.print 개발된 곳에서 가져옴 경로는 알아서 수정// 필요한 곳에서만 사용하세요 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">조직도</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">사용자관리</a>
+					>
+					<a href="#">조직도</a>
+				</div>
+			</h2>
+			
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">
+							(주) 엔컴즈 조직도(Aug18)
+						</span>
+
+						<div class="fr btnArea middle">
+							<a href="javascript:PrintElem('printArea');" class="amb_btnstyle blue middle">인쇄</a>
+						</div>
+						<script>
+						$(document).ready(function(){ 
+							orgRowUnitColset();
+						});
+
+						function PrintElem(elem){
+							   $("#"+elem).print({
+								   globalStyles: true,
+								   mediaPrint: false,
+								   stylesheet: null,
+								   noPrintSelector: ".no-print",
+								   iframe: true,
+								   append: null,
+								   prepend: null,
+								   manuallyCopyFormValues: true,
+								   deferred: $.Deferred(),
+								   timeout: 750,
+								   title: null,
+								   doctype: '<!doctype html>'
+							   });
+						}
+
+						function orgRowUnitColset() {
+							var $element = $('.orgWrap .partUnit').next('.orgRowUnit.teamWrap');
+							$element.each(function(){
+								var lengh = $(this).children('.columUnit').length;
+								//alert(lengh);
+
+								$(this).parent('.columUnit').addClass('col' + lengh);
+							});
+						}
+						</script>
+					</h3>
+
+
+					<div id="printArea" class="unitBox orgWrap" style="">
+
+						<!-- 대표이사 ///////////////////// -->
+						<div class="orgRowUnit">
+							<!-- 기본 단위 -->
+							<div class="unit headUnit">
+								<div class="boxUnit">
+									<span class="tit">대표이사</span>
+									<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+									<span class="phone">040-0000-0000 / 010-0000-0000</span>
+								</div>
+							</div>
+							<!-- //기본 단위 -->
+						</div>
+						<!-- 대표이사 ///////////////////// -->
+
+						<!-- svg를 통한 라인 영역 부분임 //////// -->
+						<div class="lineWrap"></div>
+						<!-- svg를 통한 라인 영역 부분임 //////// -->
+
+						<!-- 부서 리스트 //////////////////-->
+						<div class="orgRowUnit">
+							
+							
+							<!-- 부서 단위 //경영지원 -->
+							<div class="columUnit">
+								<!-- 부서명 -->
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">경영기획실 (2명)</span>
+										<!--
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">040-0000-0000 / 010-0000-0000</span>
+										-->
+									</div>
+								</div>
+
+								
+								<div class="orgRowUnit teamWrap">
+									<!-- 팀 단위 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">경영지원팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 부서 단위 //경영지원 -->
+
+							<!-- 부서 단위 //영업부 -->
+							<div class="columUnit">
+								<!-- 부서명 -->
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">영업부 (2명)</span>
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">00027 / 010-0000-0000</span>
+									</div>
+								</div>
+
+								<!-- 
+								<div class="orgRowUnit teamWrap">
+									<div class="columUnit">
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">경영지원팀 (2명)</span>
+											</div>
+										</div>
+
+										
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								-->
+								
+							</div>
+							<!-- 부서 단위 //영업부 -->
+
+							<!-- 부서 단위 //SQM사업부 -->
+							<div class="columUnit">
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">SQM사업부 (01명)</span>
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">040-0000-0000 / 010-0000-0000</span>
+									</div>
+								</div>
+
+								<div class="orgRowUnit teamWrap">
+									
+									<!-- 팀단위 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">Service Mgmt팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+									</div>
+									<!-- //팀단위 -->
+								</div>
+							</div>
+							<!-- 부서 단위 //SQM사업부 -->
+
+
+							<!-- 부서 단위 //SI사업부 -->
+							<div class="columUnit">
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">SI사업부 (01명)</span>
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">040-0000-0000 / 010-0000-0000</span>
+									</div>
+								</div>
+
+								<div class="orgRowUnit teamWrap">
+									
+									<!-- 팀단위 //IT_INFRA개발팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">IT_INFRA개발팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+									</div>
+									<!-- //팀단위 -->
+
+									<!-- 팀단위 //WEB컨버젼스개발팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">WEB컨버젼스개발팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+									</div>
+									<!-- //팀단위 -->
+
+
+									<!-- 팀단위 //APP개발팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">APP개발팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+									</div>
+									<!-- //팀단위 -->
+								</div>
+							</div>
+							<!-- 부서 단위 //SI사업부 -->
+
+
+							<!-- 부서 단위 //솔루션사업부 -->
+							<div class="columUnit">
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">솔루션사업부 (01명)</span>
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">040-0000-0000 / 010-0000-0000</span>
+									</div>
+								</div>
+
+								<div class="orgRowUnit teamWrap">
+									
+									<!-- 팀단위 //솔루션사업팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">솔루션사업팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+									</div>
+									<!-- //팀단위 -->
+
+									<!-- 팀단위 //커뮤니케이션팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit">
+											<div class="boxUnit">
+												<span class="tit">커뮤니케이션팀 (2명)</span>
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+									</div>
+									<!-- //팀단위 -->
+
+
+								</div>
+							</div>
+							<!-- 부서 단위 //솔루션사업부 -->
+
+
+							<!-- 부서 단위 //IoT사업부 -->
+							<div class="columUnit">
+								<div class="unit headUnit partUnit">
+									<div class="boxUnit">
+										<span class="tit">사업부 (01명)</span>
+										<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+										<span class="phone">040-0000-0000 / 010-0000-0000</span>
+									</div>
+								</div>
+
+								<div class="orgRowUnit teamWrap">
+									
+									<!-- 팀단위 //솔루션사업팀 -->
+									<div class="columUnit">
+										<!-- 팀명 -->
+										<div class="unit headUnit" style="visibility:hidden;">
+											<div class="boxUnit">
+											<!--<span class="tit">솔루션사업팀 (2명)</span> // 팀명이 없으므로-->
+											</div>
+										</div>
+
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+										<!-- 기본 반복 단위 // 팀원 단위 -->
+
+										<div class="unit defaultUnit">
+											<div class="boxUnit">
+												<span class="man"><em class="rank">직급</em> <em class="name">홍길동</em></span>
+												<span class="phone">00027 / 010-0000-0000</span>
+											</div>
+										</div>
+
+									</div>
+									<!-- //팀단위 -->
+
+									
+								</div>
+							</div>
+							<!-- 부서 단위 //IoT사업부 -->
+
+							
+
+
+
+
+
+						</div>
+						<!-- 부서 리스트 //////////////////-->
+					</div>
+				</div>
+			</div>
+
+			
+			
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>

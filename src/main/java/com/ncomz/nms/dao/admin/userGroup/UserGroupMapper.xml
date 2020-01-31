@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.userGroup.UserGroupMapper">
+ 	
+ 	<select id="getUsrGroupList" resultType="com.ncomz.nms.domain.admin.common.UserGroup">
+ 		SELECT USR_GRP_ID
+ 		     , EXPLN
+ 		  FROM T_USR_GRP
+ 	</select>
+	
+	<select id="getGroupList" resultType="com.ncomz.nms.domain.admin.common.UserGroup">
+ 		SELECT USR_GRP_ID
+ 		     , EXPLN
+ 		  FROM T_USR_GRP
+ 	</select>
+ 	<select id="getusrInfoMap" parameterType="com.ncomz.nms.domain.admin.common.UserGroup" resultType="com.ncomz.nms.domain.admin.common.UserGroup">
+ 		SELECT EMP_NO
+ 		     , USR_NM
+ 		     , USR_GRP_ID
+ 		  FROM T_USER
+ 		 WHERE EMP_NO = #{emp_no}
+ 	</select>
+ 	
+ 	<update id="updateInfo" parameterType="com.ncomz.nms.domain.admin.common.UserGroup">
+ 		UPDATE T_USER
+ 		   SET USR_GRP_ID = cast(#{usr_grp_id} as unsigned)
+ 		 WHERE EMP_NO = #{emp_no}
+ 	</update>
+ </mapper>

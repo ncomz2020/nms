@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+<script type="text/javascript" src="../js/plugins/jquery.print.js"></script> <!-- jquery.print 개발된 곳에서 가져옴 경로는 알아서 수정// 필요한 곳에서만 사용하세요 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">타임카드</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">타임카드관리</a>
+					>
+					<a href="#">타임카드</a>
+				</div>
+			</h2>
+			
+
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">
+							전체 타임카드
+						</span>
+
+
+						<div class="fr btnArea middle">
+							<a href="javascript:PrintElem('printArea');" class="amb_btnstyle blue middle">인쇄</a>
+						</div>
+						<script>
+						function PrintElem(elem){
+							   $("#"+elem).print({
+								   globalStyles: true,
+								   mediaPrint: false,
+								   stylesheet: null,
+								   noPrintSelector: ".no-print",
+								   iframe: true,
+								   append: null,
+								   prepend: null,
+								   manuallyCopyFormValues: true,
+								   deferred: $.Deferred(),
+								   timeout: 750,
+								   title: null,
+								   doctype: '<!doctype html>'
+							   });
+						}
+						</script>
+					</h3>
+
+					<div id="printArea" class="unitBox" style="">
+						
+						<!-- timeCard 반복 단위 -->
+						<h4>
+							<span class="title">홍길동</span>
+						</h4>
+						
+						<table class="amb_table center timeCardTable">
+							<colgroup>
+								<col style="width: 50px;">
+								<col style="width: 90px;">
+								<col style="width: 180px">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>유형</th>
+									<th>코드</th>
+									<th>프로젝트명</th>
+
+									<th><span class="">01</span></th>
+									<th><span class="">02</span></th>
+									<th><span class="">03</span></th>
+									<th><span class="pColor_pink">04</span></th>
+									<th><span class="pColor_red">05</span></th>
+
+									<th><span class="">06</span></th>
+									<th><span class="">07</span></th>
+									<th><span class="">08</span></th>
+									<th><span class="">09</span></th>
+									<th><span class="">10</span></th>
+
+									<th><span class="pColor_pink">11</span></th>
+									<th><span class="pColor_red">12</span></th>
+									<th><span class="">13</span></th>
+									<th><span class="">14</span></th>
+									<th><span class="">15</span></th>
+
+									<th><span class="">16</span></th>
+									<th><span class="">17</span></th>
+									<th><span class="pColor_pink">18</span></th>
+									<th><span class="pColor_red">19</span></th>
+									<th><span class="">20</span></th>
+
+									<th><span class="">21</span></th>
+									<th><span class="">22</span></th>
+									<th><span class="">23</span></th>
+									<th><span class="">24</span></th>
+									<th><span class="pColor_pink">25</span></th>
+
+									<th><span class="pColor_red">26</span></th>
+									<th><span class="">27</span></th>
+									<th><span class="">28</span></th>
+									<th><span class="">29</span></th>
+									<th><span class="">30</span></th>
+
+									<th><span class="">31</span></th>
+
+									<th><span class="bold">합계</span></th>
+
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>판관</td>
+									<td>OP1900005</td>
+									<td>FY19 SI사업부 판관프로젝트</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+
+									<td>0</td>
+								</tr>
+								<tr>
+									<td>판관</td>
+									<td>OP1900000</td>
+									<td>FY19 SI사업부 판관프로젝트2</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+
+									<td>0</td>
+								</tr>
+
+
+								<tr>
+									<td colspan="3">근무형태 분류 합계</td>
+									<td colspan="31" class="left">
+									
+										<span class="inline pdLR10">
+											정상 :  <em class="bold">(0)</em>
+										</span>
+										<span class="inline pdLR10">
+											야근 :  <em class="bold">(0)</em>
+										</span>
+										<span class="inline pdLR10">
+											야간 :  <em class="bold">(0)</em>
+										</span>
+									</td>
+
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<!-- //timeCard 반복 단위 -->
+
+						<!-- timeCard 반복 단위 -->
+						<h4>
+							<span class="title pColor_black">홍길동</span>
+						</h4>
+						
+						<table class="amb_table center timeCardTable">
+							<colgroup>
+								<col style="width: 50px;">
+								<col style="width: 90px;">
+								<col style="width: 180px">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+
+								<col style="width: 35px;">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>유형</th>
+									<th>코드</th>
+									<th>프로젝트명</th>
+
+									<th><span class="">01</span></th>
+									<th><span class="">02</span></th>
+									<th><span class="">03</span></th>
+									<th><span class="pColor_pink">04</span></th>
+									<th><span class="pColor_red">05</span></th>
+
+									<th><span class="">06</span></th>
+									<th><span class="">07</span></th>
+									<th><span class="">08</span></th>
+									<th><span class="">09</span></th>
+									<th><span class="">10</span></th>
+
+									<th><span class="pColor_pink">11</span></th>
+									<th><span class="pColor_red">12</span></th>
+									<th><span class="">13</span></th>
+									<th><span class="">14</span></th>
+									<th><span class="">15</span></th>
+
+									<th><span class="">16</span></th>
+									<th><span class="">17</span></th>
+									<th><span class="pColor_pink">18</span></th>
+									<th><span class="pColor_red">19</span></th>
+									<th><span class="">20</span></th>
+
+									<th><span class="">21</span></th>
+									<th><span class="">22</span></th>
+									<th><span class="">23</span></th>
+									<th><span class="">24</span></th>
+									<th><span class="pColor_pink">25</span></th>
+
+									<th><span class="pColor_red">26</span></th>
+									<th><span class="">27</span></th>
+									<th><span class="">28</span></th>
+									<th><span class="">29</span></th>
+									<th><span class="">30</span></th>
+
+									<th><span class="">31</span></th>
+
+									<th><span class="bold">합계</span></th>
+
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>판관</td>
+									<td>OP1900005</td>
+									<td>FY19 SI사업부 판관프로젝트</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+
+									<td>0</td>
+
+									<td>0</td>
+								</tr>
+								
+								<tr>
+									<td colspan="3">근무형태 분류 합계</td>
+									<td colspan="31" class="left">
+									
+										<span class="inline pdLR10">
+											정상 :  <em class="bold">(0)</em>
+										</span>
+										<span class="inline pdLR10">
+											야근 :  <em class="bold">(0)</em>
+										</span>
+										<span class="inline pdLR10">
+											야간 :  <em class="bold">(0)</em>
+										</span>
+									</td>
+
+									<td></td>
+								</tr>
+
+							</tbody>
+						</table>
+
+						<!-- //timeCard 반복 단위 -->
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+			
+			
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>

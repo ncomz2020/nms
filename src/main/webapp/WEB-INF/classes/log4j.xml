@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy.MM.dd HH:mm:ss} *%-5p* %c{1} [%L] - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- fileAppender 라고 정의한 놈에 대해서 상세 기술한다. -->
+	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<!-- 파일 인코딩은 UTF-8로 설정한다. -->
+		<param name="encoding" value="UTF-8"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<!-- 파일생성 위치는 아래와 같이 한다. -->
+		<param name="File" value="/home/ec2-user/nms/nms.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+		<!-- 파일에는 아래의 형식으로 로그를 뿌릴 것이다. -->
+		<param name="ConversionPattern" value="[%d][%-5p][%-20t][%25C{1}:%3L] - %m%n"/>
+		</layout>
+	</appender>​
+		
+	<logger name="org.springframework.web.servlet.mvc">
+		<level value="debug" />
+	</logger>
+
+	<logger name="net.sf.ehcache">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="debug" />
+	</logger>
+
+	<logger name="org.mybatis.spring">
+		<level value="debug" />
+	</logger>
+
+	<logger name="jdbc.audit">
+		<level value="warn" />
+	</logger>
+
+	<logger name="jdbc.resultset">
+		<level value="error" />
+	</logger>
+
+	<logger name="jdbc.connection">
+		<level value="error" />
+	</logger>
+
+	<logger name="jdbc.sqlonly">
+		<level value="error" /> 
+	</logger>
+
+	<logger name="net.sf.log4jdbc" additivity="false">
+		<level value="error" />
+	</logger>
+
+	<logger name="com.ncomz.nms">
+		<level value="debug" />
+	</logger>
+
+	<logger name="com.ntels.nisf.filter">
+		<level value="error" /> 
+	</logger>
+
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+
+</log4j:configuration>

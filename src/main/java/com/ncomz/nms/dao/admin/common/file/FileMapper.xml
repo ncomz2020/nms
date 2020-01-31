@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncomz.nms.dao.admin.common.file.FileMapper">
+
+	<!--파일테이블 등록 -->
+	<insert id="insertFile" parameterType="com.ncomz.nms.domain.admin.common.FileInfo">
+		INSERT INTO T_FILE_INFO (
+			FILE_ID,
+			PHY_FILE_NM,
+			ORI_FILE_NM,
+			FILE_URI
+		) VALUES (
+			#{file_id},
+			#{phy_file_nm},
+			#{ori_file_nm},
+			#{file_uri}
+		)
+	</insert>
+	
+	<select id="selectFileId" resultType="int">
+		SELECT IFNULL(MAX(File_ID),0)+1
+ 			   	  FROM T_FILE_INFO
+	</select> 
+	
+	<update id="updateFile" parameterType="com.ncomz.nms.domain.admin.common.FileInfo">
+	UPDATE T_FILE_INFO
+	   SET PHY_FILE_NM	= #{phy_file_nm}
+		  ,ORI_FILE_NM 	= #{ori_file_nm}
+		  ,FILE_URI 	= #{file_uri}
+	 WHERE FILE_ID = #{file_id}
+	</update>
+	
+</mapper>

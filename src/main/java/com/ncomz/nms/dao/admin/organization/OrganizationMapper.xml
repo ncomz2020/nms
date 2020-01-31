@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ncomz.nms.dao.admin.organization.OrganizationMapper">
+ 
+   		<!-- 0507 전체 조직도 가져오기 -->
+	   <select id="selectOrg" resultType="com.ncomz.nms.domain.admin.organization.Org">
+	  		 /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.selectOrg*/
+			SELECT 
+				A.DTL_CD_DESC,
+			    E.DTL_CD_DESC  AS TEAM,
+			    U.USR_NM , 
+			    U.EMP_NO,
+			    E2.DTL_CD_DESC AS RANK,
+			    IF (CHAR_LENGTH(CELL_NO)=11,
+					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+			FROM   
+				 T_USER U, 
+			    T_COMMON_CODE A, 
+			    T_COM_INFO CO 
+			    LEFT OUTER JOIN T_COMMON_CODE E
+			    ON CO.TEAM_CD = E.DTL_CD 
+			    LEFT OUTER JOIN T_COMMON_CODE E2
+			    ON CO.PSIT_CD = E2.DTL_CD
+			WHERE  CO.EMP_NO = U.EMP_NO 
+			    AND U.USE_YN = 'Y' 
+			    AND CO.DEPT_CD = A.DTL_CD
+			    AND NOT CO.PSIT_CD = '210'
+			    AND NOT CO.PSIT_CD = '220'
+			    AND NOT CO.PSIT_CD = '230'
+			    AND U.EMP_NO NOT IN ('ADMIN')
+			ORDER BY E2.ALGN_ORD	 , U.EMP_NO
+	   </select>
+	   <!-- 0509 상무,사업부장 리스트  -->
+	   <select id="selectHonor"  resultType="com.ncomz.nms.domain.admin.organization.Org">
+	   <![CDATA[
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.selectHonor*/
+			SELECT 
+				    E3.DTL_CD,
+				    U.USR_NM , 
+				    A.DTL_CD_DESC,
+				    E2.DTL_CD_DESC AS RANK,
+				    E3.DTL_CD_DESC AS PSRT,
+				    IF (CHAR_LENGTH(CELL_NO)=11,
+						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+			FROM   
+					T_USER U, 
+				    T_COMMON_CODE A, 
+				    T_COM_INFO CO
+				    LEFT OUTER JOIN T_COMMON_CODE E
+				    ON CO.TEAM_CD = E.DTL_CD 
+				    LEFT OUTER JOIN T_COMMON_CODE E2
+				    ON CO.RANK_CD = E2.DTL_CD
+				    LEFT OUTER JOIN T_COMMON_CODE E3
+				    ON CO.PSIT_CD = E3.DTL_CD
+			WHERE  
+					 CO.EMP_NO = U.EMP_NO 
+				    AND U.USE_YN = 'Y' 
+				    AND CO.DEPT_CD = A.DTL_CD
+				    AND CO.PSIT_CD <= '230'
+				    AND CO.PSIT_CD >= '220'
+				    AND U.EMP_NO NOT IN ('ADMIN')
+			ORDER BY A.ALGN_ORD	
+		]]>	 
+	   </select>
+	   <!-- 0522 대표이사 -->
+	   	<select id = "getCeo"  resultType="com.ncomz.nms.domain.admin.organization.Org">
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getCeo*/
+  			SELECT 
+				    E3.DTL_CD,
+				    U.USR_NM ,
+				    A.DTL_CD_DESC,
+				    E2.DTL_CD_DESC AS RANK,
+				    E3.DTL_CD_DESC AS PSRT,
+				    IF (CHAR_LENGTH(CELL_NO)=11,
+						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+			FROM   
+					 T_USER U, 
+				    T_COMMON_CODE A, 
+				    T_COM_INFO CO
+				    LEFT OUTER JOIN T_COMMON_CODE E
+				    ON CO.TEAM_CD = E.DTL_CD 
+				    LEFT OUTER JOIN T_COMMON_CODE E2
+				    ON CO.RANK_CD = E2.DTL_CD
+				    LEFT OUTER JOIN T_COMMON_CODE E3
+				    ON CO.PSIT_CD = E3.DTL_CD
+			WHERE  
+					 CO.EMP_NO = U.EMP_NO 
+				    AND U.USE_YN = 'Y' 
+				    AND CO.DEPT_CD = A.DTL_CD
+				    AND CO.PSIT_CD = '210'
+				    AND U.EMP_NO NOT IN ('ADMIN')
+			ORDER BY A.ALGN_ORD 
+	   	</select>
+   		<!-- 0508 사업부 가져오기 -->
+	  <select id ="getDept"  resultType="com.ncomz.nms.domain.admin.organization.Org">
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getDept*/	  
+			SELECT DISTINCT 
+		    	DTL_CD_DESC  AS DEPT,
+		    	DTL_CD
+			FROM    
+			    T_COMMON_CODE 
+			WHERE USE_YN = 'Y'
+			  AND GRP_CD = '100'
+			  AND ALGN_ORD > 2
+			ORDER BY  ALGN_ORD
+	  </select>
+	  <!-- 0508  팀 가져오기 -->
+	  <select id ="getTeam" resultType="com.ncomz.nms.domain.admin.organization.Org">
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getTeam*/	  
+	  		SELECT  A.DTL_CD_DESC AS GRP_CD_DESC,
+			 	 B.DTL_CD_DESC
+			FROM    
+			    T_COMMON_CODE A
+			    LEFT OUTER JOIN T_COMMON_CODE B
+				 ON A.DTL_CD = B.GRP_CD
+			WHERE  A.USE_YN = 'Y'
+			AND  A.GRP_CD = 100
+	  </select>
+	  <!-- 0509 팀 직원수 -->
+	  <select id= "teamCount"   resultType="com.ncomz.nms.domain.admin.organization.Org">
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.teamCount*/	 	  
+	  		SELECT 
+				COUNT(*) AS T_COUNT,
+				E.DTL_CD_DESC  
+			FROM   
+			    T_COM_INFO CO
+			    LEFT OUTER JOIN T_USER U
+			    ON CO.EMP_NO = U.EMP_NO 
+			    LEFT OUTER JOIN T_COMMON_CODE E
+			    ON CO.TEAM_CD = E.DTL_CD 
+	    	WHERE  U.USE_YN = 'Y'
+	    	AND  E.DTL_CD_DESC IS NOT NULL
+			GROUP BY 
+				E.DTL_CD_DESC
+	  </select>
+	  <!-- 0509 사업부 직원 수 -->
+	  <select id = "deptCount"  resultType="com.ncomz.nms.domain.admin.organization.Org">
+	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.deptCount*/
+			SELECT 
+				COUNT(*) AS D_COUNT,
+				DEPT_CD  
+			FROM    
+			    T_COM_INFO CO
+			    LEFT OUTER JOIN T_USER U
+			    ON CO.EMP_NO = U.EMP_NO
+			    LEFT OUTER JOIN T_COMMON_CODE E
+			    ON CO.DEPT_CD = E.DTL_CD 
+			WHERE  U.USE_YN = 'Y'
+			GROUP BY 
+				DEPT_CD
+	  </select>
+ </mapper>

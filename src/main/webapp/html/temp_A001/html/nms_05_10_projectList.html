@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">프로젝트관리</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">프로젝트관리</a>
+					>
+					<a href="#">프로젝트</a>
+				</div>
+			</h2>
+			
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<div class="unitBox searchBox" style="">
+						<table class="amb_form_table">
+							<colgroup>
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>구분</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									
+									<th>완료일자</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker endDate" placeholder="date" />
+										</span>
+									</td>
+									
+									<th>상태</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+
+									<th>담당본부/팀</th>
+									<td>
+										<select class="inp w45p">
+											<option value="">전체</option>
+										</select>
+										<select class="inp w45p">
+											<option value="">선택</option>
+										</select>
+									</td>
+
+									<th>비고</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+
+									<th>검색</th>
+									<td>
+										<select class="inp w35p">
+											<option value="">전체</option>
+										</select>
+										<input type="text" value="" class="inp w55p" placeholder="검색어를 입력하세요" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<span class="searchFormBtn"><a href="#" class="amb_btnstyle black middle">검색</a></span>
+					</div>
+				</div>
+			</div>
+
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">프로젝트 목록</span>
+						<div class="fr btnArea middle">
+							<a href="#" class="amb_btnstyle white middle">엑셀 다운로드</a>
+							<a href="nms_05_11_projectListReg.html" class="amb_btnstyle blue middle">프로젝트 등록</a>
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						<table class="amb_table center"  id="">	
+							<colgroup>
+								<col style="width:60px;" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="width:100px;" />
+
+								<col style="width:100px;" />
+								<col style="width:100px;" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>구분</th>
+									<th>프로젝트코드</th>
+									<th>프로젝트명</th>
+									<th>고객</th>
+									<th>PM</th>
+
+									<th>담당본부</th>
+									<th>사업부/팀	</th>
+									<th>계약여부</th>
+									<th>상태</th>
+									<th>시작일자</th>
+
+									<th>완료일자</th>
+									<th>비고</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr onclick="javascript:alert('필요한 작업 진행');">							
+									<td>추가</td>
+									<td>LV9999999</td>
+									<td>만렙 프로젝트</td>
+									<td>고객</td>
+									<td>PM</td>
+
+									<td>SI사업부</td>
+									<td>WEB컨버젼스개발팀</td>
+									<td>YES</td>
+									<td>Close</td>
+									<td>2019-05-01</td>
+
+									<td>2019-05-01</td>
+									<td>유지보수</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+					<div class="paging center">
+						<ul class="paginglist">
+							
+							<li class="first"><a href="#"><i class="ambicon-006_arrow_first"></i></a></li>
+							<li class="prev"><a href="#"><i class="ambicon-002_arrow_left"></i></a></li>
+
+							<li><a href="#"> 1 </a></li>
+							<li><a href="#"> 2 </a></li>
+							<li class="active"><a href="#"> 3 </a></li>
+							<li><a href="#"> 4 </a></li>
+							<li><a href="#"> 5 </a></li>
+							<li><a href="#"> 6 </a></li>
+							<li><a href="#"> 7 </a></li>
+							<li><a href="#"> 8 </a></li>
+							<li><a href="#"> 9 </a></li>
+							<li><a href="#"> 10 </a></li>
+
+							<li class="next"><a href="#"><i class="ambicon-001_arrow_right"></i></a></li>
+							<li class="last"><a href="#"><i class="ambicon-005_arrow_last"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>

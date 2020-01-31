@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">datePicker  샘플</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">템플릿 가이드</a>
+					>
+					<a href="#">datePicker 예제</a>
+				</div>
+			</h2>
+			
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT30">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">DatePicker 샘플 (jquery datepicker 사용)</span>
+						<div class="fr btnArea middle">
+							<select style="width:200px;">
+								<option>No selected 01</option>
+								<option>No selected 02</option>
+								<option>No selected 03</option>
+							</select>
+
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						
+						<table class="amb_form_table lineAll">
+							<colgroup>
+								<col style="width:15%;" />
+								<col style="" />
+								<col style="width:15%;" />
+								<col style="" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>DatePicker</th>
+									<td>
+										<input type="text" value="" class="inp datepicker"  placeholder="date" />
+									</td>
+									<th>DatePicker from to</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker endDate" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th>monthsPicker</th>
+									<td>
+										<input type="text" value="" class="inp datepicker months"  placeholder="date" />
+									</td>
+									<th>monthsPicker from to</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker months startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker months endDate" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<th>yearsPicker</th>
+									<td>
+										<input type="text" value="" class="inp datepicker years"  placeholder="date" />
+									</td>
+									<th>yearsPicker from to</th>
+									<td>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker years startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker years endDate" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT30">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">설명</span>
+					</h3>
+					<div class="unitBox grayBox" style="">
+						<xmp>
+datePicker ------------------------------------------------------------------
+datePicker  기본형
+<input type="text" value="" class="inp datepicker" placeholder="date" />
+
+datePicker  From To
+<span class="datepickerRange">
+	<input type="text" value="" class="inp datepicker startDate" placeholder="date" />
+	~
+	<input type="text" value="" class="inp datepicker endDate" placeholder="date" />
+</span>
+
+
+monthsPicker  기본형
+<input type="text" value="" class="inp datepicker months" placeholder="date" />
+
+monthsPicker  From To
+<span class="datepickerRange">
+	<input type="text" value="" class="inp datepicker months startDate" placeholder="date" />
+	~
+	<input type="text" value="" class="inp datepicker months endDate" placeholder="date" />
+</span>
+
+
+yearsPicker  기본형
+<input type="text" value="" class="inp datepicker years" placeholder="date" />
+
+yearsPicker  From To
+<span class="datepickerRange">
+	<input type="text" value="" class="inp datepicker years startDate" placeholder="date" />
+	~
+	<input type="text" value="" class="inp datepicker years endDate" placeholder="date" />
+</span>
+
+
+------------------------------------------------------------------
+
+
+
+						</xmp>
+						
+					</div>
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->		
+			
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+
+</div>
+
+
+</body>
+</html>

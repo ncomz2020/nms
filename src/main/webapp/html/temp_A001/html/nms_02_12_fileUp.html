@@ -1,0 +1,52 @@
+
+<!-- 실제 개별 페이지 개발자가 제작하는 부분 -->
+<div class="amb_layout_common amb_admin_layout_temp_01 modal-dialog">
+
+	<div class="modal-content">
+
+		<!-- 실제 컨텐츠 작업부분 -->
+		<!--  레이어팝업 header -->
+		<div class="modal_header">
+			<span class="title">사진 등록</span>
+			<a href="#" class="close" onClick="javascript:closeModal(this);"><i class="ambicon-015_mark_times"></i></a>
+		</div>
+
+		
+		<!--  레이어팝업 content -->
+		<div class="modal_body content">		
+			
+			<!-- 반복단위 -->
+			<div class="rowBox">					
+
+				<div class="g_column w_1_1">
+
+					<div class="unitBox" style="">
+
+						<label class="fileBoxWrap w100p"> 
+							<input type="file" class="file_input" onchange="$(this).next().after().text($(this).val().split('\\').slice(-1)[0])" placeholder="doc, docx, ppt, pptx, pdf, xml, xlsx, jpg, jpeg, gif(10MB 이하)" /> 
+							<span class="file_control"></span>
+							<span class="btnText"><i class="ambicon-087_flieadd"></i></span>
+						</label>
+						<div class="exText">PNG, JPG, JPEG / 200px X 260px / (2MB 이하)</div>
+					</div>
+				</div>
+			</div>
+			<!-- //반복단위 -->
+
+			
+		</div>
+
+		<!--  레이어팝업 footer-->
+		<div class="modal_footer">
+			<div class="btnArea right">
+				<button type="button" class="amb_btnstyle middle gray" onClick="javascript:closeModal(this);"><span class="text">취소</span></button>
+				<button type="button" class="amb_btnstyle middle blue" onClick="javascript:alert('필요한 작업후 closeModal(this);');closeModal(this);"><span class="text">저장</span></button>
+			</div>
+		</div>
+	 
+		<!-- //실제 컨텐츠 작업부분 -->
+
+
+	</div>
+</div>
+

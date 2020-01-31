@@ -1,0 +1,68 @@
+<div id="header" class="header">
+	<div class="wrap">
+		<button type="button" class="subMenuIcon close"></button>
+		<h1><a href="00_001_defaultLayout_ex01.html"><span>AMB_UI Templete</span></a></h1>		
+
+		<div class="loginInfo">
+			<div class="totalAlert dropDownBox">				
+				<span class="bedge">2</span>
+
+				<a href="#" class="dropDownHeader"><i class="ambGicon-g_notice"></i></a>
+				<div class="dropDownBody">
+					<ul class="downList">
+						<li data-val="01">
+							<span class="tit">color01</span>
+							<span class="cont">108</span>
+						</li>
+						<li data-val="02">
+							<span class="tit">color02</span>
+							<span class="cont">108</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="setting dropDownBox">
+				<span class="bedge">2</span>
+
+				<a href="#" class="dropDownHeader"><i class="ambicon-033_human"></i> <span>사용자 정보</span></a>
+				<div class="dropDownBody">
+					<ul class="downList">
+						<li data-val="01">
+							<span class="tit">color01</span>
+						</li>
+						<li data-val="02">
+							<span class="tit">color02</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="logout">
+				<a href="00_901_login_ncomz.html"><i class="ambicon-074_get_out"></i> <span>LOGOUT</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+$(document).on('click', '.dropDownBox>.dropDownHeader', function(){
+	var _this = $(this),
+		_dropBody = $(this).next('.dropDownBody');
+
+	_this.addClass('open');
+	_dropBody.show();
+});
+
+
+////////////////////////////////////////////
+//targetDownBox 또는 selectDownBox 이외의 지역 클릭시 
+//dropDownBody 또는 selectBody 를 닫는 이벤트 예제
+$('body').click(function(e){
+	if($('.dropDownBox>.dropDownHeader').hasClass('open')){
+		$('.dropDownBox>.dropDownBody').hide();
+		$('.dropDownBox>.dropDownHeader').removeClass('open');
+	}
+});
+</script>
+
+

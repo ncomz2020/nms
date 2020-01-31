@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7" lang="ko"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="ko"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="ko"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="ko"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<!--  head 공통 부분으로 meta 및 css, js 등 사이트 공통 요소를 불러옵니다  -->
+<!--#include virtual="./inc_headMeta.html" -->
+
+<!--  페이지 특화 css / js 는 이부분에 추가 -->
+
+<script>
+
+// 삭제 버튼 예제
+function colDel(obj){
+	alert('정말 삭제 할것 인지 물어보고 삭제 처리하세요');
+	$(obj).parent().parent().remove();
+}
+
+// 추가 버튼 예제
+function addCol(obj){
+	var btnId = $(obj).attr("id");	
+	var today = new Date();
+	var mm = today.getMonth()+1; //January is 0!
+	var dd = today.getDay(); //January is 0!
+	if(mm<10) mm='0'+mm;
+	if(dd<10) dd='0'+dd;
+	var yyyy = today.getFullYear();
+	var yyyyMm = yyyy+'-'+ mm;
+	var yyyyMmDd = yyyy+'-'+ mm+'-'+ dd;
+	
+	if (btnId == "btnAddEdu"){
+		var rowCount = $('#eduTable >tbody >tr').length;
+		var strTd  = "<tr><td>"+ (rowCount+1) + "</td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><button id='' class='amb_btnstyle white middle onlyIcon btn_delete' onClick='colDel(this);'><i class='ambicon-015_mark_times'></i></a></td></tr>";
+		$('#eduTable > tbody:last').append(strTd);
+		datepicker();
+	} else if (btnId == "btnAddCert"){
+		var rowCount = $('#certTable >tbody >tr').length;
+		var strTd  = "<tr><td>"+ (rowCount+1) + "</td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><button id='' class='amb_btnstyle white middle onlyIcon btn_delete' onClick='colDel(this);'><i class='ambicon-015_mark_times'></i></a></td></tr>";
+		$('#certTable > tbody:last').append(strTd);
+		datepicker();
+	} else if (btnId == "btnAddTask"){
+		var rowCount = $('#taskTable >tbody >tr').length;
+		var strTd  = "<tr><td>"+ (rowCount+1) + "</td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><button id='' class='amb_btnstyle white middle onlyIcon btn_delete' onClick='colDel(this);'><i class='ambicon-015_mark_times'></i></a></td></tr>";
+		$('#taskTable > tbody:last').append(strTd);
+		datepicker();
+	}else {
+		var rowCount = $('#careerTable >tbody >tr').length;
+		var strTd  = "<tr><td>"+ (rowCount+1) + "</td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' value="+ yyyyMmDd +" class='inp datepicker w90p' placeholder='date' maxlength='10' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><input type='text' id='' name='' class='inp w90p' /></td>";
+			strTd += "<td><button id='' class='amb_btnstyle white middle onlyIcon btn_delete' onClick='colDel(this);'><i class='ambicon-015_mark_times'></i></a></td></tr>";
+		$('#careerTable > tbody:last').append(strTd);
+		datepicker();
+	}
+}
+
+</script>
+</head>
+
+<body>
+
+<!--  default layout 구조 -->
+<div class="amb_layout_common amb_admin_layout_temp_01"><!-- class명 amb_layout_common :필수  / amb_admin_layout_temp_01:필수(사이트 레이아웃 결정) -->
+	
+	<!-- header영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_header.html" -->
+	
+	<!-- Snb(LNB)를 포함한 실제 컨텐츠가 들어 가는 부분 -->
+	<div id="contentWrap" class="contentWrap wrap">
+		
+		<!-- snb영역을 불러 옵니다  -->
+		<!--#include virtual="./inc_snb.html" -->
+
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+		<!-- 실제 컨텐츠가 들어 가는 부분  -->
+		<div id="content" class="content">
+			
+			<!-- location 및 페이지 타이틀 // 해당 부분을 공통으로 관리할지는 협의후 결정해야함 -->
+			<h2>
+				<span class="title">사용자조회</span>
+				<div class="location">
+					<a href="#">Home</a>
+					>
+					<a href="#">사용자관리</a>
+					>
+					<a href="#">사용자조회</a>
+				</div>
+			</h2>
+			
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_5_4">
+					
+					<h3>
+						<span class="title">기본정보</span>
+					</h3>
+					<div class="unitBox grayBox lineBox" style="">
+						<table class="amb_form_table">
+							<colgroup>
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>이름</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="이름" />
+									</td>
+									<th>생년월일</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="생년월일" />
+									</td>
+									<th>주소</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="주소" />
+									</td>
+								</tr>
+								<tr>
+									<th>유선전화</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="유선전화" />
+									</td>
+									<th>휴대전화</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="휴대전화" />
+									</td>
+									<th>FAX</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="FAX" />
+									</td>
+								</tr>
+								<tr>
+									<th>이메일</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="이메일" />
+									</td>
+									<th>결혼</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<th></th>
+									<td></td>
+								</tr>
+								<tr>
+									<th>특기</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="특기" />
+									</td>
+									<th>병력</th>
+									<td colspan="3">
+										<select class="inp">
+											<option value="">전체</option>
+										</select>
+										<span class="datepickerRange">
+											<input type="text" value="" class="inp datepicker startDate" placeholder="date" />
+											~
+											<input type="text" value="" class="inp datepicker endDate" placeholder="date" />
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="g_column w_5_1">
+					
+					<h3>
+						<div class="fr btnArea middle">
+							<button class="amb_btnstyle black middle" onclick="javascript:openModal('nms_02_12_fileUp.html' , 'fileUp_01', '', '600')">사진등록</button>
+						</div>
+					</h3>
+					<div class="unitBox grayBox lineBox pd0" style="">
+						<div class="photoBox center">
+							<span class="photoBox_imgBox">
+								<img src="../img/member_bIcon.png" style="height:154px;" />
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<h3>
+					<span class="title">사내정보</span>
+				</h3>
+				<div class="g_column w_1_1">
+					
+					<div class="unitBox grayBox lineBox" style="">
+						<table class="amb_form_table">
+							<colgroup>
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+								<col style="width: 8%;">
+								<col style="width: ;">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>사번</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="사번" />
+									</td>
+									<th>부서</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="부서" />
+									</td>
+									<th>팀</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="팀" />
+									</td>
+								</tr>
+								<tr>
+									<th>직급</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<th>직책</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<th>호봉</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>입사일</th>
+									<td>
+										<input type="text" value="" class="inp datepicker w90p" placeholder="date" />
+									</td>
+									<th>등급</th>
+									<td>
+										<select class="inp w90p">
+											<option value="">전체</option>
+										</select>
+									</td>
+									<th>회사명</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="회사명" />
+									</td>
+								</tr>
+								<tr>
+									<th>근무지</th>
+									<td>
+										<input type="text" class="inp w90p" placeholder="근무지" />
+									</td>
+									<th></th>
+									<td></td>
+									<th></th>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">학력사항</span>
+						<div class="fr btnArea middle">
+							<button class="amb_btnstyle black middle" id="btnAddEdu" onclick="addCol(this)"><i class="ambicon-013_mark_plus"></i> 추가</button>
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						<table class="amb_table center"  id="eduTable">	
+							<colgroup>
+								<col style="width:60px;" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+
+								<col style="" />
+								<col style="width:60px;" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>학교</th>
+									<th>시작기간</th>
+									<th>종료기간</th>
+									<th>전공</th>
+
+									<th>비고</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>							
+									<td>1</td>
+									<td><input type="text" class="inp w90p" placeholder="학교" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" class="inp w90p" placeholder="전공" /></td>
+
+									<td><input type="text" class="inp w90p" placeholder="비고" /></td>
+									<td><button class="amb_btnstyle white middle onlyIcon btn_delete" onClick="colDel(this);"><i class="ambicon-015_mark_times"></i></button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+
+
+					<!--
+					<div class="paging center">
+						<ul class="paginglist">
+							
+							<li class="first"><a href="#"><i class="ambicon-006_arrow_first"></i></a></li>
+							<li class="prev"><a href="#"><i class="ambicon-002_arrow_left"></i></a></li>
+
+							<li><a href="#"> 1 </a></li>
+							<li><a href="#"> 2 </a></li>
+							<li class="active"><a href="#"> 3 </a></li>
+							<li><a href="#"> 4 </a></li>
+							<li><a href="#"> 5 </a></li>
+							<li><a href="#"> 6 </a></li>
+							<li><a href="#"> 7 </a></li>
+							<li><a href="#"> 8 </a></li>
+							<li><a href="#"> 9 </a></li>
+							<li><a href="#"> 10 </a></li>
+
+							<li class="next"><a href="#"><i class="ambicon-001_arrow_right"></i></a></li>
+							<li class="last"><a href="#"><i class="ambicon-005_arrow_last"></i></a></li>
+						</ul>
+					</div>
+					-->
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">자격사항</span>
+						<div class="fr btnArea middle">
+							<button class="amb_btnstyle black middle" id="btnAddCert" onclick="addCol(this)"><i class="ambicon-013_mark_plus"></i> 추가</button>
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						<table class="amb_table center"  id="certTable">	
+							<colgroup>
+								<col style="width:60px;" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="width:60px;" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>자격 종목 및 등급</th>
+									<th>취득일</th>
+									<th>비고</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>							
+									<td>1</td>
+									<td><input type="text" class="inp w90p" placeholder="자격 종목 및 등급" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" class="inp w90p" placeholder="비고" /></td>
+									<td><button class="amb_btnstyle white middle onlyIcon btn_delete" onClick="colDel(this);"><i class="ambicon-015_mark_times"></i></button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+					<!--
+					<div class="paging center">
+						<ul class="paginglist">
+							
+							<li class="first"><a href="#"><i class="ambicon-006_arrow_first"></i></a></li>
+							<li class="prev"><a href="#"><i class="ambicon-002_arrow_left"></i></a></li>
+
+							<li><a href="#"> 1 </a></li>
+							<li><a href="#"> 2 </a></li>
+							<li class="active"><a href="#"> 3 </a></li>
+							<li><a href="#"> 4 </a></li>
+							<li><a href="#"> 5 </a></li>
+							<li><a href="#"> 6 </a></li>
+							<li><a href="#"> 7 </a></li>
+							<li><a href="#"> 8 </a></li>
+							<li><a href="#"> 9 </a></li>
+							<li><a href="#"> 10 </a></li>
+
+							<li class="next"><a href="#"><i class="ambicon-001_arrow_right"></i></a></li>
+							<li class="last"><a href="#"><i class="ambicon-005_arrow_last"></i></a></li>
+						</ul>
+					</div>
+					-->
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">경력사항</span>
+						<div class="fr btnArea middle">
+							<button class="amb_btnstyle black middle" id="btnAddCareer" onclick="addCol(this)"><i class="ambicon-013_mark_plus"></i> 추가</button>
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						<table class="amb_table center"  id="careerTable">	
+							<colgroup>
+								<col style="width:60px;" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+
+								<col style="" />
+								<col style="width:60px;" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>회사명</th>
+									<th>시작기간</th>
+									<th>종료기간</th>
+									<th>직위</th>
+
+									<th>담당업무</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>							
+									<td>1</td>
+									<td><input type="text" class="inp w90p" placeholder="회사명" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" class="inp w90p" placeholder="직위" /></td>
+
+									<td><input type="text" class="inp w90p" placeholder="비고" /></td>
+									<td><button class="amb_btnstyle white middle onlyIcon btn_delete" onClick="colDel(this);"><i class="ambicon-015_mark_times"></i></button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+
+					<!--
+					<div class="paging center">
+						<ul class="paginglist">
+							
+							<li class="first"><a href="#"><i class="ambicon-006_arrow_first"></i></a></li>
+							<li class="prev"><a href="#"><i class="ambicon-002_arrow_left"></i></a></li>
+
+							<li><a href="#"> 1 </a></li>
+							<li><a href="#"> 2 </a></li>
+							<li class="active"><a href="#"> 3 </a></li>
+							<li><a href="#"> 4 </a></li>
+							<li><a href="#"> 5 </a></li>
+							<li><a href="#"> 6 </a></li>
+							<li><a href="#"> 7 </a></li>
+							<li><a href="#"> 8 </a></li>
+							<li><a href="#"> 9 </a></li>
+							<li><a href="#"> 10 </a></li>
+
+							<li class="next"><a href="#"><i class="ambicon-001_arrow_right"></i></a></li>
+							<li class="last"><a href="#"><i class="ambicon-005_arrow_last"></i></a></li>
+						</ul>
+					</div>
+					-->
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+			<!-- rowBox 반복단위 -->
+			<div class="rowBox mgT20">
+				<div class="g_column w_1_1">
+					<h3>
+						<span class="title">주요업무경험내역</span>
+						<div class="fr btnArea middle">
+							<button class="amb_btnstyle black middle" id="btnAddTask" onclick="addCol(this)"><i class="ambicon-013_mark_plus"></i> 추가</button>
+						</div>
+					</h3>
+					<div class="unitBox" style="">
+						<table class="amb_table center"  id="taskTable">	
+							<colgroup>
+								<col style="width:60px;" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+								<col style="" />
+
+								<col style="" />
+								<col style="width:60px;" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>프로젝트명</th>
+									<th>관련회사</th>
+									<th>시작기간</th>
+									<th>종료기간</th>
+
+									<th>역할</th>
+									<th>기종</th>
+									<th>OS</th>
+									<th>언어</th>
+									<th>DBMS</th>
+
+									<th>DC</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>							
+									<td>1</td>
+									<td><input type="text" class="inp w90p" placeholder="프로젝트명" /></td>
+									<td><input type="text" class="inp w90p" placeholder="관련회사" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+									<td><input type="text" value="" class="inp datepicker w90p" placeholder="date" /></td>
+
+									<td><input type="text" class="inp w90p" placeholder="역할" /></td>
+									<td><input type="text" class="inp w90p" placeholder="기종" /></td>
+									<td><input type="text" class="inp w90p" placeholder="역할" /></td>
+									<td><input type="text" class="inp w90p" placeholder="언어" /></td>
+									<td><input type="text" class="inp w90p" placeholder="DBMS" /></td>
+
+									<td><input type="text" class="inp w90p" placeholder="DC" /></td>
+									<td><button class="amb_btnstyle white middle onlyIcon btn_delete" onClick="colDel(this);"><i class="ambicon-015_mark_times"></i></button></td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+
+					<!--
+					<div class="paging center">
+						<ul class="paginglist">
+							
+							<li class="first"><a href="#"><i class="ambicon-006_arrow_first"></i></a></li>
+							<li class="prev"><a href="#"><i class="ambicon-002_arrow_left"></i></a></li>
+
+							<li><a href="#"> 1 </a></li>
+							<li><a href="#"> 2 </a></li>
+							<li class="active"><a href="#"> 3 </a></li>
+							<li><a href="#"> 4 </a></li>
+							<li><a href="#"> 5 </a></li>
+							<li><a href="#"> 6 </a></li>
+							<li><a href="#"> 7 </a></li>
+							<li><a href="#"> 8 </a></li>
+							<li><a href="#"> 9 </a></li>
+							<li><a href="#"> 10 </a></li>
+
+							<li class="next"><a href="#"><i class="ambicon-001_arrow_right"></i></a></li>
+							<li class="last"><a href="#"><i class="ambicon-005_arrow_last"></i></a></li>
+						</ul>
+					</div>
+					-->
+				</div>
+			</div>
+			<!-- rowBox 반복단위 -->
+
+
+			<div class="rowBox mgT20">
+				<div class="fr btnArea">
+					<a href="nms_02_10_userList.html" class="amb_btnstyle gray middle">목록으로</a>
+					<button type="button" class="amb_btnstyle blue middle">저장</button>
+				</div>
+			</div>
+
+
+
+					
+
+		</div>
+		<!--  ////////////// 실제 개별 페이지 개발자 작업영역 ////////////// -->
+	</div>
+
+	<!-- footer 영역을 불러 옵니다 -->
+	<!--#include virtual="./inc_footer.html" -->
+
+</div>
+
+</body>
+</html>
