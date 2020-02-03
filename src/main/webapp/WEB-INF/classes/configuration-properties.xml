@@ -2,12 +2,21 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<comment>common configuration</comment>
-	<entry key="jdbc.driverClass.master">org.mariadb.jdbc.Driver</entry>
+	<!-- <entry key="jdbc.driverClass.master">org.mariadb.jdbc.Driver</entry> -->
+	<entry key="jdbc.driverClass.master">com.mysql.jdbc.Driver</entry>
+	
+	
 
 	 <!--  AWS RDS 연결 정보 -->
+	 <!-- 
 	<entry key="jdbc.url.master">jdbc:mariadb://nms.cvllz2p6xm33.ap-northeast-2.rds.amazonaws.com:3306/PROJECT</entry>
     <entry key="jdbc.username.master">nms</entry>
-    <entry key="jdbc.password.master">nms12345</entry> 
+    <entry key="jdbc.password.master">nms12345</entry>
+     -->
+     <!-- Azure MySql 연결정보 -->
+    <entry key="jdbc.url.master">jdbc:mysql://ncomzsqldev.mysql.database.azure.com:3306/project</entry>
+    <entry key="jdbc.username.master">ncomzadmin</entry>
+    <entry key="jdbc.password.master">nc120227!</entry> 
    
 	<entry key="fileDirectoryPath">/nms</entry>
 	<entry key="filePath">/upload/</entry>
