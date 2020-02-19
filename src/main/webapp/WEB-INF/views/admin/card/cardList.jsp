@@ -54,12 +54,12 @@ var strUsrGrpId	 = "${USER_GRP_ID}";
 				var teamList = data.data;
 				var teamHtml = '';
 				if(strUsrGrpId == '1'){ // 관리자
-					teamHtml += '<option value="">전체</option>';
+					teamHtml += '<option value=""><spring:message code="label.common.all"/></option>';
 					for(var i=0; i<teamList.length; i++){
 						teamHtml += '<option value="' + teamList[i].dtl_cd +'">' + teamList[i].dtl_cd_desc + '</option>';
 					}
 				}else if(strUsrGrpId == '2'){ // 사업부장
-					teamHtml += '<option value="">전체</option>';
+					teamHtml += '<option value=""><spring:message code="label.common.all"/></option>';
 					for(var i=0; i<teamList.length; i++){
 						teamHtml += '<option value="' + teamList[i].dtl_cd +'">' + teamList[i].dtl_cd_desc + '</option>';
 					}
@@ -84,7 +84,7 @@ var strUsrGrpId	 = "${USER_GRP_ID}";
 			},
 			error : function() {
 				swal({
-		    			title: '실패'
+		    			title: '<spring:message code="label.common.fail"/>'
 				    });
 			}
 		});
@@ -115,7 +115,7 @@ var strUsrGrpId	 = "${USER_GRP_ID}";
 								<select id="dept_cd" name="dept_cd" class="inp w90p">
 									<c:choose>
 										<c:when test="${USER_GRP_ID eq '1'}">
-											<option value="">전체</option>
+											<option value=""><spring:message code="label.common.all"/></option>
 											<c:forEach items="${getDeptList}" var="getDeptList" varStatus="status">
 												<option value="${getDeptList.dtl_cd}">${getDeptList.dtl_cd_desc}</option>
 											</c:forEach>
@@ -143,10 +143,10 @@ var strUsrGrpId	 = "${USER_GRP_ID}";
 								<select id="team_cd" name="team_cd" class="inp w90p">
 									<c:choose>
 										<c:when test="${USER_GRP_ID eq '1'}">
-											<option value="">전체</option>
+											<option value=""><spring:message code="label.common.all"/></option>
 										</c:when>
 										<c:when test="${USER_GRP_ID eq '2'}">
-											<option value="">전체</option>
+											<option value=""><spring:message code="label.common.all"/></option>
 										</c:when>
 										<c:when test="${USER_GRP_ID eq '3'}">
 											<c:forEach items="${getDeptList}" var="getDeptList" varStatus="status">

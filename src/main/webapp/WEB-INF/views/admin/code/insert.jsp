@@ -29,7 +29,7 @@
 			success : function(data) {
 				var result = data.result;
 				swal({
-			        title: '성공'
+			        title: '<spring:message code="label.common.succ"/>'
 					},function() {
 						$("#insertModal a.close").trigger("click");
 						$("#tree").dynatree("getTree").reload();
@@ -39,7 +39,7 @@
 			error : function(request, status, error) {
 				console.log("Error code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				swal({
-	    			title: '실패'
+	    			title: '<spring:message code="label.common.fail"/>'
 			    });
 			}
 		});
@@ -68,13 +68,13 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th class="center">그룹코드</th>
+								<th class="center"><spring:message code="label.usergroup.code"/></th>
 								<td>
 									<input type="text" class="inp" style="width: 100%;" value="${(param.grp_cd == null || param.grp_cd == '') ? '000' : param.dtl_cd}" id="insert_grp_cd_desc" name="grp_cd_desc" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
 								</td>
 							</tr>
 							<tr>
-								<th class="center">그룹명</th>
+								<th class="center"><spring:message code="label.usergroup.code.name"/></th>
 								<td>
 									<input type="text" class="inp" style="width: 100%;" value="${param.grp_cd_desc}" id="insert_grp_cd_desc" name="grp_cd_desc" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
 								</td>

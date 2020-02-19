@@ -144,7 +144,7 @@
 									<option value="NO"><spring:message code="label.project.pjtno" /></option>
 									<option value="NAME"><spring:message code="label.project.pjtname" /></option>
 			                    </select>
-		                    	<input type="text" id="search_text" name="search_text" class="inp w40p" placeholder='검색' />
+		                    	<input type="text" id="search_text" name="search_text" class="inp w40p" placeholder='<spring:message code="label.common.search" />' />
 		                    </td>
 						</tr>
 					</tbody>

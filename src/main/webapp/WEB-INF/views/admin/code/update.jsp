@@ -120,27 +120,27 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th class="center">그룹코드</th>
+								<th class="center"><spring:message code="label.usergroup.code"/></th>
 								<td>
-									<input type="text" class="inp" style="width: 100%;" placeholder="그룹코드" maxlength="50" autofocus value="<c:out value="${code.grp_cd}"/>" disabled>
+									<input type="text" class="inp" style="width: 100%;" placeholder="<spring:message code='label.usergroup.code'/>" maxlength="50" autofocus value="<c:out value="${code.grp_cd}"/>" disabled>
 								</td>
 							</tr>
 							<tr>
-								<th class="center">그룹명</th>
+								<th class="center"><spring:message code="label.usergroup.code.name"/></th>
 								<td>
-									<input type="text" class="inp" style="width: 100%;" placeholder="그룹명" maxlength="50" autofocus value="<c:out value="${code.grp_cd_desc}"/>" disabled>
+									<input type="text" class="inp" style="width: 100%;" placeholder="<spring:message code='label.usergroup.code.name'/>" maxlength="50" autofocus value="<c:out value="${code.grp_cd_desc}"/>" disabled>
 								</td>
 							</tr>
 							<tr>
 								<th class="center"><spring:message code="label.code.code"/></th>
 								<td>
-									<input type="text" class="inp" style="width: 100%;" placeholder="코드" maxlength="50" autofocus value="<c:out value="${code.dtl_cd}"/>" disabled>
+									<input type="text" class="inp" style="width: 100%;" placeholder="<spring:message code='label.code.code'/>" maxlength="50" autofocus value="<c:out value="${code.dtl_cd}"/>" disabled>
 								</td>
 							</tr>
 							<tr>
 								<th class="center"><spring:message code="label.code.name"/></th>
 								<td>
-									<input type="text" class="inp" style="width: 100%;" id="update_dtl_nm" name="dtl_cd_desc" placeholder="코드명" maxlength="50" autofocus value="<c:out value="${code.dtl_cd_desc}"/>" onfocus="this.value = this.value;">
+									<input type="text" class="inp" style="width: 100%;" id="update_dtl_nm" name="dtl_cd_desc" placeholder="<spring:message code='label.code.name'/>" maxlength="50" autofocus value="<c:out value="${code.dtl_cd_desc}"/>" onfocus="this.value = this.value;">
 								</td>
 							</tr>
 <%-- 							<c:forEach items="${languageCodeList}" var="code" varStatus="status">
