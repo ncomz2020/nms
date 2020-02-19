@@ -69,6 +69,9 @@
 								<td>
 									<input type="text" class="inp" style="width: 100%;" id="insert_title" name="title" placeholder="메뉴명" maxlength="50" autofocus>
 								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" id="insert_title_en" name="title_en" placeholder="메뉴명(영문)" maxlength="50" autofocus>
+								</td>
 							</tr>
 							<tr>
 								<th class="center">URL</th>

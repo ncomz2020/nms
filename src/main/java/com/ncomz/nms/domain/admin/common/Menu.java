@@ -10,6 +10,7 @@ public class Menu implements Serializable {
 	String menu_id;
 	String parent_id;
 	String title;
+	String title_en;
 	String url;
 	String icon;
 	String display_order;
@@ -128,7 +129,12 @@ public class Menu implements Serializable {
 	public void setChk_user(boolean chk_user) {
 		this.chk_user = chk_user;
 	}
-	
+	public String getTitle_en() {
+		return title_en;
+	}
+	public void setTitle_en(String title_en) {
+		this.title_en = title_en;
+	}
 	
 	@Override
 	public String toString() {

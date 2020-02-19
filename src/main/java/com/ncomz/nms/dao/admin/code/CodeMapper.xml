@@ -8,8 +8,10 @@
       SELECT /* CodeMapper.getCodeList */ 
          GRP_CD,
          GRP_CD_DESC,
+         GRP_CD_DESC_EN,
          DTL_CD,
          CONCAT('[', DTL_CD ,'] ', DTL_CD_DESC) AS DTL_CD_DESC,
+         CONCAT('[', DTL_CD ,'] ', DTL_CD_DESC_EN) AS DTL_CD_DESC_EN,
          ALGN_ORD,
          DEPTH,
          USE_YN
@@ -21,8 +23,10 @@
       SELECT /* CodeMapper.createComboBox */ 
          GRP_CD,
          GRP_CD_DESC,
+         GRP_CD_DESC_EN,
          DTL_CD,
          DTL_CD_DESC,
+         DTL_CD_DESC_EN,
          ALGN_ORD,
          DEPTH,
          USE_YN
@@ -35,8 +39,10 @@
       SELECT /* CodeMapper.createComboBox */ 
          GRP_CD,
          GRP_CD_DESC,
+         GRP_CD_DESC_EN,
          DTL_CD,
          DTL_CD_DESC,
+         DTL_CD_DESC_EN,
          ALGN_ORD,
          DEPTH,
          USE_YN
@@ -49,8 +55,10 @@
       SELECT /* CodeMapper.createComboBox */ 
          GRP_CD,
          GRP_CD_DESC,
+         GRP_CD_DESC_EN,
          DTL_CD,
          DTL_CD_DESC,
+         DTL_CD_DESC_EN,
          ALGN_ORD,
          DEPTH,
          USE_YN
@@ -63,8 +71,10 @@
       SELECT /* CodeMapper.createComboBox */ 
          GRP_CD,
          GRP_CD_DESC,
+         GRP_CD_DESC_EN,
          DTL_CD,
          DTL_CD_DESC,
+         DTL_CD_DESC_EN,
          ALGN_ORD,
          DEPTH,
          USE_YN
@@ -79,7 +89,9 @@
 			GRP_CD,
 			DTL_CD,
 			DTL_CD_DESC,
+			DTL_CD_DESC_EN,
 			GRP_CD_DESC,
+			GRP_CD_DESC_EN,
 			ALGN_ORD,
 			DEPTH,
 			USE_YN
@@ -92,8 +104,10 @@
 	<select id="getGroupCodeList" parameterType="String" resultType="com.ncomz.nms.domain.admin.code.Code">
 		SELECT GRP_CD,
 			GRP_CD_DESC,
+			GRP_CD_DESC_EN,
 			DTL_CD,
 			DTL_CD_DESC,
+			DTL_CD_DESC_EN,
 			ALGN_ORD,
 			DEPTH,
 			USE_YN

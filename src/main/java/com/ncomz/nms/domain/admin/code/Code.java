@@ -8,8 +8,10 @@ public class Code implements Serializable {
 
    String grp_cd;
    String grp_cd_desc;
+   String grp_cd_desc_en;
    String dtl_cd;
    String dtl_cd_desc;
+   String dtl_cd_desc_en;
    List<Code> children;
    String algn_ord;
    String use_yn;
@@ -79,10 +81,19 @@ public class Code implements Serializable {
    public void setDepth(String depth) {
       this.depth = depth;
    }
-   
-
-   
-   @Override
+   public String getGrp_cd_desc_en() {
+	return grp_cd_desc_en;
+	}
+	public void setGrp_cd_desc_en(String grp_cd_desc_en) {
+		this.grp_cd_desc_en = grp_cd_desc_en;
+	}
+	public String getDtl_cd_desc_en() {
+		return dtl_cd_desc_en;
+	}
+	public void setDtl_cd_desc_en(String dtl_cd_desc_en) {
+		this.dtl_cd_desc_en = dtl_cd_desc_en;
+	}
+@Override
    public String toString() {
       return "Code [grp_cd=" + grp_cd + ", grp_cd_desc=" + grp_cd_desc + ", dtl_cd=" + dtl_cd + ", dtl_cd_desc="
             + dtl_cd_desc + ", children=" + children + ", algn_ord=" + algn_ord + ", use_yn=" + use_yn + ", update_user_id=" + update_user_id + ", create_user_id=" + create_user_id + ", depth="

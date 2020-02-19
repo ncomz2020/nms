@@ -62,7 +62,13 @@ public class MenuService {
 			if (StringUtil.compare(menu.getParent_id(), parentId) == 0) {
 				DynatreeNode node = new DynatreeNode();
 				node.setKey(menu.getMenu_id());
-				node.setTitle(menu.getTitle());
+				
+				if(LocaleContextHolder.getLocale().getLanguage().equalsIgnoreCase("en")) {
+					node.setTitle(menu.getTitle_en());
+				} else {
+					node.setTitle(menu.getTitle());
+				}
+	
 				node.setAuth_tp(menu.getAuth_tp());
 				List<DynatreeNode> children = this.buildTree(menuList, menu.getMenu_id());
 				node.setChildren(children);

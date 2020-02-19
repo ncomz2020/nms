@@ -104,6 +104,9 @@
 								<td>
 									<input type="text" class="inp" style="width: 100%;" id="update_title" name="title" placeholder="메뉴명" maxlength="50" autofocus value="<c:out value="${menu.title}"/>" onfocus="this.value = this.value;">
 								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" id="update_title_en" name="title_en" placeholder="메뉴명(영문)" maxlength="50" autofocus value="<c:out value="${menu.title_en}"/>" onfocus="this.value = this.value;">
+								</td>
 							</tr>
 							<tr>
 								<th class="center">URL</th>

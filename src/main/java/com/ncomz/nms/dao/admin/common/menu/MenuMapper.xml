@@ -8,6 +8,7 @@
 		SELECT MENU_ID,
 			   PARENT_ID,
 			   TITLE,
+			   TITLE_EN,
 			   DISP_ORD,
 			   URL,
 			   ICON
@@ -20,6 +21,7 @@
 		SELECT M.MENU_ID,
 			M.PARENT_ID,
 			TITLE,
+			TITLE_EN,
 			M.DISP_ORD,
 			M.URL,
 			M.ICON,
@@ -34,6 +36,7 @@
 		SELECT M.MENU_ID, /* getUserGroupMenuList, doyejin */
 			   M.PARENT_ID,
 			   TITLE,
+			   TITLE_EN,
 			   M.DISP_ORD,
 			   M.URL,
 			   M.ICON,
@@ -49,6 +52,7 @@
 			M.MENU_ID,
 			M.PARENT_ID,
 			M.TITLE,
+			TITLE_EN,
 			M.DISP_ORD AS DISPLAY_ORDER,
 			M.URL,
 			M.ICON,
@@ -73,6 +77,7 @@
 			MENU_ID,
 			PARENT_ID,
 			TITLE,
+			TITLE_EN,
 			DISP_ORD,
 			URL,
 			ICON
@@ -80,6 +85,7 @@
 			#{menu_id},
 			#{parent_id},
 			#{title},
+			#{title_en},
 			(SELECT A.DISP_ORD FROM (SELECT IFNULL(MAX(DISP_ORD), 0) + 1 AS DISP_ORD FROM T_MENU WHERE PARENT_ID = #{parent_id}) A),
 			#{url},
 			#{icon}

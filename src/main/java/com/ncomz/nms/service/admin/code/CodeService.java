@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -50,7 +51,13 @@ public class CodeService {
          if (StringUtil.compare(code.getGrp_cd(), grp_cd) == 0 && StringUtil.parseInt(code.getDepth()) == depth) {
             DynatreeNode node = new DynatreeNode();
             node.setKey(code.getDtl_cd());
-            node.setTitle(code.getDtl_cd_desc());
+            
+            if(LocaleContextHolder.getLocale().getLanguage().equals("en")) {
+            	node.setTitle(code.getDtl_cd_desc_en());
+            } else {
+            	node.setTitle(code.getDtl_cd_desc());
+            }
+            
             List<DynatreeNode> children = this.buildTree(codeList, code.getDtl_cd(), depth+1);
             if (children.size() > 0) {
                node.setIsFolder(true);
