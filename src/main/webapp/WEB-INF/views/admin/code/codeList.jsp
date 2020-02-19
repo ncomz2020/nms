@@ -118,6 +118,7 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 		var pdc = activeNode.data.key;
 		/* var pgd = activeNode.parent.data.title; */
 		var pdd = activeNode.data.title;
+		var pdde = activeNode.data.title_en;
  		var depth = getNodeDepth(activeNode) - 1;
  		
 		if(pgc =='_1' || pgc == null || pgc =='' || pgc =='0') {
@@ -132,7 +133,9 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 		param.dtl_cd = pdc;
 		param.depth = depth;
 		param.grp_cd_desc = pdd;
+		param.grp_cd_desc_en = pdde;
 		param.dtl_cd_desc = pdd;
+		param.dtl_cd_desc_en = pdde;
 		openModal(url, "insertModal", param,"500");
 	}
 	
@@ -146,7 +149,9 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 		var pgc = node.parent.data.key;
 		var pdc = node.data.key;
 		var pgd = node.parent.data.title;
+		var pgde = node.parent.data.title_en;
 		var pdd = node.data.title;
+		var pdde = node.data.title_en;
  		var depth = getNodeDepth(node) - 1;
  		
  		
@@ -162,7 +167,9 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 		param.dtl_cd = pdc;
 		param.depth = depth;
 		param.grp_cd_desc = pgd;
+		param.grp_cd_desc_en = pgde;
 		param.dtl_cd_desc = pdd;
+		param.dtl_cd_desc_en = pdde;
 		
 		openModal(url, "updateModal", param,"500");
 	}

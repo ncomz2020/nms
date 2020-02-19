@@ -78,6 +78,9 @@
 								<td>
 									<input type="text" class="inp" style="width: 100%;" value="${param.grp_cd_desc}" id="insert_grp_cd_desc" name="grp_cd_desc" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
 								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" value="${param.grp_cd_desc_en}" id="insert_grp_cd_desc_en" name="grp_cd_desc_en" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
+								</td>
 							</tr>
 							<tr>
 								<th class="center"><spring:message code="label.code.code"/></th>
@@ -89,6 +92,9 @@
 								<th class="center"><spring:message code="label.code.name"/></th>
 								<td>
 									<input type="text" class="inp" style="width: 100%;" id="insert_dtl_nm" name="dtl_cd_desc" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
+								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" id="insert_dtl_nm_en" name="dtl_cd_desc_en" placeholder="<spring:message code="label.code.name"/>" maxlength="50">
 								</td>
 							</tr>
 						</tbody>

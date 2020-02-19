@@ -109,6 +109,7 @@
 			<div class="unitBox" style="">
 				<form id="updateForm" action="javascript:updateAction();">
 					<input type="hidden" name="grp_cd_desc" value="${code.grp_cd_desc}">
+					<input type="hidden" name="grp_cd_desc_en" value="${code.grp_cd_desc_en}">
 					<input type="hidden" name="grp_cd" value="${code.grp_cd}">
 					<input type="hidden" name="dtl_cd" value="${code.dtl_cd}">
 					<input type="hidden" name="depth" value="${code.depth}">
@@ -130,6 +131,9 @@
 								<td>
 									<input type="text" class="inp" style="width: 100%;" placeholder="그룹명" maxlength="50" autofocus value="<c:out value="${code.grp_cd_desc}"/>" disabled>
 								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" placeholder="그룹명(영문)" maxlength="50" autofocus value="<c:out value="${code.grp_cd_desc_en}"/>" disabled>
+								</td>
 							</tr>
 							<tr>
 								<th class="center"><spring:message code="label.code.code"/></th>
@@ -141,6 +145,9 @@
 								<th class="center"><spring:message code="label.code.name"/></th>
 								<td>
 									<input type="text" class="inp" style="width: 100%;" id="update_dtl_nm" name="dtl_cd_desc" placeholder="코드명" maxlength="50" autofocus value="<c:out value="${code.dtl_cd_desc}"/>" onfocus="this.value = this.value;">
+								</td>
+								<td>
+									<input type="text" class="inp" style="width: 100%;" id="update_dtl_nm_en" name="dtl_cd_desc_en" placeholder="코드명(영문)" maxlength="50" autofocus value="<c:out value="${code.dtl_cd_desc_en}"/>" onfocus="this.value = this.value;">
 								</td>
 							</tr>
 <%-- 							<c:forEach items="${languageCodeList}" var="code" varStatus="status">

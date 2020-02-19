@@ -126,16 +126,20 @@
 		INSERT INTO T_COMMON_CODE (
 			GRP_CD,
 			GRP_CD_DESC,
+			GRP_CD_DESC_EN,
 			DTL_CD,
 			DTL_CD_DESC,
+			DTL_CD_DESC_EN,
 			ALGN_ORD,
 			USE_YN,
 			DEPTH
 		) VALUES (
 			#{grp_cd},
 			#{grp_cd_desc},
+			#{grp_cd_desc_en},
 			#{dtl_cd},
 			#{dtl_cd_desc},
+			#{dtl_cd_desc_en},
 			(SELECT A.ALGN_ORD FROM (SELECT IFNULL(MAX(ALGN_ORD), 0) + 1 AS ALGN_ORD FROM T_COMMON_CODE WHERE GRP_CD = #{grp_cd}) A),
 			'Y',
 			#{depth}
@@ -145,7 +149,9 @@
 	<update id="updateCodeInfo" parameterType="com.ncomz.nms.domain.admin.code.Code">
 		UPDATE T_COMMON_CODE SET 
 		GRP_CD_DESC = #{grp_cd_desc},
+		GRP_CD_DESC_EN = #{grp_cd_desc_en},
 		DTL_CD_DESC = #{dtl_cd_desc}
+		DTL_CD_DESC_EN = #{dtl_cd_desc_en}
 		WHERE GRP_CD = #{grp_cd} AND DEPTH = #{depth}
 		AND DTL_CD = #{dtl_cd}
 	</update>
