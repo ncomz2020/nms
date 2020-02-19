@@ -8,7 +8,7 @@ public class Org  {
    String dtl_cd_desc;
    String team;
    String usr_nm;
-   String rank;
+   String rank_nm;
    String cell_no;
    String grp_cd_desc;
    String emp_no;
@@ -48,11 +48,11 @@ public class Org  {
 	public void setUsr_nm(String usr_nm) {
 		this.usr_nm = usr_nm;
 	}
-	public String getRank() {
-		return rank;
+	public String getRank_nm() {
+		return rank_nm;
 	}
-	public void setRank(String rank) {
-		this.rank = rank;
+	public void setRank_nm(String rank_nm) {
+		this.rank_nm = rank_nm;
 	}
 	public String getCell_no() {
 		return cell_no;
@@ -106,7 +106,7 @@ public class Org  {
 	@Override
 	public String toString() {
 		return "Org [dept_cd=" + dept_cd + ", team_cd=" + team_cd + ", dtl_cd_desc=" + dtl_cd_desc + ", team=" + team
-				+ ", usr_nm=" + usr_nm + ", rank=" + rank + ", cell_no=" + cell_no + ", grp_cd_desc=" + grp_cd_desc
+				+ ", usr_nm=" + usr_nm + ", rank_nm=" + rank_nm + ", cell_no=" + cell_no + ", grp_cd_desc=" + grp_cd_desc
 				+ ", emp_no=" + emp_no + ", psrt=" + psrt + ", dept=" + dept + ", dtl_cd=" + dtl_cd + ", t_count="
 				+ t_count + ", d_count=" + d_count + "]";
 	}

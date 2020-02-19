@@ -53,7 +53,7 @@
 							<div class="unit headUnit">
 								<div class="boxUnit">
 									<span class="tit">${ceo.psrt}</span>
-									<span class="man"><em class="rank">${ceo.rank}</em> <em class="name">${ceo.usr_nm}</em></span>
+									<span class="man"><em class="rank">${ceo.rank_nm}</em> <em class="name">${ceo.usr_nm}</em></span>
 									<span class="phone">${ceo.cell_no}</span>
 								</div>
 							</div>
@@ -80,7 +80,7 @@
 										</c:forEach><br/>
 										<c:forEach items="${Honor}" var="Honor" >  
 											<c:if test="${Honor.dtl_cd_desc eq dept.dept}">
-												${Honor.usr_nm} ${Honor.rank}<br/>${Honor.cell_no}<br/>																							
+												${Honor.usr_nm} ${Honor.rank_nm}<br/>${Honor.cell_no}<br/>																							
 											</c:if>
 										</c:forEach>
 										</span>
@@ -129,7 +129,7 @@
 														<c:if test="${org.team eq team.dtl_cd_desc}">
 															<div class="unit defaultUnit">
 																<div class="boxUnit">
-																	<span class="man"><em class="rank">${org.rank}</em> <em class="name">${org.usr_nm}</em></span>
+																	<span class="man"><em class="rank">${org.rank_nm}</em> <em class="name">${org.usr_nm}</em></span>
 																	<span class="phone">${org.emp_no} /${org.cell_no}</span>
 																</div>
 															</div>
