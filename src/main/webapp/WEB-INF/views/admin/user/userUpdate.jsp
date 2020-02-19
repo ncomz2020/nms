@@ -274,7 +274,7 @@ function updateAction(){
 <div class="rowBox mgT20">
 	<div class="g_column w_5_4">
 		<h3>
-			<span class="title">기본정보</span>
+			<span class="title"><spring:message code="label.user.userinfo"/></span>
 		</h3>
 		<div class="unitBox grayBox lineBox" style="">
 			<table class="amb_form_table">
@@ -488,7 +488,7 @@ function updateAction(){
 <div class="rowBox mgT10">
 	<div class="fr btnArea middle">
 		 <a href="javascript:movePage('/admin/user/userList.ajax');" class="amb_btnstyle gray middle" ><spring:message code="label.common.return"/></a>
-		 <a href="javascript:openModal('/admin/user/passwordPopup.ajax' , 'passwordPopup' , 'emp_no=${user.userInfo[0].emp_no}' ,'600px');" class="amb_btnstyle green small">비밀번호 변경</a>
+		 <a href="javascript:openModal('/admin/user/passwordPopup.ajax' , 'passwordPopup' , 'emp_no=${user.userInfo[0].emp_no}' ,'600px');" class="amb_btnstyle green small"><spring:message code="label.common.change.password"/></a>
 		 <a id="btnUseYn" class="amb_btnstyle blue middle" ><spring:message code="label.common.unuse"/></a>
 		 <a id="btnSave" class="amb_btnstyle blue middle" ><spring:message code="label.common.save"/></a>
 	</div>

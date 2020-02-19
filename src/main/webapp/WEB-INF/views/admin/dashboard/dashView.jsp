@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>NMS</title>
+<title><spring:message code="msg.login.login.title" /></title>
 <script type="text/javascript"> // 차트 공통 요소로써 차트가 존재하는 페이지에 반드시 한번만 존재해야함 
 	//chart 공통 부분							
 	Chart.defaults.global.responsive = true; //가변형
@@ -46,7 +46,7 @@
 <div class="rowBox mgT20">
 	<div class="g_column w_1_1">
 		<h3>
-			<span class="title">프로젝트 현황</span>
+			<span class="title"><spring:message code="msg.dashboard.project.title"/></span>
 		</h3>
 		<div class="unitBox chartBox" style="height:320px;">
 			<canvas id="lineChart03" style=""></canvas>
@@ -58,7 +58,7 @@
 <div class="rowBox mgT20">
 	<div class="g_column w_2_1">
 		<h3>
-			<span class="title">팀별 인원 현황 </span>
+			<span class="title"><spring:message code="msg.dashboard.team.title"/></span>
 		</h3>
 		<div class="unitBox chartBox legendLeft" style="height:320px;">
 			<canvas id="pieChart04" style=""></canvas>

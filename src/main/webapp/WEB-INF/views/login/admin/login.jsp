@@ -5,6 +5,12 @@
 <script>
 $(window).on('load', function () {
 
+	if (getCookie("nmsLanguage") == "" || getCookie("nmsLanguage") == null) {
+		$("#textLang").val("en").prop("selected", true);
+	} else {	
+		$("#textLang").val(getCookie("nmsLanguage")).prop("selected", true);
+	}
+	
 	$("#textId").keypress(function( event ) {
 		if ( event.which == 13 ) {
 			login();				
@@ -17,7 +23,7 @@ $(window).on('load', function () {
 	});
 
 	$("#textLang").change(function () {
-		movePage('/admin/login?lang='+this.value)
+		movePage('/admin/login?lang='+this.value);
 	});
 });
 

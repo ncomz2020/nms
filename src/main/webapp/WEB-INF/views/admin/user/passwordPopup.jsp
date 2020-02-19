@@ -59,7 +59,7 @@ function updatePasswordAction(){
 
 	var param = checkParam();
 	if(param){
-		swalConfirm('저장하시겠습니까?', 'warning', function() {
+		swalConfirm('<spring:message code="label.common.confirm.save"/>', 'warning', function() {
 			$.ajax({
 				url:'updatePasswordAction.json'
 				, type:'POST'
@@ -70,7 +70,7 @@ function updatePasswordAction(){
 					if ( data == 'succ'){
 						swal({
 							  title: '',
-							  text: "저장에 성공 했습니다.",
+							  text: '<spring:message code="label.common.success.save"/>',
 							  type: 'success',
 							  showConfirmButton:true,
 							  confirmButtonText: 'OK',
@@ -81,7 +81,7 @@ function updatePasswordAction(){
 					}
 					else{
 						swal({
-				    			title: '비밀번호가 틀립니다.',
+				    			title: '<spring:message code="label.user.password.txt.password.error"/>',
 				  			  	type: 'error',
 						    })
 					}
@@ -90,7 +90,7 @@ function updatePasswordAction(){
 		});
 	}else{
 		swal({
-			  title: '변경 비밀번호가 서로 다릅니다.',
+			  title: '<spring:message code="label.user.password.txt.diff.error"/>',
 			  type: 'error',
 			});
 	}
@@ -103,7 +103,7 @@ function updatePasswordAction(){
 	<div class="modal-content">
 		<!-- 실제 컨텐츠 작업부분 -->
 		<div class="modal_header">
-			<span class="title">비밀번호 변경</span> 
+			<span class="title"><spring:message code="label.common.change.password"/></span> 
 			<a href="#" class="close"onClick="javascript:closeModal(this);"><i class="ambicon-015_mark_times"></i></a>
 		</div>
 		
@@ -118,7 +118,7 @@ function updatePasswordAction(){
 							</colgroup>
 							<tbody>
 								<tr>
-									<th>현재 비밀번호</th>
+									<th><spring:message code="label.user.password.current"/></th>
 									<td>
 										<input type="hidden" id="emp_no" name="emp_no" value="${User.emp_no}"/>
 										<input type="hidden" id="upd_id" name="upd_id" value="${sessionScope.session_user.emp_no}"/>
@@ -126,13 +126,13 @@ function updatePasswordAction(){
 									</td>
 								</tr>
 								<tr>
-									<th>변경 비밀번호</th>
+									<th><spring:message code="label.user.password.new"/></th>
 									<td>
 										<input type="password" id="pwd_tobe" name="pwd_tobe" class="inp w90p" maxlength="10"/>								
 									</td>
 								</tr>
 								<tr>
-									<th>변경 비밀번호 확인</th>
+									<th><spring:message code="label.user.password.new.confirm"/></th>
 									<td>
 										<input type="password" id="pwd_tobe_chk" name="pwd_tobe_chk" class="inp w90p" maxlength="10"/>								
 									</td>
@@ -144,12 +144,12 @@ function updatePasswordAction(){
 			</div>
 		</div>
 		<div class="modal_footer">
-			<div class="btnArea right">
+			<div class="btnArea right">	
 				<button type="button" class="amb_btnstyle middle gray" onclick="javascript:updatePasswordAction();">
-					<span class="text">저장</span>
+					<span class="text"><spring:message code="label.common.save"/></span>
 				</button>
 				<button type="button" class="amb_btnstyle middle gray" onclick="closeModal(this);">
-					<span class="text">취소</span>
+					<span class="text"><spring:message code="label.common.cancel"/></span>
 				</button>
 			</div>
 		</div>
