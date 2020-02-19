@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ncomz.nms.domain.authorization.User;
 import com.ncomz.nms.service.admin.code.CodeService;
 import com.ncomz.nms.service.login.LoginService;
+import com.ncomz.nms.utility.MessageUtil;
 import com.ncomz.nms.utility.SHA256Util;
 import com.ncomz.nms.utility.StringUtil;
 
@@ -60,10 +62,21 @@ public class LoginController {
 	@RequestMapping(value = "admin/loginAction", method = RequestMethod.POST)
 	public @ResponseBody Object loginAction(@RequestParam(required = false) String textId,
 											@RequestParam(required = false) String textNm,
+											@RequestParam(required = false) String textLang,
 											@RequestParam(required = false) String force, Model model, HttpServletRequest request, HttpServletResponse response) {
 		
 		textId = StringUtil.decode(textId);
 		textNm = StringUtil.decode(textNm);
+		textNm = StringUtil.decode(textLang);
+		
+//		
+//		LocaleContextHolder.setLocale(Locale.US);
+//		Locale.setDefault(Locale.US);
+//		Locale locale = LocaleContextHolder.getLocale();
+//		System.out.println("                                  getLanguage  %%  " + locale.getLanguage());
+//		System.out.println("                                  MessageUtil.getMessage(\"label.common.search\")  %%  " + MessageUtil.getMessage("label.common.search"));
+//		
+		
 		boolean bForce = Boolean.parseBoolean(force);
 		return loginService.login(textId, textNm, bForce, request);
 		

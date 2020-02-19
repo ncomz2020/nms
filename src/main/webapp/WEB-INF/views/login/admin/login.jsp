@@ -49,10 +49,11 @@ function login(bForce) {
 		f.textNm.focus();
 		return;
 	}
-
+	
 	var param = new Object();
 	param.textId = replaceall($("#textId").val());
 	param.textNm = replaceall($("#textNm").val());
+	param.textLang = replaceall($("#textLang").val());
 	param.force = bForce;
 
 	$.ajax({
@@ -811,7 +812,7 @@ function getCookie(cookieName){
 		<div class="loginPage">
 			<div class="loginPageBox">
 				<h1>
-					<span class="title">NMS <em class="ex">영업 전산시스템</em></span>
+					<span class="title"><spring:message code="msg.login.login.title" /> <em class="ex"><spring:message code="msg.login.login.subtitle" /></em></span>
 				</h1>
 
 				<!-- 필요없는 경우 삭제 
@@ -831,8 +832,16 @@ function getCookie(cookieName){
 				<!-- //필요없는 경우 삭제 -->
 				<form method="post" id="formLogin" action="/login/login" name="formLogin">
 					<fieldset class="loginBox">				
-						<input type="text" class="id" id="textId" name="textId" placeholder="ID" />
-						<input type="password" class="pw" id="textNm" name="textNm" placeholder="PASSWORD" />
+						<input type="text" class="id" id="textId" name="textId" placeholder="ID" value="admin"/>
+						<input type="password" class="pw" id="textNm" name="textNm" placeholder="PASSWORD" value="admin"/>
+						
+						<!-- 
+						<select id="textLang" name="textLang">
+						    <option value="">(언어 선택)</option>
+						    <option value="ko">한국어</option>
+						    <option value="en" selected="selected">English</option>
+						</select>
+						 -->
 	
 						<div class="loginSetting">
 							<span class="fl">
@@ -849,7 +858,7 @@ function getCookie(cookieName){
 							<a href="javascript:login()" class="amb_btnstyle blue large">LOGIN</a>
 						</div>
 					</fieldset>
-					<div class="copyright">Copyright @2019 NCOMZ All Rights Reserved</div>
+					<div class="copyright"><spring:message code="msg.login.bottom.copyright" /></div>
 				</form>				
 			</div>
 		</div>
