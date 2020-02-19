@@ -67,15 +67,7 @@ public class LoginController {
 		
 		textId = StringUtil.decode(textId);
 		textNm = StringUtil.decode(textNm);
-		textNm = StringUtil.decode(textLang);
-		
-//		
-//		LocaleContextHolder.setLocale(Locale.US);
-//		Locale.setDefault(Locale.US);
-//		Locale locale = LocaleContextHolder.getLocale();
-//		System.out.println("                                  getLanguage  %%  " + locale.getLanguage());
-//		System.out.println("                                  MessageUtil.getMessage(\"label.common.search\")  %%  " + MessageUtil.getMessage("label.common.search"));
-//		
+		textLang = StringUtil.decode(textLang);
 		
 		boolean bForce = Boolean.parseBoolean(force);
 		return loginService.login(textId, textNm, bForce, request);
