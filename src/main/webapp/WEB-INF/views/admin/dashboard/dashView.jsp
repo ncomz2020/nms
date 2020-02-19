@@ -81,7 +81,7 @@
 	var lineData = {
 		labels: ${projectResultList[4]},
 		datasets: [{
-			label: "계약건수 ",
+			label: '<spring:message code="msg.dashboard.contract"/> ',
 			data: ${projectResultList[0]},
 			backgroundColor: "rgba(49,141,231,0.0)",//background 의 opacity를 0으로
 			borderColor : "rgba(49,141,231,0.6)",
@@ -89,7 +89,7 @@
 			pointBackgroundColor:"rgba(49,141,231,0.5)",
 			pointHoverBackgroundColor :"rgba(49,141,231,1.0)",
 		},{
-			label: "진행건수",
+			label: '<spring:message code="msg.dashboard.progression"/> ',
 			data: ${projectResultList[1]},
 			backgroundColor: "rgba(80,80,80,0.0)",//background 의 opacity를 0으로
 			borderColor : "rgba(80,80,80,0.7)",
@@ -97,7 +97,7 @@
 			pointBackgroundColor:"rgba(80,80,80,0.5)",
 			pointHoverBackgroundColor :"rgba(80,80,80,1.0)",
 		},{
-			label: "종료건수",
+			label: '<spring:message code="msg.dashboard.done"/> ',
 			data: ${projectResultList[2]},
 			backgroundColor: "rgba(243,73,80,0.0)",//background 의 opacity를 0으로
 			borderColor : "rgba(243,73,80,0.7)",
@@ -105,7 +105,7 @@
 			pointBackgroundColor:"rgba(243,73,80,0.5)",
 			pointHoverBackgroundColor :"rgba(243,73,80,1.0)",
 		},{
-			label: "미계약건수",
+			label: '<spring:message code="msg.dashboard.uncontract"/> ',
 			data: ${projectResultList[3]},
 			backgroundColor: "rgba(0,203,129,0.0)",//background 의 opacity를 0으로
 			borderColor : "rgba(0,203,129,0.7)",
@@ -141,7 +141,7 @@
 				label: function (tooltipItem, data) {
 					var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 					var tt = data.datasets[tooltipItem.datasetIndex].label;
-					return tt + ': '+ amount + '건 ';
+					return tt + ': '+ amount + '<spring:message code="msg.dashboard.result"/>';
 				}
 			},
 		},
@@ -164,7 +164,7 @@
 				}
 				
 				text.push('<li>');
-				text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '"></span>' + chart.data.datasets[i].label + ' ' + total + ' 건' +  '');
+				text.push('<span style="background-color:' + chart.data.datasets[i].borderColor + '"></span>' + chart.data.datasets[i].label + ' ' + total + ' <spring:message code="msg.dashboard.result"/>' +  '');
 				text.push('</li>'); 
 				
 				/*
@@ -235,7 +235,7 @@
 				label: function (tooltipItem, data) {
 					var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 					var tt = data.labels[tooltipItem.index];
-					return tt + ': '+ amount + '명 ';
+					return tt + ': '+ amount + '<spring:message code="msg.dashboard.person"/> ';
 				}
 			},
 		},
@@ -258,7 +258,7 @@
 			    ctx2.font = fontSize + "em sans-serif";
 			    ctx2.textBaseline = "middle";
 
-			    var text = ${total_cnt}+ " 명",
+			    var text = ${total_cnt}+ ' <spring:message code="msg.dashboard.person"/>',
 			        textX = Math.round((width + 250 - ctx2.measureText(text).width) / 2),
 			        textY = height / 2;
 

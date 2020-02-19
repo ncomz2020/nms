@@ -11,7 +11,7 @@
 	<div class="g_column w_1_1">
 		<h3>
 			<span class="title">
-			타임카드 리스트(${count}건)
+			<spring:message code="label.card.subtitle"/>(${count}<spring:message code="label.common.total.count"/>)
 			</span>
 			<div class="fr btnArea middle">
 				<a href="javascript:goPage();" class="amb_btnstyle white middle"><spring:message code="label.card.alllist.btn"/></a>

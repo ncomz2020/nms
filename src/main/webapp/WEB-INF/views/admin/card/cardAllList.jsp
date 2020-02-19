@@ -132,7 +132,7 @@
 		<h3>
 			<span class="title"><c:out value="${fn:substring(CardYm,0,4)}"/><spring:message code="label.common.year"/> <c:out value="${fn:substring(CardYm,4,6)}"/><spring:message code="label.common.month"/> <spring:message code="label.card.alllist"/></span>
 			<div class="fr btnArea middle"> 
-				<a href="javascript:PrintElem('cardDiv');" class="amb_btnstyle white middle">인쇄</a>
+				<a href="javascript:PrintElem('cardDiv');" class="amb_btnstyle white middle"><spring:message code="msg.organization.print"/></a>
 			</div>
 		</h3>
 			<div id="cardDiv" class="unitBox" > 

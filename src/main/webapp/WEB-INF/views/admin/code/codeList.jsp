@@ -25,7 +25,7 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 	
    function initTree() {
       $("#tree").dynatree({
-      title : '코드관리',
+      title : '<spring:message code="label.code.manage"/>',
       clickFolderMode : 1, // 1:activate, 2:expand, 3:activate and expand
       fx : {
       height : "toggle",
@@ -107,7 +107,7 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
 		var activeNode = $("#tree").dynatree("getActiveNode");
 		if (activeNode == null) {
 			swal({
-		        title: '등록'
+		        title: '<spring:message code="label.common.regist"/>'
 		    });
 			return;
 		}
@@ -181,7 +181,7 @@ span.dynatree-active.node_font_red a {background-color:#f00!important;}
    <div class="g_column w_1_1">
       <div class="unitBox lineBox menuTreeBox" style="">
          <h4>
-            <span class="title">코드관리</span>
+            <span class="title"><spring:message code="label.code.manage"/></span>
             <div class="fr btnArea middle">
                <a href="javascript:expandAll('tree');" class="amb_btnstyle white middle onlyIcon">
                   <i class="ambicon-011_scale_up"></i>

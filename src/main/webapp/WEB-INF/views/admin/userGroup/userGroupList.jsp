@@ -34,7 +34,7 @@
 			},
 			error : function() {
 				swal({
-		    			title: '실패'
+		    			title: '<spring:message code="label.common.fail"/>'
 				    });
 			}
 		});
@@ -53,7 +53,7 @@
 			success: function(data){
 				var teamList = data.data;
 				var teamHtml = '';
-					teamHtml += '<option value="">전체</option>';
+					teamHtml += '<option value=""><spring:message code="label.common.all"/></option>';
 				for(var i=0; i<teamList.length; i++){
 					teamHtml += '<option value="' + teamList[i].dtl_cd +'">' + teamList[i].dtl_cd_desc + '</option>';
 				}
@@ -86,7 +86,7 @@
 							<th><spring:message code="label.usergroup.name"/></th>
 							<td>
 								<select id="search_usr_grp_id" name="search_usr_grp_id" class="inp w90p">
-									<option value="">전체</option>
+									<option value=""><spring:message code="label.common.all"/></option>
 									<c:forEach items="${getUsrGroupList}" var="getUsrGroupList" varStatus="status">
 										<option value="${getUsrGroupList.usr_grp_id}">${getUsrGroupList.expln}</option>
 									</c:forEach>
@@ -95,7 +95,7 @@
 		                    <th><spring:message code="label.user.dept"/></th>
 							<td>
 								<select id="dept_cd" name="dept_cd" class="inp w90p">
-									<option value="">전체</option>
+									<option value=""><spring:message code="label.common.all"/></option>
 									<c:forEach items="${getDeptList}" var="getDeptList" varStatus="status">
 										<option value="${getDeptList.dtl_cd}">${getDeptList.dtl_cd_desc}</option>
 									</c:forEach>
@@ -104,7 +104,7 @@
 							<th><spring:message code="label.user.team"/></th>
 							<td>
 								<select id="team_cd" name="team_cd" class="inp w90p">
-									<option value="">전체</option>
+									<option value=""><spring:message code="label.common.all"/></option>
 								</select>
 							</td>
 							<th><spring:message code="label.user.usernm"/></th>
