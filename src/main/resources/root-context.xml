@@ -89,14 +89,17 @@
 
 	<!--<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> -->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<property name="defaultLocale" value="ko" /><!-- 기본언어 한국어 -->
+		<property name="defaultLocale" value="ko" /> <!--기본언어 한국어 -->
 		<property name="cookieName" value="nmsLanguage"/>
 		<property name="cookieMaxAge" value="100000"/>
 		<property name="cookiePath" value="/"/>
 	</bean>
 
 	<mvc:interceptors>
-
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+		
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/css/**" />
@@ -125,6 +128,8 @@
 					<value>/</value>
 				</property>
 			</bean>
+			
+			
 		</mvc:interceptor>
 
 		<!-- configuration for handling browser back button -->

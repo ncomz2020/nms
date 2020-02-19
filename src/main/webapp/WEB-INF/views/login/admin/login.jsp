@@ -15,6 +15,10 @@ $(window).on('load', function () {
 			login();				
 		}
 	});
+
+	$("#textLang").change(function () {
+		movePage('/admin/login?lang='+this.value)
+	});
 });
 
 function login(bForce) {
@@ -55,7 +59,7 @@ function login(bForce) {
 	param.textNm = replaceall($("#textNm").val());
 	param.textLang = replaceall($("#textLang").val());
 	param.force = bForce;
-
+		
 	$.ajax({
 	url : '/login/admin/loginAction',
 	type : 'POST',
@@ -835,13 +839,13 @@ function getCookie(cookieName){
 						<input type="text" class="id" id="textId" name="textId" placeholder="ID" value="admin"/>
 						<input type="password" class="pw" id="textNm" name="textNm" placeholder="PASSWORD" value="admin"/>
 						
-						<!-- 
+						 
 						<select id="textLang" name="textLang">
-						    <option value="">(언어 선택)</option>
+							<option value="" selected>언어선택</option>
 						    <option value="ko">한국어</option>
-						    <option value="en" selected="selected">English</option>
+						    <option value="en">English</option>
 						</select>
-						 -->
+						
 	
 						<div class="loginSetting">
 							<span class="fl">
