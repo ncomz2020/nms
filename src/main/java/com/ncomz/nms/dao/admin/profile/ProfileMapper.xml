@@ -78,7 +78,8 @@
              A.DTL_CD_DESC AS DEPT_CD, 
              CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
                   ELSE E.DTL_CD_DESC END AS TEAM_CD,
-             U.CRE_DT,   
+             U.CRE_DT,
+             DATE_FORMAT(U.CRE_DT,'%Y-%m-%d %h:%i:%s') CRE_DT_ST,   
              CONCAT(SUBSTRING(U.WRIT_YM, 1, 4),'-',SUBSTRING(U.WRIT_YM, 5, 2)) AS WRIT_YM
       	FROM   T_USER_HIST U, 
              T_COMMON_CODE A, 

@@ -115,7 +115,7 @@ function changeCmbM(cmb){
 		                     <c:if test="${sessionScope.session_user.usr_grp_id ne '4'}">
 		                     	 <th><spring:message code="label.user.usernm"/></th>
 			                     <td>
-			                         <input type="text" id="usr_nm" name="usr_nm" class="inp w90p" placeholder='검색' />
+			                         <input type="text" id="usr_nm" name="usr_nm" class="inp w90p" placeholder='<spring:message code="label.common.search"/>' />
 			                     </td>
 		                     	 <th><spring:message code="label.user.deptteam"/></th>
 			                     <td>

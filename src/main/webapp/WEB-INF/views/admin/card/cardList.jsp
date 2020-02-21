@@ -167,7 +167,7 @@ var strUsrGrpId	 = "${USER_GRP_ID}";
 							</td>
 							<th><spring:message code="label.user.usernm"/></th>
 							<td>
-								<input type="text" id="usr_nm" name="usr_nm" class="inp w90p" placeholder='검색' />
+								<input type="text" id="usr_nm" name="usr_nm" class="inp w90p" placeholder='<spring:message code="label.common.search"/>' />
 							</td>
                  		</tr>
 					</tbody>

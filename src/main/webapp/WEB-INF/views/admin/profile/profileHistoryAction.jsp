@@ -11,6 +11,7 @@
 		// 변수 = 사번, 작성일
 		var empNo = profileListTr[index].children[1].textContent;
 		var creDt = profileListTr[index].children[5].dataset.cre_dt;
+		alert(creDt);
 		// var url = '/admin/profile/profileHistView/' + empNo + '/' + creDt + '.ajax';
 		
 		var param = empNo + "," + creDt;
@@ -81,7 +82,7 @@
 								${profile.dept_cd}
 							</td>
 							<td>${profile.team_cd}</td>
-							<td data-cre_dt="<fmt:formatDate value="${profile.cre_dt}" pattern="yyyy-MM-dd hh:mm:ss" />">
+							<td data-cre_dt="${profile.cre_dt_st}">
 								${profile.cre_dt}
 							</td>
 						</tr>
