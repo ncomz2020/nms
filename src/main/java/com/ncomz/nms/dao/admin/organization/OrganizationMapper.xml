@@ -9,10 +9,13 @@
 	  		 /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.selectOrg*/
 			SELECT 
 				A.DTL_CD_DESC,
-			    E.DTL_CD_DESC  AS TEAM,
+			    A.DTL_CD_DESC_EN,
+			    E.DTL_CD_DESC AS TEAM,
+			    E.DTL_CD_DESC_EN AS TEAM_EN,
 			    U.USR_NM , 
 			    U.EMP_NO,
 			    E2.DTL_CD_DESC AS RANK_NM,
+			    E2.DTL_CD_DESC_EN AS RANK_NM_EN,
 			    IF (CHAR_LENGTH(CELL_NO)=11,
 					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
 					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
@@ -41,8 +44,11 @@
 				    E3.DTL_CD,
 				    U.USR_NM , 
 				    A.DTL_CD_DESC,
+				    A.DTL_CD_DESC_EN,
 				    E2.DTL_CD_DESC AS RANK_NM,
+				    E2.DTL_CD_DESC_EN AS RANK_NM_EN,
 				    E3.DTL_CD_DESC AS PSRT,
+				    E3.DTL_CD_DESC_EN AS PSRT_EN,
 				    IF (CHAR_LENGTH(CELL_NO)=11,
 						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
 						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
@@ -73,8 +79,11 @@
 				    E3.DTL_CD,
 				    U.USR_NM ,
 				    A.DTL_CD_DESC,
+				    A.DTL_CD_DESC_EN,
 				    E2.DTL_CD_DESC AS RANK_NM,
+				    E2.DTL_CD_DESC_EN AS RANK_NM_EN,
 				    E3.DTL_CD_DESC AS PSRT,
+				    E3.DTL_CD_DESC_EN AS PSRT_EN,
 				    IF (CHAR_LENGTH(CELL_NO)=11,
 						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
 						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
@@ -101,6 +110,7 @@
 	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getDept*/	  
 			SELECT DISTINCT 
 		    	DTL_CD_DESC  AS DEPT,
+		    	DTL_CD_DESC_EN  AS DEPT_EN,
 		    	DTL_CD
 			FROM    
 			    T_COMMON_CODE 
@@ -113,7 +123,9 @@
 	  <select id ="getTeam" resultType="com.ncomz.nms.domain.admin.organization.Org">
 	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getTeam*/	  
 	  		SELECT  A.DTL_CD_DESC AS GRP_CD_DESC,
+                 A.DTL_CD_DESC_EN AS GRP_CD_DESC_EN,
 			 	 B.DTL_CD_DESC
+			 	 B.DTL_CD_DESC_EN
 			FROM    
 			    T_COMMON_CODE A
 			    LEFT OUTER JOIN T_COMMON_CODE B
@@ -127,6 +139,7 @@
 	  		SELECT 
 				COUNT(*) AS T_COUNT,
 				E.DTL_CD_DESC  
+				E.DTL_CD_DESC_EN  
 			FROM   
 			    T_COM_INFO CO
 			    LEFT OUTER JOIN T_USER U

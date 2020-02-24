@@ -3,20 +3,26 @@ package com.ncomz.nms.domain.admin.organization;
 
 public class Org  {
 
-   String dept_cd;
-   String team_cd;
-   String dtl_cd_desc;
-   String team;
-   String usr_nm;
-   String rank_nm;
-   String cell_no;
-   String grp_cd_desc;
-   String emp_no;
-   String psrt;
-   String dept;
-   String dtl_cd;
-   int t_count;
-   int d_count; 
+	String dept_cd;
+	String team_cd;
+	String dtl_cd_desc;
+	String dtl_cd_desc_en;
+	String team;
+	String team_en;
+	String usr_nm;
+	String rank_nm;
+	String rank_nm_en;
+	String cell_no;
+	String grp_cd_desc;
+	String grp_cd_desc_en;
+	String emp_no;
+	String psrt;
+	String psrt_en;
+	String dept;
+	String dept_en;
+	String dtl_cd;
+	int t_count;
+	int d_count;
    
 	public String getDept_cd() {
 		return dept_cd;
@@ -36,11 +42,23 @@ public class Org  {
 	public void setDtl_cd_desc(String dtl_cd_desc) {
 		this.dtl_cd_desc = dtl_cd_desc;
 	}
+	public String getDtl_cd_desc_en() {
+		return dtl_cd_desc_en;
+	}
+	public void setDtl_cd_desc_en(String dtl_cd_desc_en) {
+		this.dtl_cd_desc_en = dtl_cd_desc_en;
+	}
 	public String getTeam() {
 		return team;
 	}
 	public void setTeam(String team) {
 		this.team = team;
+	}
+	public String getTeam_en() {
+		return team_en;
+	}
+	public void setTeam_en(String team_en) {
+		this.team_en = team_en;
 	}
 	public String getUsr_nm() {
 		return usr_nm;
@@ -54,6 +72,12 @@ public class Org  {
 	public void setRank_nm(String rank_nm) {
 		this.rank_nm = rank_nm;
 	}
+	public String getRank_nm_en() {
+		return rank_nm_en;
+	}
+	public void setRank_nm_en(String rank_nm_en) {
+		this.rank_nm_en = rank_nm_en;
+	}
 	public String getCell_no() {
 		return cell_no;
 	}
@@ -65,6 +89,12 @@ public class Org  {
 	}
 	public void setGrp_cd_desc(String grp_cd_desc) {
 		this.grp_cd_desc = grp_cd_desc;
+	}
+	public String getGrp_cd_desc_en() {
+		return grp_cd_desc_en;
+	}
+	public void setGrp_cd_desc_en(String grp_cd_desc_en) {
+		this.grp_cd_desc_en = grp_cd_desc_en;
 	}
 	public String getEmp_no() {
 		return emp_no;
@@ -78,11 +108,23 @@ public class Org  {
 	public void setPsrt(String psrt) {
 		this.psrt = psrt;
 	}
+	public String getPsrt_en() {
+		return psrt_en;
+	}
+	public void setPsrt_en(String psrt_en) {
+		this.psrt_en = psrt_en;
+	}
 	public String getDept() {
 		return dept;
 	}
 	public void setDept(String dept) {
 		this.dept = dept;
+	}
+	public String getDept_en() {
+		return dept_en;
+	}
+	public void setDept_en(String dept_en) {
+		this.dept_en = dept_en;
 	}
 	public String getDtl_cd() {
 		return dtl_cd;
@@ -101,14 +143,8 @@ public class Org  {
 	}
 	public void setD_count(int d_count) {
 		this.d_count = d_count;
-	}
-	
-	@Override
-	public String toString() {
-		return "Org [dept_cd=" + dept_cd + ", team_cd=" + team_cd + ", dtl_cd_desc=" + dtl_cd_desc + ", team=" + team
-				+ ", usr_nm=" + usr_nm + ", rank_nm=" + rank_nm + ", cell_no=" + cell_no + ", grp_cd_desc=" + grp_cd_desc
-				+ ", emp_no=" + emp_no + ", psrt=" + psrt + ", dept=" + dept + ", dtl_cd=" + dtl_cd + ", t_count="
-				+ t_count + ", d_count=" + d_count + "]";
-	}
-    
+	} 
+
+
+   
 }

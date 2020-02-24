@@ -88,18 +88,15 @@ public class ProjectService {
 	}
 	
 	//프로젝트 정보
-	public Map<String, Object> getProjectInfo(Project project){
-		Map<String, Object> projectInfo = new HashMap<String, Object>();
-		
-		projectInfo.put("projectInfo", projectMapper.getProjectInfo(project));
+	public List<Project> getProjectInfo(Project project){
+		List<Project> projectInfo = projectMapper.getProjectInfo(project);
 		
 		return projectInfo;
 	}
 	
 	//투입인력 정보
-	public Map<String, Object> getmemberInfo(ProjectUser projectUser){
-		Map<String, Object> memberInfo = new HashMap<String, Object>();
-		memberInfo.put("memberInfo", projectMapper.getMemberInfo(projectUser));
+	public List<ProjectUser> getmemberInfo(ProjectUser projectUser){
+		List<ProjectUser> memberInfo = projectMapper.getMemberInfo(projectUser);
 		
 		return memberInfo;
 	}

@@ -4,6 +4,7 @@ package com.ncomz.nms.controller.admin.project;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.internet.ParseException;
 import javax.servlet.http.HttpServletRequest;
@@ -132,10 +133,15 @@ public class ProjectController {
 	//프로젝트 수정 페이지
 	@RequestMapping(value = "projectUpdate", method = RequestMethod.POST)
 	public String projectUpdate(Model model, Project project,ProjectUser ProjectUser, HttpServletRequest request) {
+		List<ProjectUser> memberInfo = projectService.getmemberInfo(ProjectUser);
+		List<Project> projectInfo = projectService.getProjectInfo(project);
+		System.out.println("                   %%%% " + memberInfo.get(0).getUsr_nm());
+		System.out.println("                   %%%% " + projectInfo.get(0).getDept_cd());
+		
 		model.addAttribute("getDeptList", codeService.createComboBox2("100"));
 		
-		model.addAttribute("project", projectService.getProjectInfo(project));
-		model.addAttribute("member",projectService.getmemberInfo(ProjectUser));
+		model.addAttribute("project", projectInfo);
+		model.addAttribute("member", memberInfo);
 		
 		return thisUrl + "/projectUpdate";
 	}
