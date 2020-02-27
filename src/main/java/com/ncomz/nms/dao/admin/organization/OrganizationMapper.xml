@@ -124,7 +124,7 @@
 	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.getTeam*/	  
 	  		SELECT  A.DTL_CD_DESC AS GRP_CD_DESC,
                  A.DTL_CD_DESC_EN AS GRP_CD_DESC_EN,
-			 	 B.DTL_CD_DESC
+			 	 B.DTL_CD_DESC,
 			 	 B.DTL_CD_DESC_EN
 			FROM    
 			    T_COMMON_CODE A
@@ -138,7 +138,7 @@
 	        /*com.ncomz.nms.dao.admin.organization.OrganizationMapper.teamCount*/	 	  
 	  		SELECT 
 				COUNT(*) AS T_COUNT,
-				E.DTL_CD_DESC  
+				E.DTL_CD_DESC,  
 				E.DTL_CD_DESC_EN  
 			FROM   
 			    T_COM_INFO CO
