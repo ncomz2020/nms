@@ -11,16 +11,16 @@
     <entry key="jdbc.username.master">nms</entry>
     <entry key="jdbc.password.master">nms12345</entry>
      -->
-     <!-- Azure MySql 연결정보
+     <!-- Azure MySql 연결정보-->
     <entry key="jdbc.url.master">jdbc:mysql://ncomzsqldev.mysql.database.azure.com:3306/project?serverTimezone=UTC</entry>
-    <entry key="jdbc.username.master">c@ncomzsqldev</entry>
+    <entry key="jdbc.username.master">ncomzadmin@ncomzsqldev</entry>
     <entry key="jdbc.password.master">nc120227!</entry> 
-   	 -->
-   	 <!--Local MySql 연결정보 -->
+   	 
+   	 <!--Local MySql 연결정보 
     <entry key="jdbc.url.master">jdbc:mysql://192.168.20.197:3306/project?serverTimezone=UTC</entry>
     <entry key="jdbc.username.master">ncomzadmin</entry>
     <entry key="jdbc.password.master">ncomzadmin1234567890!</entry> 
-    
+    -->
 	<entry key="fileDirectoryPath">/nms</entry>
 	<entry key="filePath">/upload/</entry>
 
