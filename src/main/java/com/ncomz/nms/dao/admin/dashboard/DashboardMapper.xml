@@ -8,6 +8,8 @@
 				   COUNT(*) AS TEAM_CAPA,
 			       CASE WHEN ISNULL(E.dtl_cd_desc) THEN A.dtl_cd_desc
 			            ELSE E.dtl_cd_desc END AS TEAM_NM,
+			       CASE WHEN ISNULL(E.dtl_cd_desc_en) THEN A.dtl_cd_desc_en
+			            ELSE E.dtl_cd_desc_en END AS TEAM_NM_EN,
         		   (SELECT COUNT(*) AS TOTAL_CAPA FROM T_USER WHERE emp_no != 'admin') AS TOTAL_CAPA
 			FROM   T_USER U, 
 			       T_COMMON_CODE A, 

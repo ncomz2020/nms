@@ -186,9 +186,9 @@
 	});
 
 	document.getElementById('chartLegend03').innerHTML = myChart.generateLegend();//커스텀 legend를 생성함				
-<!-- 포로젝트 현황 라인차트 생성 스크립트 종료 -->	
+	//포로젝트 현황 라인차트 생성 스크립트 종료
 	
-<!-- 팀별인원 현황 도넛차트 생성 스크립트 시작 -->							
+	//팀별인원 현황 도넛차트 생성 스크립트 시작					
 	//data 부분
 	var pieData = {
 		labels: ${teamResultList[0]},
@@ -270,6 +270,6 @@
 	});
 	
 	document.getElementById('chartLegend04').innerHTML = myChart2.generateLegend();//커스텀 legend를 생성함			
-<!-- 팀별인원 현황 도넛차트 생성 스크립트 시작 -->
+	// 팀별인원 현황 도넛차트 생성 스크립트 시작 
 </script>						
 </html>

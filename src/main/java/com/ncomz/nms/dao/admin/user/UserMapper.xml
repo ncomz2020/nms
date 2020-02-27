@@ -46,22 +46,31 @@
 		  SELECT   U.EMP_NO, 
 			       U.USR_NM,
 			       U.USR_GRP_ID,
-			       (SELECT EXPLN FROM T_USR_GRP G WHERE U.USR_GRP_ID = G.USR_GRP_ID) EXPLN,
+		           G.EXPLN,
+		           G.USR_GRP_NM AS EXPLN_EN,
 			       A.DTL_CD_DESC AS DEPT_CD, 
+            	   A.DTL_CD_DESC_EN AS DEPT_CD_EN,
 			       CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
 			            ELSE E.DTL_CD_DESC END AS TEAM_CD,
-			       B.DTL_CD_DESC AS RANK_CD, 
-			       C.DTL_CD_DESC AS PSIT_CD, 
-			       D.DTL_CD_DESC AS STEP_CD, 
+		           CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC_EN
+                		ELSE E.DTL_CD_DESC_EN END AS TEAM_CD_EN,
+	               B.DTL_CD_DESC AS RANK_CD,
+	               B.DTL_CD_DESC_EN AS RANK_CD_EN,
+	               C.DTL_CD_DESC AS PSIT_CD,
+	               C.DTL_CD_DESC_EN AS PSIT_CD_EN,
+	               D.DTL_CD_DESC AS STEP_CD,
+	               D.DTL_CD_DESC_EN AS STEP_CD_EN,
 			       DATE_FORMAT(CO.COM_STRT_DT, '%Y-%m-%d') AS COM_STRT_DT, 
 			       CONCAT(SUBSTRING(U.SRT_NO, 5, 2), '월 ', 
 			       SUBSTRING(U.SRT_NO, 7, 2), '일') AS SRT_NO, 
+			       DATE_FORMAT(SRT_NO, '%M %D, %Y') AS SRT_NO_EN,
 			       U.EMAIL 
 			FROM   T_USER U, 
 			       T_COMMON_CODE A, 
 			       T_COMMON_CODE B, 
 			       T_COMMON_CODE C, 
 			       T_COMMON_CODE D, 
+			       T_USR_GRP G,
 			       T_COM_INFO CO
 			       LEFT OUTER JOIN T_COMMON_CODE E
 			       ON CO.TEAM_CD = E.DTL_CD 
@@ -71,6 +80,7 @@
 			       AND CO.RANK_CD = B.DTL_CD 
 			       AND CO.PSIT_CD = C.DTL_CD 
 			       AND CO.STEP_CD = D.DTL_CD
+            	   AND U.USR_GRP_ID = G.USR_GRP_ID
 			
 			/* 관리자 사용자 권한 분기*/       
 			<if test='emp_no != null and !emp_no.equals("admin") '>

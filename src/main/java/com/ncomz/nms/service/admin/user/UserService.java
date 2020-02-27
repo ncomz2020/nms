@@ -37,8 +37,22 @@ public class UserService {
    
    public List<User> getUserList(User user){
       Locale locale = LocaleContextHolder.getLocale();
-      
       List<User> userList = UserMapper.getUserList(user);
+      User userInfo = new User();
+
+	  if(locale.getLanguage().equals("en")) {
+		  for (int i=0; i<userList.size(); i++) {
+			  userInfo = userList.get(i);
+			  
+			  userInfo.setSrt_no(userInfo.getSrt_no_en());
+    		  userInfo.setExpln(userInfo.getExpln_en());
+    		  userInfo.setDept_cd(userInfo.getDept_cd_en());
+    		  userInfo.setTeam_cd(userInfo.getTeam_cd_en());
+    		  userInfo.setRank_cd(userInfo.getRank_cd_en());
+    		  userInfo.setPsit_cd(userInfo.getPsit_cd_en());
+    		  userInfo.setStep_cd(userInfo.getStep_cd_en());
+    	  }
+      }
       
       return userList;
    }
