@@ -19,6 +19,8 @@
         <!-- commons depedencies -->
         <commons.lang.version>2.5</commons.lang.version>
         <java.mail-version>1.5.5</java.mail-version>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
         <skipTests>true</skipTests>
 	</properties>
 	<dependencies>
