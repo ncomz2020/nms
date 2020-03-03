@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="/js/commonUtil.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function() {
-			movePage("/nms/login/admin/login");
+			movePage("/login/admin/login");
 		});
 		</script>
 	</head>
