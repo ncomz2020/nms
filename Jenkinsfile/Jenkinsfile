@@ -21,6 +21,6 @@ node {
   }
   
    stage('success') {
-    sh 'sudo service tomcat8.5 restart''
+    sh 'sudo service tomcat8.5 restart'
   }
 }
