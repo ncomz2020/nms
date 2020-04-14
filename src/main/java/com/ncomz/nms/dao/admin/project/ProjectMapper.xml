@@ -43,11 +43,14 @@
 	   	SELECT
 	   	  	CASE WHEN P.CHECK_YN = 1 THEN '신규'
  				  ELSE '추가' END AS CHECK_YN
+ 			, CASE WHEN P.CHECK_YN = 1 THEN 'New'
+ 				  ELSE 'Add' END AS CHECK_YN_EN
  			, P.PJT_NO
  			, P.PJT_NAME
  			, P.CUST_NM
  			, P.PM_NM
  			, A.DTL_CD_DESC AS DEPT_CD 
+ 			, A.DTL_CD_DESC_EN AS DEPT_CD_EN
  			, CASE WHEN P.CONT_YN = 1 THEN 'YES'
  				  ELSE 'NO' END AS CONT_YN
  			, CASE WHEN P.USE_YN = 1 THEN 'Active'
@@ -56,6 +59,8 @@
  			, DATE_FORMAT(P.END_DT, '%Y-%m-%d') AS END_DT
  			, CASE WHEN P.ETC_YN = 1 THEN '개발'
  				  ELSE '유지보수' END AS ETC_YN
+ 			, CASE WHEN P.ETC_YN = 1 THEN 'Development'
+ 				  ELSE 'Maintenance' END AS ETC_YN_EN
  		FROM
 		 	   T_COMMON_CODE A  
  			 , T_PROJECT_INFO P	 

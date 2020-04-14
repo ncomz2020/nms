@@ -10,13 +10,16 @@ public class Project extends Paging {
 	String pjt_name;
 	String pjt_type_cd;
 	String check_yn;
+	String check_yn_en;
 	String cust_nm;
 	String pm_nm;
 	String dept_cd;
+	String dept_cd_en;
 	String team_cd;
 	String cont_yn;
 	String use_yn;
 	String etc_yn;
+	String etc_yn_en;
 	Date strt_dt;
 	Date end_dt;
 	String cre_id;
@@ -61,6 +64,12 @@ public class Project extends Paging {
 	public void setCheck_yn(String check_yn) {
 		this.check_yn = check_yn;
 	}
+	public String getCheck_yn_en() {
+		return check_yn_en;
+	}
+	public void setCheck_yn_en(String check_yn_en) {
+		this.check_yn_en = check_yn_en;
+	}
 	public String getCust_nm() {
 		return cust_nm;
 	}
@@ -78,6 +87,12 @@ public class Project extends Paging {
 	}
 	public void setDept_cd(String dept_cd) {
 		this.dept_cd = dept_cd;
+	}
+	public String getDept_cd_en() {
+		return dept_cd_en;
+	}
+	public void setDept_cd_en(String dept_cd_en) {
+		this.dept_cd_en = dept_cd_en;
 	}
 	public String getTeam_cd() {
 		return team_cd;
@@ -102,6 +117,12 @@ public class Project extends Paging {
 	}
 	public void setEtc_yn(String etc_yn) {
 		this.etc_yn = etc_yn;
+	}
+	public String getEtc_yn_en() {
+		return etc_yn_en;
+	}
+	public void setEtc_yn_en(String etc_yn_en) {
+		this.etc_yn_en = etc_yn_en;
 	}
 	public Date getStrt_dt() {
 		return strt_dt;
@@ -211,19 +232,18 @@ public class Project extends Paging {
 	public void setPre_pjt_no(String pre_pjt_no) {
 		this.pre_pjt_no = pre_pjt_no;
 	}
+
 	@Override
 	public String toString() {
 		return "Project [pjt_no=" + pjt_no + ", pjt_name=" + pjt_name + ", pjt_type_cd=" + pjt_type_cd + ", check_yn="
-				+ check_yn + ", cust_nm=" + cust_nm + ", pm_nm=" + pm_nm + ", dept_cd=" + dept_cd + ", team_cd="
-				+ team_cd + ", cont_yn=" + cont_yn + ", use_yn=" + use_yn + ", etc_yn=" + etc_yn + ", strt_dt="
-				+ strt_dt + ", end_dt=" + end_dt + ", cre_id=" + cre_id + ", cre_dt=" + cre_dt + ", upd_id=" + upd_id
-				+ ", upd_dt=" + upd_dt + ", user_nm=" + user_nm + ", rownum=" + rownum + ", search_check_yn="
-				+ search_check_yn + ", pjt_strtdt=" + pjt_strtdt + ", pjt_enddt=" + pjt_enddt + ", search_use_yn="
-				+ search_use_yn + ", search_etc_yn=" + search_etc_yn + ", search_pjt=" + search_pjt + ", search_text="
-				+ search_text + ", param_dept_cd=" + param_dept_cd + ", param_team_cd=" + param_team_cd
-				+ ", pre_pjt_no=" + pre_pjt_no + "]";
+				+ check_yn + ", check_yn_en=" + check_yn_en + ", cust_nm=" + cust_nm + ", pm_nm=" + pm_nm + ", dept_cd="
+				+ dept_cd + ", team_cd=" + team_cd + ", cont_yn=" + cont_yn + ", use_yn=" + use_yn + ", etc_yn="
+				+ etc_yn + ", etc_yn_en=" + etc_yn_en + ", strt_dt=" + strt_dt + ", end_dt=" + end_dt + ", cre_id="
+				+ cre_id + ", cre_dt=" + cre_dt + ", upd_id=" + upd_id + ", upd_dt=" + upd_dt + ", user_nm=" + user_nm
+				+ ", rownum=" + rownum + ", search_check_yn=" + search_check_yn + ", pjt_strtdt=" + pjt_strtdt
+				+ ", pjt_enddt=" + pjt_enddt + ", search_use_yn=" + search_use_yn + ", search_etc_yn=" + search_etc_yn
+				+ ", search_pjt=" + search_pjt + ", search_text=" + search_text + ", param_dept_cd=" + param_dept_cd
+				+ ", param_team_cd=" + param_team_cd + ", pre_pjt_no=" + pre_pjt_no + "]";
 	}
-	
-	
 	
 }

@@ -43,6 +43,17 @@ public class ProfileService {
    public List<User> getProfileHistoryList(User user){
 	   Locale locale = LocaleContextHolder.getLocale();
 	   List<User> profileHistList = profileMapper.getProfileHistoryList(user);
+	   User profileHisteInfo = new User();
+
+	   if(locale.getLanguage().equals("en")) {
+		   for (int i=0; i<profileHistList.size(); i++) {
+			  profileHisteInfo = profileHistList.get(i);
+			  
+			  profileHisteInfo.setDept_cd(profileHisteInfo.getDept_cd_en());
+			  profileHisteInfo.setTeam_cd(profileHisteInfo.getTeam_cd_en());
+		   }
+	   }
+	   
 	   return profileHistList;
    }
 
@@ -74,6 +85,17 @@ public class ProfileService {
    public List<User> getProfileList(User user){
 	   Locale locale = LocaleContextHolder.getLocale();
 	   List<User> profileList = profileMapper.getProfileList(user);
+	   User profileInfo = new User();
+
+	   if(locale.getLanguage().equals("en")) {
+		   for (int i=0; i<profileList.size(); i++) {
+			  profileInfo = profileList.get(i);
+			  
+    		  profileInfo.setDept_cd(profileInfo.getDept_cd_en());
+    		  profileInfo.setTeam_cd(profileInfo.getTeam_cd_en());
+		   }
+	   }
+	   
 	   return profileList;
    }
    

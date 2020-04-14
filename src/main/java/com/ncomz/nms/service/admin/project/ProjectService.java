@@ -30,7 +30,19 @@ public class ProjectService {
 	
 	//프로젝트 리스트
 	public List<Project> getProjectList(Project project){	
+		Locale locale = LocaleContextHolder.getLocale();
 		List<Project> projectList = projectMapper.getProjectList(project);
+		Project projectInfo = new Project();
+
+		if(locale.getLanguage().equals("en")) {
+			for (int i=0; i<projectList.size(); i++) {
+				projectInfo = projectList.get(i);
+				  
+				projectInfo.setCheck_yn(projectInfo.getCheck_yn_en());
+				projectInfo.setEtc_yn(projectInfo.getEtc_yn_en());
+				projectInfo.setDept_cd(projectInfo.getDept_cd_en());
+	    	}
+	    }
 		
 		return projectList;
 	}

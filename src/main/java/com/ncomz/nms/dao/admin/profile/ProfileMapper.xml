@@ -76,8 +76,11 @@
              U.EMP_NO, 
              U.USR_NM, 
              A.DTL_CD_DESC AS DEPT_CD, 
+             A.DTL_CD_DESC_EN AS DEPT_CD_EN, 
              CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
                   ELSE E.DTL_CD_DESC END AS TEAM_CD,
+             CASE WHEN ISNULL(E.DTL_CD_DESC_EN) THEN A.DTL_CD_DESC_EN
+                  ELSE E.DTL_CD_DESC_EN END AS TEAM_CD_EN,
              U.CRE_DT,
              DATE_FORMAT(U.CRE_DT,'%Y-%m-%d %h:%i:%s') CRE_DT_ST,   
              CONCAT(SUBSTRING(U.WRIT_YM, 1, 4),'-',SUBSTRING(U.WRIT_YM, 5, 2)) AS WRIT_YM
@@ -288,8 +291,11 @@
 		       U.EMP_NO, 
 		       U.USR_NM, 
 		       A.DTL_CD_DESC AS DEPT_CD, 
+		       A.DTL_CD_DESC_EN AS DEPT_CD_EN, 
 		       CASE WHEN ISNULL(E.DTL_CD_DESC) THEN A.DTL_CD_DESC
 		            ELSE E.DTL_CD_DESC END AS TEAM_CD,
+		       CASE WHEN ISNULL(E.DTL_CD_DESC_EN) THEN A.DTL_CD_DESC_EN
+		            ELSE E.DTL_CD_DESC_EN END AS TEAM_CD_EN,
 		       DATE_FORMAT(U.CRE_DT, '%Y-%m-%d') AS CRE_DT,
 		       DATE_FORMAT(U.UPD_DT, '%Y-%m-%d') AS UPD_DT
 		FROM   T_USER U, 

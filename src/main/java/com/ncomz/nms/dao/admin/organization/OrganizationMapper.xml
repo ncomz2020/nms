@@ -17,8 +17,8 @@
 			    E2.DTL_CD_DESC AS RANK_NM,
 			    E2.DTL_CD_DESC_EN AS RANK_NM_EN,
 			    IF (CHAR_LENGTH(CELL_NO)=11,
-					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
-					concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+					CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+					CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
 			FROM   
 				 T_USER U, 
 			    T_COMMON_CODE A, 
@@ -50,8 +50,8 @@
 				    E3.DTL_CD_DESC AS PSRT,
 				    E3.DTL_CD_DESC_EN AS PSRT_EN,
 				    IF (CHAR_LENGTH(CELL_NO)=11,
-						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
-						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+						CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+						CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
 			FROM   
 					T_USER U, 
 				    T_COMMON_CODE A, 
@@ -85,8 +85,8 @@
 				    E3.DTL_CD_DESC AS PSRT,
 				    E3.DTL_CD_DESC_EN AS PSRT_EN,
 				    IF (CHAR_LENGTH(CELL_NO)=11,
-						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
-						concat( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
+						CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,4), '-', right(U.CELL_NO,4) ),
+						CONCAT( left(U.CELL_NO,3), '-', mid(U.CELL_NO,4,3), '-', right(U.CELL_NO,4) )) as CELL_NO
 			FROM   
 					 T_USER U, 
 				    T_COMMON_CODE A, 
