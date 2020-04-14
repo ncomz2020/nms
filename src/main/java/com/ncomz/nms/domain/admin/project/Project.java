@@ -6,8 +6,9 @@ import com.ncomz.nms.domain.admin.common.Paging;
 
 public class Project extends Paging {
 	
+	// 4/14 수정
 	String pjt_no;
-	String pjt_name;
+	String pjt_name; 
 	String pjt_type_cd;
 	String check_yn;
 	String check_yn_en;
